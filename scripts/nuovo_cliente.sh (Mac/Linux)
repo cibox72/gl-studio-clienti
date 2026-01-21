@@ -1,0 +1,38 @@
+#!/bin/bash
+read -p "Nome e Cognome (es. Mario Rossi): " nome
+read -p "Telefono (solo numeri, es. 3451234567): " tel
+read -p "Email: " email
+read -p "Indirizzo: " indirizzo
+read -p "Tipo servizio (Matrimonio/Battesimo/Eventi): " servizio
+
+nome_file=$(echo "$nome" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
+anno=$(date +%Y)
+data=$(date +%Y-%m-%d)
+nome_breve=$(echo "$nome" | cut -d' ' -f1)
+
+mkdir -p "documenti/$nome_file"
+
+cat > "clienti/$nome_file.md" << EOF
+# $nome
+
+- **Telefono**: +39 $tel  
+- **Email**: $email  
+- **Indirizzo**: $indirizzo  
+- **Data inserimento**: $data  
+- **Stato**: Nuovo  
+
+## Richiesta
+Organizzazione $servizio$(if [ -n "$indirizzo" ]; then echo " presso $indirizzo"; fi).
+
+## Documenti
+- [Preventivo](../documenti/$nome_file/preventivo_$anno.pdf)
+- [Contratto](../documenti/$nome_file/contratto_$anno.pdf)
+
+## Invio WhatsApp
+- [💬 Apri chat WhatsApp con $nome](https://wa.me/39$tel?text=Ciao%20$nome_breve,%20ti%20invio%20il%20preventivo.%20Grazie!)
+
+> ⏱️ Ultimo aggiornamento: $data
+EOF
+
+echo "✅ Scheda creata: clienti/$nome_file.md"
+echo "📁 Cartella documenti: documenti/$nome_file/"
