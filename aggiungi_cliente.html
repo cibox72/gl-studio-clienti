@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>G&L Studio - Nuovo Cliente</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    form { max-width: 600px; margin: 20px auto; padding: 20px; background: #f9f9f9; border-radius: 8px; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    button { background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+    button:hover { background: #b71c1c; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>➕ Aggiungi Nuovo Cliente</h1>
+
+    <form id="clienteForm">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" required>
+
+      <label for="cognome">Cognome</label>
+      <input type="text" id="cognome" required>
+
+      <label for="servizio">Tipo di Servizio</label>
+      <select id="servizio" required>
+        <option value="">-- Seleziona --</option>
+        <option value="Matrimonio">Matrimonio</option>
+        <option value="Battesimo">Battesimo</option>
+        <option value="Eventi">Eventi</option>
+      </select>
+
+      <label for="telefono">Telefono (solo numeri, es. 3451234567)</label>
+      <input type="text" id="telefono" pattern="[0-9]{10,}" title="Inserisci almeno 10 cifre" required>
+
+      <label for="indirizzo">Indirizzo</label>
+      <textarea id="indirizzo" rows="2"></textarea>
+
+      <label for="email">Email</label>
+      <input type="email" id="email">
+
+      <button type="button" onclick="generaScheda()">Genera Scheda Cliente (.md)</button>
+    </form>
+
+    <p><a href="dashboard.html">← Torna alla dashboard</a></p>
+    <p><a href="logout.html">🚪 Esci</a></p>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    function generaScheda() {
+      const nome = document.getElementById('nome').value.trim();
+      const cognome = document.getElementById('cognome').value.trim();
+      const servizio = document.getElementById('servizio').value;
+      const telefono = document.getElementById('telefono').value.trim();
+      const indirizzo = document.getElementById('indirizzo').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!nome || !cognome || !servizio || !telefono) {
+        alert("Per favore compila tutti i campi obbligatori.");
+        return;
+      }
+
+      const nomeCompleto = nome + " " + cognome;
+      const nomeFile = (nome + "_" + cognome).toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const data = new Date().toISOString().split('T')[0];
+      const anno = new Date().getFullYear();
+      const nomeBreve = nome;
+
+      let richiesta = `Organizzazione ${servizio.toLowerCase()}`;
+      if (indirizzo) richiesta += ` presso ${indirizzo}`;
+
+      const contenuto = `# ${nomeCompleto}
+
+- **Telefono**: +39 ${telefono}  
+- **Email**: ${email || "non fornita"}  
+- **Indirizzo**: ${indirizzo || "non fornito"}  
+- **Data inserimento**: ${data}  
+- **Stato**: Nuovo  
+
+## Richiesta
+${richiesta}
+
+## Documenti
+- [Preventivo](../documenti/${nomeFile}/preventivo_${anno}.pdf)
+- [Contratto](../documenti/${nomeFile}/contratto_${anno}.pdf)
+
+## Invio WhatsApp
+- [💬 Apri chat WhatsApp con ${nome}](https://wa.me/39${telefono}?text=Ciao%20${nomeBreve},%20ti%20invio%20il%20preventivo.%20Grazie!)
+
+> ⏱️ Ultimo aggiornamento: ${data}
+`;
+
+      const blob = new Blob([contenuto], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${nomeFile}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      alert(`✅ Scheda generata!\nSalva il file "${nomeFile}.md" nella cartella "clienti" del tuo progetto.`);
+    }
+  </script>
+</body>
+</html>
