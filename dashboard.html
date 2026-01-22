@@ -83,6 +83,20 @@
       background: #2e7d32;
     }
 
+    .btn-backup {
+      background: #7b1fa2; /* viola */
+    }
+    .btn-backup:hover {
+      background: #6a1b9a;
+    }
+
+    .btn-restore {
+      background: #f57c00; /* arancione */
+    }
+    .btn-restore:hover {
+      background: #ef6c00;
+    }
+
     .btn-esci {
       background: #d32f2f;
     }
@@ -126,8 +140,13 @@
     <div class="btn-group">
       <a href="clienti.html" class="btn btn-gestione">📁 Gestione Clienti</a>
       <a href="archivio.html" class="btn btn-archivio">🗄️ Archivio</a>
+      <button class="btn btn-backup" onclick="esportaBackup()">📥 Backup Dati</button>
+      <button class="btn btn-restore" onclick="document.getElementById('fileInput').click()">📤 Ripristina da File</button>
       <a href="logout.html" class="btn btn-esci">🚪 Esci</a>
     </div>
+
+    <!-- Input nascosto per caricare file -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="importaBackup(event)">
 
     <div class="info">
       <p><strong>📍</strong> Via Ciarrocco n.21, Canicattì (AG)</p>
@@ -138,5 +157,64 @@
   </div>
 
   <script src="auth.js"></script>
+  <script>
+    // Esporta backup come file JSON
+    function esportaBackup() {
+      const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      if (clienti.length === 0) {
+        alert("Nessun cliente da salvare.");
+        return;
+      }
+
+      const data = new Date().toISOString().split('T')[0]; // AAAA-MM-GG
+      const nomeFile = `backup-gl-studio-clienti-${data}.json`;
+
+      const datiJSON = JSON.stringify(clienti, null, 2);
+      const blob = new Blob([datiJSON], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomeFile;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      alert(`Backup salvato come:\n${nomeFile}`);
+    }
+
+    // Importa backup da file
+    function importaBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const clienti = JSON.parse(e.target.result);
+          
+          // Verifica che sia un array
+          if (!Array.isArray(clienti)) {
+            throw new Error("Formato non valido");
+          }
+
+          // Conferma
+          if (!confirm(`⚠️ Questa operazione sostituirà tutti i dati attuali.\n\nClienti nel file: ${clienti.length}\n\nConfermi?`)) {
+            return;
+          }
+
+          localStorage.setItem('clienti', JSON.stringify(clienti));
+          alert("✅ Dati ripristinati con successo!\nRicarica la pagina per vedere i cambiamenti.");
+        } catch (err) {
+          alert("❌ Errore: il file non è un backup valido di G&L Studio.");
+          console.error(err);
+        }
+      };
+      reader.readAsText(file);
+      // Reset input
+      event.target.value = '';
+    }
+  </script>
 </body>
 </html>
