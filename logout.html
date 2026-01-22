@@ -1,17 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Logout - G&L Studio</title>
-  <meta http-equiv="refresh" content="1;url=index.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>G&L Studio - Esci</title>
   <style>
-    body { font-family: Arial; text-align: center; padding-top: 100px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f9f9f9 0%, #eef2f5 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-size: 24px;
+      color: #d32f2f;
+    }
+    p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .btn-dashboard {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      background: #1976d2;
+      color: white;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+    .btn-dashboard:hover {
+      background: #1565c0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
   </style>
 </head>
 <body>
-  <h2>Logout in corso...</h2>
-  <p>Stai uscendo dall'area riservata.</p>
+  <div class="container">
+    <h1>🚪 Sei uscito con successo</h1>
+    <p>La tua sessione è stata terminata.</p>
+    <a href="index.html" class="btn-dashboard">← Torna al login</a>
+  </div>
+
   <script>
+    // Rimuovi lo stato di login
     localStorage.removeItem('isLoggedIn');
   </script>
 </body>
