@@ -16,11 +16,17 @@
       max-width: 1000px;
       margin: 0 auto;
     }
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
       color: #000;
       margin: 20px 0;
       font-weight: bold;
+    }
+    h3 {
+      font-size: 16px;
+      color: #d32f2f;
+      margin-top: 20px;
+      margin-bottom: 12px;
     }
     
     /* Form aggiunta cliente */
@@ -167,6 +173,88 @@
       <label for="email">Email</label>
       <input type="email" id="email">
 
+      <!-- SERVIZIO COMMISSIONATO -->
+      <h3>SERVIZIO COMMISSIONATO:</h3>
+
+      <label for="album">Album</label>
+      <select id="album">
+        <option value="">-- Seleziona --</option>
+        <option value="ANALOGICO 33x33 cm">ANALOGICO 33x33 cm</option>
+        <option value="DIGITALE 20x30 cm vert.">DIGITALE 20x30 cm vert.</option>
+        <option value="DIGITALE 25x35 cm vert.">DIGITALE 25x35 cm vert.</option>
+        <option value="DIGITALE 30x40 cm vert.">DIGITALE 30x40 cm vert.</option>
+        <option value="DIGITALE 35x45 cm vert.">DIGITALE 35x45 cm vert.</option>
+        <option value="SERVIZIO SOLO FILES">SERVIZIO SOLO FILES</option>
+      </select>
+
+      <label for="miniAlbum">Mini Album</label>
+      <select id="miniAlbum">
+        <option value="">-- Seleziona --</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+
+      <label for="copertina">Copertina</label>
+      <select id="copertina">
+        <option value="">-- Seleziona --</option>
+        <option value="TELATA">TELATA</option>
+        <option value="EXTRA LUX">EXTRA LUX</option>
+      </select>
+
+      <label for="effetti">Effetti</label>
+      <select id="effetti">
+        <option value="">-- Seleziona --</option>
+        <option value="SI">SI</option>
+        <option value="NO">NO</option>
+      </select>
+
+      <label for="interni">Interni</label>
+      <select id="interni">
+        <option value="">-- Seleziona --</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+
+      <label for="anteprima">Anteprima</label>
+      <select id="anteprima">
+        <option value="">-- Seleziona --</option>
+        <option value="FOTO">FOTO</option>
+        <option value="VIDEO">VIDEO</option>
+        <option value="FOTO+VIDEO">FOTO+VIDEO</option>
+      </select>
+
+      <label for="postServ">Post-Serv.</label>
+      <select id="postServ">
+        <option value="">-- Seleziona --</option>
+        <option value="FOTO">FOTO</option>
+        <option value="VIDEO">VIDEO</option>
+        <option value="FOTO+VIDEO">FOTO+VIDEO</option>
+      </select>
+
+      <label for="video">Video</label>
+      <select id="video">
+        <option value="">-- Seleziona --</option>
+        <option value="SOLO GIORNATA">SOLO GIORNATA</option>
+        <option value="GIORNATA+DRONE">GIORNATA+DRONE</option>
+        <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
+      </select>
+
       <label for="prezzo">Importo totale (€)</label>
       <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required>
 
@@ -279,6 +367,16 @@
       const email = document.getElementById('email').value.trim();
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
+      // Nuovi campi - Servizio Commissionato
+      const album = document.getElementById('album').value;
+      const miniAlbum = document.getElementById('miniAlbum').value;
+      const copertina = document.getElementById('copertina').value;
+      const effetti = document.getElementById('effetti').value;
+      const interni = document.getElementById('interni').value;
+      const anteprima = document.getElementById('anteprima').value;
+      const postServ = document.getElementById('postServ').value;
+      const video = document.getElementById('video').value;
+
       if (!nome || !cognome || !servizio || !dataEvento || !telefono || prezzo <= 0) {
         alert("Compila tutti i campi obbligatori.");
         return;
@@ -295,6 +393,17 @@
         telefono,
         email,
         prezzo,
+        // Salva i dettagli del servizio commissionato
+        servizioCommissionato: {
+          album: album || null,
+          miniAlbum: miniAlbum || null,
+          copertina: copertina || null,
+          effetti: effetti || null,
+          interni: interni || null,
+          anteprima: anteprima || null,
+          postServ: postServ || null,
+          video: video || null
+        },
         acconti: [],
         dataInserimento: new Date().toISOString().split('T')[0]
       };
@@ -379,6 +488,9 @@
         return;
       }
 
+      // Per ora non modifichiamo il servizio commissionato via prompt (troppo complesso)
+      // Potremmo aggiungere un modulo avanzato in futuro
+
       cliente.nome = nome.trim();
       cliente.cognome = cognome.trim();
       cliente.servizio = servizio.trim();
@@ -439,6 +551,22 @@
         `;
         tbody.appendChild(tr);
 
+        // --- Servizio Commissionato ---
+        let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
+        const sc = c.servizioCommissionato || {};
+        if (sc.album || sc.miniAlbum || sc.copertina || sc.effetti || sc.interni || sc.anteprima || sc.postServ || sc.video) {
+          servizioCommHtml = `
+            <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
+            <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
+            <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
+            <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
+            <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
+            <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
+            <div class="campo"><strong>Post-Serv.:</strong> ${sc.postServ || 'Non selezionato'}</div>
+            <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
+          `;
+        }
+
         let accontiHtml = '<em>Nessun acconto registrato.</em>';
         if (c.acconti.length > 0) {
           accontiHtml = `
@@ -475,6 +603,11 @@
             <div class="campo"><strong>Cognome:</strong> ${c.cognome}</div>
             <div class="campo"><strong>Telefono:</strong> ${c.telefono}</div>
             <div class="campo"><strong>Email:</strong> ${c.email || 'Non fornita'}</div>
+          </div>
+
+          <div class="sezione">
+            <div class="sezione-titolo">Servizio Commissionato</div>
+            ${servizioCommHtml}
           </div>
 
           <div class="sezione">
