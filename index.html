@@ -59,35 +59,17 @@
   </div>
 
   <script>
-    const EXPECTED_HASH = "d8f4c7b9e3a1f0c6d2e5b8a7c4f1e0d3b6a9c2f5e8b1a4d7c0f3e6b9a2c5f8e1d";
-    
-    async function sha256(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function login() {
+    function login() {
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value;
 
-      if (u !== 'cibox72') {
-        showError();
-        return;
-      }
-
-      const hash = await sha256(p);
-      if (hash === EXPECTED_HASH) {
+      // Credenziali corrette
+      if (u === 'cibox72' && p === '@2026Banzaimaria') {
         localStorage.setItem('isLoggedIn', 'true');
         window.location.href = 'dashboard.html';
       } else {
-        showError();
+        document.getElementById('error').style.display = 'block';
       }
-    }
-
-    function showError() {
-      document.getElementById('error').style.display = 'block';
     }
   </script>
 </body>
