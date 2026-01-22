@@ -248,8 +248,35 @@
       <label for="email2">Email</label>
       <input type="email" id="email2">
 
-      <!-- SERVIZIO COMMISSIONATO -->
+      <!-- ✅ SERVIZIO COMMISSIONATO (INTTESTAZIONE) -->
       <h3>SERVIZIO COMMISSIONATO:</h3>
+
+      <!-- 🔽 TUTTI I CAMPI IN ORDINE RICHIESTO 🔽 -->
+
+      <label for="servizio">Tipo di Servizio</label>
+      <select id="servizio" required>
+        <option value="">-- Seleziona --</option>
+        <option value="Anniversario">Anniversario</option>
+        <option value="Compleanno">Compleanno</option>
+        <option value="Battesimo">Battesimo</option>
+        <option value="Comunione">Comunione</option>
+        <option value="Cresima">Cresima</option>
+        <option value="Percorso Catecumenale">Percorso Catecumenale</option>
+        <option value="Matrimonio">Matrimonio</option>
+        <option value="Maternity">Maternity</option>
+        <option value="New Born">New Born</option>
+        <option value="Maternity+New Born">Maternity+New Born</option>
+        <option value="Evento">Evento</option>
+      </select>
+
+      <label for="chiesa">Chiesa</label>
+      <input type="text" id="chiesa" placeholder="Nome della chiesa (se applicabile)">
+
+      <label for="location">Location</label>
+      <input type="text" id="location" placeholder="Luogo dell'evento">
+
+      <label for="dataEvento">Data dell'evento</label>
+      <input type="date" id="dataEvento" required>
 
       <label for="album">Album</label>
       <select id="album">
@@ -284,19 +311,19 @@
         <option value="EXTRA LUX">EXTRA LUX</option>
       </select>
 
-      <label for="effetti">Effetti</label>
-      <select id="effetti">
-        <option value="">-- Seleziona --</option>
-        <option value="SI">SI</option>
-        <option value="NO">NO</option>
-      </select>
-
       <label for="interni">Interni</label>
       <select id="interni">
         <option value="">-- Seleziona --</option>
         <script>
           document.write(Array.from({length: 50}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
         </script>
+      </select>
+
+      <label for="effetti">Effetti</label>
+      <select id="effetti">
+        <option value="">-- Seleziona --</option>
+        <option value="SI">SI</option>
+        <option value="NO">NO</option>
       </select>
 
       <label for="anteprima">Anteprima</label>
@@ -322,32 +349,6 @@
         <option value="GIORNATA+DRONE">GIORNATA+DRONE</option>
         <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
       </select>
-
-      <!-- Servizio -->
-      <label for="servizio">Tipo di Servizio</label>
-      <select id="servizio" required>
-        <option value="">-- Seleziona --</option>
-        <option value="Anniversario">Anniversario</option>
-        <option value="Compleanno">Compleanno</option>
-        <option value="Battesimo">Battesimo</option>
-        <option value="Comunione">Comunione</option>
-        <option value="Cresima">Cresima</option>
-        <option value="Percorso Catecumenale">Percorso Catecumenale</option>
-        <option value="Matrimonio">Matrimonio</option>
-        <option value="Maternity">Maternity</option>
-        <option value="New Born">New Born</option>
-        <option value="Maternity+New Born">Maternity+New Born</option>
-        <option value="Evento">Evento</option>
-      </select>
-
-      <label for="chiesa">Chiesa</label>
-      <input type="text" id="chiesa" placeholder="Nome della chiesa (se applicabile)">
-
-      <label for="location">Location</label>
-      <input type="text" id="location" placeholder="Luogo dell'evento">
-
-      <label for="dataEvento">Data dell'evento</label>
-      <input type="date" id="dataEvento" required>
 
       <label for="prezzo">Importo totale (€)</label>
       <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required>
@@ -475,7 +476,6 @@
     });
 
     function aggiungiCliente() {
-      // Cliente 1 (obbligatorio)
       const nome1 = document.getElementById('nome1').value.trim();
       const cognome1 = document.getElementById('cognome1').value.trim();
       const via1 = document.getElementById('via1').value.trim();
@@ -483,7 +483,6 @@
       const telefono1 = document.getElementById('telefono1').value.trim();
       const email1 = document.getElementById('email1').value.trim();
 
-      // Cliente 2 (opzionale)
       const nome2 = document.getElementById('nome2').value.trim();
       const cognome2 = document.getElementById('cognome2').value.trim();
       const via2 = document.getElementById('via2').value.trim();
@@ -517,8 +516,8 @@
           album: document.getElementById('album').value || null,
           miniAlbum: document.getElementById('miniAlbum').value || null,
           copertina: document.getElementById('copertina').value || null,
-          effetti: document.getElementById('effetti').value || null,
           interni: document.getElementById('interni').value || null,
+          effetti: document.getElementById('effetti').value || null,
           anteprima: document.getElementById('anteprima').value || null,
           postServizio: document.getElementById('postServizio').value || null,
           video: document.getElementById('video').value || null
@@ -661,7 +660,6 @@
         `;
         tbody.appendChild(tr);
 
-        // --- Dati Anagrafici ---
         let anagraficaHtml = `
           <div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.nome} ${c.cliente1.cognome}</div>
           <div class="campo"><strong>Via:</strong> ${c.cliente1.via}</div>
@@ -679,7 +677,6 @@
           `;
         }
 
-        // --- Luoghi ---
         let luoghiHtml = '';
         if (c.chiesa || c.location) {
           luoghiHtml = `
@@ -690,13 +687,13 @@
 
         let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
         const sc = c.servizioCommissionato || {};
-        if (sc.album || sc.miniAlbum || sc.copertina || sc.effetti || sc.interni || sc.anteprima || sc.postServizio || sc.video) {
+        if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.effetti || sc.anteprima || sc.postServizio || sc.video) {
           servizioCommHtml = `
             <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
             <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
             <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
-            <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
             <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
+            <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
             <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
             <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
             <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
@@ -740,16 +737,10 @@
 
           <div class="sezione">
             <div class="sezione-titolo">Servizio Commissionato</div>
-            ${servizioCommHtml}
-          </div>
-
-          ${luoghiHtml ? `<div class="sezione"><div class="sezione-titolo">Luoghi</div>${luoghiHtml}</div>` : ''}
-
-          <div class="sezione">
-            <div class="sezione-titolo">Servizio</div>
             <div class="campo"><strong>Tipo:</strong> ${c.servizio}</div>
+            ${luoghiHtml}
             <div class="campo"><strong>Data evento:</strong> ${c.dataEvento}</div>
-            <div class="campo"><strong>Data inserimento:</strong> ${c.dataInserimento}</div>
+            ${servizioCommHtml}
           </div>
 
           <div class="sezione">
