@@ -3,19 +3,354 @@
 <head>
   <meta charset="UTF-8" />
   <title>G&L Studio - Clienti</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #000;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    
+    /* Form aggiunta cliente */
+    #clienteForm {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+      border: 1px solid #ddd;
+    }
+    label { display: block; margin-top: 12px; font-weight: bold; font-size: 14px; }
+    input, select { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 5px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button { 
+      background: #000; 
+      color: white; 
+      border: none; 
+      padding: 8px 16px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      margin: 5px 5px 5px 0;
+      font-weight: bold;
+      font-size: 13px;
+    }
+    button:hover { background: #333; }
+
+    /* Elenco riassuntivo */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f5f5f5;
+      font-weight: bold;
+    }
+    .apri-btn {
+      background: #d32f2f;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* Scheda cliente espansa */
+    .scheda-cliente {
+      background: white;
+      padding: 25px;
+      margin-bottom: 30px;
+      border: 1px solid #000;
+      display: none; /* nascosta di default */
+    }
+    .intestazione {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #000;
+    }
+    .sezione {
+      margin-bottom: 18px;
+    }
+    .sezione-titolo {
+      font-weight: bold;
+      text-decoration: underline;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+    .campo {
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .campo strong {
+      display: inline-block;
+      width: 160px;
+    }
+    .acconti-lista {
+      margin-top: 8px;
+    }
+    .acconto-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 2px 0;
+    }
+    .saldo-finale {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #000;
+    }
+    @media print {
+      body { padding: 0; }
+      .container { max-width: none; margin: 0; }
+      button, #clienteForm, a, .apri-btn { display: none !important; }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>📁 Archivio Clienti</h1>
-    
-    <ul>
-      <li><a href="clienti/mario_rossi.md" target="_blank">Mario Rossi</a></li>
-    </ul>
+    <h1>📁 Archivio Clienti – G&L Studio</h1>
+
+    <!-- Modulo Nuovo Cliente -->
+    <form id="clienteForm">
+      <h2>➕ Aggiungi Nuovo Cliente</h2>
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" required>
+
+      <label for="cognome">Cognome</label>
+      <input type="text" id="cognome" required>
+
+      <label for="servizio">Tipo di Servizio</label>
+      <select id="servizio" required>
+        <option value="">-- Seleziona --</option>
+        <option value="Matrimonio">Matrimonio</option>
+        <option value="Battesimo">Battesimo</option>
+        <option value="Evento">Evento</option>
+      </select>
+
+      <label for="telefono">Telefono</label>
+      <input type="text" id="telefono" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email">
+
+      <label for="prezzo">Importo totale (€)</label>
+      <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required>
+
+      <button type="button" onclick="aggiungiCliente()">Salva Cliente</button>
+    </form>
+
+    <!-- Elenco riassuntivo -->
+    <h2>📋 Elenco Clienti</h2>
+    <table id="elencoRiassunto">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Servizio</th>
+          <th>Saldo (€)</th>
+          <th>Azione</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyRiassunto"></tbody>
+    </table>
+
+    <!-- Schede espandibili -->
+    <div id="schedeEspandibili"></div>
 
     <p><a href="dashboard.html">← Torna alla dashboard</a></p>
     <p><a href="logout.html">🚪 Esci</a></p>
   </div>
-  <script src="js/auth.js"></script>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', caricaClienti);
+
+    function aggiungiCliente() {
+      const nome = document.getElementById('nome').value.trim();
+      const cognome = document.getElementById('cognome').value.trim();
+      const servizio = document.getElementById('servizio').value;
+      const telefono = document.getElementById('telefono').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
+
+      if (!nome || !cognome || !servizio || !telefono || prezzo <= 0) {
+        alert("Compila tutti i campi obbligatori.");
+        return;
+      }
+
+      const nuovoCliente = {
+        id: Date.now(),
+        nome,
+        cognome,
+        servizio,
+        telefono,
+        email,
+        prezzo,
+        acconti: [],
+        dataInserimento: new Date().toISOString().split('T')[0]
+      };
+
+      let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      clienti.push(nuovoCliente);
+      localStorage.setItem('clienti', JSON.stringify(clienti));
+
+      document.getElementById('clienteForm').reset();
+      caricaClienti();
+      alert("Cliente salvato con successo!");
+    }
+
+    function aggiungiAcconto(id) {
+      const importo = prompt("Inserisci l'importo dell'acconto (€):");
+      if (!importo || isNaN(importo) || parseFloat(importo) <= 0) return;
+
+      const data = prompt("Data dell'acconto (gg/mm/aaaa):", new Date().toLocaleDateString('it-IT'));
+      if (!data) return;
+
+      let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      const cliente = clienti.find(c => c.id == id);
+      if (cliente) {
+        cliente.acconti.push({ importo: parseFloat(importo), data });
+        localStorage.setItem('clienti', JSON.stringify(clienti));
+        caricaClienti();
+      }
+    }
+
+    function calcolaSaldo(prezzo, acconti) {
+      const totaleAcconti = acconti.reduce((sum, a) => sum + a.importo, 0);
+      return prezzo - totaleAcconti;
+    }
+
+    function modificaCliente(id) {
+      let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      const cliente = clienti.find(c => c.id == id);
+      if (!cliente) return;
+
+      const nome = prompt("Nome:", cliente.nome);
+      if (nome === null) return;
+      const cognome = prompt("Cognome:", cliente.cognome);
+      if (cognome === null) return;
+      const telefono = prompt("Telefono:", cliente.telefono);
+      if (telefono === null) return;
+      const email = prompt("Email:", cliente.email || "");
+      const prezzoStr = prompt("Importo totale (€):", cliente.prezzo.toString());
+      const prezzo = parseFloat(prezzoStr);
+      if (isNaN(prezzo) || prezzo <= 0) {
+        alert("Importo non valido.");
+        return;
+      }
+
+      cliente.nome = nome.trim();
+      cliente.cognome = cognome.trim();
+      cliente.telefono = telefono.trim();
+      cliente.email = email.trim();
+      cliente.prezzo = prezzo;
+
+      localStorage.setItem('clienti', JSON.stringify(clienti));
+      caricaClienti();
+    }
+
+    function mostraScheda(id) {
+      // Nascondi tutte
+      document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+      // Mostra quella selezionata
+      const scheda = document.getElementById(`scheda-${id}`);
+      if (scheda) scheda.style.display = 'block';
+    }
+
+    function caricaClienti() {
+      const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      const tbody = document.getElementById('tbodyRiassunto');
+      const containerSchede = document.getElementById('schedeEspandibili');
+      
+      tbody.innerHTML = '';
+      containerSchede.innerHTML = '';
+
+      if (clienti.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">Nessun cliente salvato.</td></tr>';
+        return;
+      }
+
+      clienti.sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento));
+
+      clienti.forEach(c => {
+        const saldo = calcolaSaldo(c.prezzo, c.acconti);
+
+        // --- Riga nell'elenco riassuntivo ---
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${c.nome} ${c.cognome}</td>
+          <td>${c.servizio}</td>
+          <td>€${saldo.toFixed(2)}</td>
+          <td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button></td>
+        `;
+        tbody.appendChild(tr);
+
+        // --- Scheda espandibile (nascosta) ---
+        const div = document.createElement('div');
+        div.id = `scheda-${c.id}`;
+        div.className = 'scheda-cliente';
+        div.innerHTML = `
+          <div class="intestazione">
+            <h3>Scheda Cliente – ${c.nome} ${c.cognome}</h3>
+          </div>
+
+          <div class="sezione">
+            <div class="sezione-titolo">Dati Anagrafici</div>
+            <div class="campo"><strong>Nome:</strong> ${c.nome}</div>
+            <div class="campo"><strong>Cognome:</strong> ${c.cognome}</div>
+            <div class="campo"><strong>Telefono:</strong> ${c.telefono}</div>
+            <div class="campo"><strong>Email:</strong> ${c.email || 'Non fornita'}</div>
+          </div>
+
+          <div class="sezione">
+            <div class="sezione-titolo">Servizio</div>
+            <div class="campo"><strong>Tipo:</strong> ${c.servizio}</div>
+            <div class="campo"><strong>Data inserimento:</strong> ${c.dataInserimento}</div>
+          </div>
+
+          <div class="sezione">
+            <div class="sezione-titolo">Note Economiche</div>
+            <div class="campo"><strong>Importo totale:</strong> €${c.prezzo.toFixed(2)}</div>
+            
+            <div class="campo"><strong>Acconti registrati:</strong></div>
+            <div class="acconti-lista">
+              ${c.acconti.length ? c.acconti.map(a => 
+                `<div class="acconto-item"><span>${a.data}</span> <span>€${a.importo.toFixed(2)}</span></div>`
+              ).join('') : '<em>Nessun acconto</em>'}
+            </div>
+            
+            <button type="button" onclick="aggiungiAcconto(${c.id})">+ Aggiungi acconto</button>
+            <button type="button" style="background:#1976d2;" onclick="modificaCliente(${c.id})">Modifica dati</button>
+            
+            <div class="saldo-finale">
+              Saldo da versare: €${saldo.toFixed(2)}
+            </div>
+          </div>
+        `;
+        containerSchede.appendChild(div);
+      });
+    }
+  </script>
 </body>
 </html>
