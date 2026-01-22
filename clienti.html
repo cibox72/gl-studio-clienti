@@ -149,10 +149,23 @@
     .btn-stampa:hover {
       background: #2e7d32;
     }
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 5px 5px 5px 0;
+    }
+    .btn-whatsapp:hover {
+      background: #128C7E;
+    }
     @media print {
       body { padding: 0; }
       .container { max-width: none; margin: 0; }
-      button, #clienteForm, a, .apri-btn, .btn-elimina, .btn-stampa {
+      button, #clienteForm, a, .apri-btn, .btn-elimina, .btn-stampa, .btn-whatsapp {
         display: none !important;
       }
       .scheda-cliente {
@@ -188,7 +201,7 @@
       <input type="date" id="dataEvento" required>
 
       <label for="telefono">Telefono</label>
-      <input type="text" id="telefono" required>
+      <input type="text" id="telefono" required placeholder="+393669381103">
 
       <label for="email">Email</label>
       <input type="email" id="email">
@@ -539,6 +552,22 @@
       }, 500);
     }
 
+    function apriWhatsApp(telefono) {
+      let numeroPulito = telefono.replace(/\D/g, '');
+      if (numeroPulito.startsWith('39') && numeroPulito.length === 11) {
+        numeroPulito = '+' + numeroPulito;
+      } else if (!numeroPulito.startsWith('+')) {
+        if (!confirm("⚠️ Il numero potrebbe non essere in formato internazionale.\n\nAssicurati che sia nel formato: +393669381103\n\nVuoi continuare?")) {
+          return;
+        }
+        if (!numeroPulito.startsWith('+')) {
+          numeroPulito = '+' + numeroPulito;
+        }
+      }
+      const url = `https://wa.me/${numeroPulito}`;
+      window.open(url, '_blank');
+    }
+
     function caricaClienti() {
       const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const tbody = document.getElementById('tbodyRiassunto');
@@ -564,104 +593,4 @@
           <td>${c.servizio} (${c.dataEvento})</td>
           <td>€${c.prezzo.toFixed(2)}</td>
           <td>€${totaleAcconti.toFixed(2)}</td>
-          <td>€${saldo.toFixed(2)}</td>
-          <td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button></td>
-        `;
-        tbody.appendChild(tr);
-
-        let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
-        const sc = c.servizioCommissionato || {};
-        if (sc.album || sc.miniAlbum || sc.copertina || sc.effetti || sc.interni || sc.anteprima || sc.postServizio || sc.video) {
-          servizioCommHtml = `
-            <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
-            <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
-            <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
-            <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
-            <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
-            <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
-            <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
-            <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
-          `;
-        }
-
-        let accontiHtml = '<em>Nessun acconto registrato.</em>';
-        if (c.acconti.length > 0) {
-          accontiHtml = `
-            <table class="acconti-lista">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Importo (€)</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${c.acconti.map(a => `
-                  <tr>
-                    <td>${a.data}</td>
-                    <td>€${a.importo.toFixed(2)}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          `;
-        }
-
-        const div = document.createElement('div');
-        div.id = `scheda-${c.id}`;
-        div.className = 'scheda-cliente';
-        div.innerHTML = `
-          <div class="intestazione">
-            <h3>Scheda Cliente – ${c.nome} ${c.cognome}</h3>
-          </div>
-
-          <div class="sezione">
-            <div class="sezione-titolo">Dati Anagrafici</div>
-            <div class="campo"><strong>Nome:</strong> ${c.nome}</div>
-            <div class="campo"><strong>Cognome:</strong> ${c.cognome}</div>
-            <div class="campo"><strong>Telefono:</strong> ${c.telefono}</div>
-            <div class="campo"><strong>Email:</strong> ${c.email || 'Non fornita'}</div>
-          </div>
-
-          <div class="sezione">
-            <div class="sezione-titolo">Servizio Commissionato</div>
-            ${servizioCommHtml}
-          </div>
-
-          <div class="sezione">
-            <div class="sezione-titolo">Servizio</div>
-            <div class="campo"><strong>Tipo:</strong> ${c.servizio}</div>
-            <div class="campo"><strong>Data evento:</strong> ${c.dataEvento}</div>
-            <div class="campo"><strong>Data inserimento:</strong> ${c.dataInserimento}</div>
-          </div>
-
-          <div class="sezione">
-            <div class="sezione-titolo">Note Economiche</div>
-            <div class="campo"><strong>Importo totale:</strong> €${c.prezzo.toFixed(2)}</div>
-            
-            <div class="campo"><strong>Acconti ricevuti:</strong></div>
-            ${accontiHtml}
-            
-            <button type="button" onclick="apriModaleAcconto(${c.id})">+ Aggiungi acconto</button>
-            <button type="button" style="background:#1976d2;" onclick="modificaCliente(${c.id})">Modifica dati</button>
-            <button type="button" class="btn-elimina" onclick="eliminaCliente(${c.id})">❌ Elimina cliente</button>
-            <button type="button" class="btn-stampa" onclick="stampaScheda(${c.id})">🖨️ Stampa Scheda</button>
-            
-            <div class="saldo-finale">
-              Saldo da versare: €${saldo.toFixed(2)}
-            </div>
-          </div>
-        `;
-        containerSchede.appendChild(div);
-      });
-
-      const idDaAprire = localStorage.getItem('apriSchedaId');
-      if (idDaAprire) {
-        setTimeout(() => {
-          mostraScheda(parseInt(idDaAprire));
-          localStorage.removeItem('apriSchedaId');
-        }, 300);
-      }
-    }
-  </script>
-</body>
-</html>
+          <td>€${saldo
