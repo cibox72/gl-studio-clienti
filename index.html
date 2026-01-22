@@ -5,17 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>G&L Studio - Accesso</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-    .login-box { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; width: 300px; }
-    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-    button { background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px; }
-    button:hover { background: #b71c1c; }
-    img { max-width: 120px; margin-bottom: 15px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #b71c1c;
+    }
+    h2 {
+      margin-top: 0;
+      color: #d32f2f;
+    }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <img src="logo/logo.png" alt="G&L Studio Logo">
     <h2>G&L Studio</h2>
     <p>Accedi all'area riservata</p>
     <input type="text" id="username" placeholder="Username" autocomplete="off">
@@ -25,7 +59,6 @@
   </div>
 
   <script>
-    // Hash SHA-256 di "@2026Banzaimaria"
     const EXPECTED_HASH = "d8f4c7b9e3a1f0c6d2e5b8a7c4f1e0d3b6a9c2f5e8b1a4d7c0f3e6b9a2c5f8e1d";
     
     async function sha256(message) {
@@ -39,7 +72,6 @@
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value;
 
-      // Nuovo username: cibox72
       if (u !== 'cibox72') {
         showError();
         return;
