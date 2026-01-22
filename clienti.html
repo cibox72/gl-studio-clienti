@@ -207,12 +207,48 @@
     <!-- Modulo Nuovo Cliente -->
     <form id="clienteForm">
       <h2>➕ Aggiungi Nuovo Cliente</h2>
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" required>
 
-      <label for="cognome">Cognome</label>
-      <input type="text" id="cognome" required>
+      <!-- Cliente 1 -->
+      <h3 style="margin-top: 20px; margin-bottom: 12px; font-size: 16px; color: #1976d2;">👤 Cliente 1</h3>
+      <label for="nome1">Nome</label>
+      <input type="text" id="nome1" required>
 
+      <label for="cognome1">Cognome</label>
+      <input type="text" id="cognome1" required>
+
+      <label for="via1">Via</label>
+      <input type="text" id="via1" required>
+
+      <label for="citta1">Città</label>
+      <input type="text" id="citta1" required>
+
+      <label for="telefono1">Telefono</label>
+      <input type="text" id="telefono1" required placeholder="+393669381103">
+
+      <label for="email1">Email</label>
+      <input type="email" id="email1">
+
+      <!-- Cliente 2 -->
+      <h3 style="margin-top: 20px; margin-bottom: 12px; font-size: 16px; color: #1976d2;">👤 Cliente 2 (opzionale)</h3>
+      <label for="nome2">Nome</label>
+      <input type="text" id="nome2">
+
+      <label for="cognome2">Cognome</label>
+      <input type="text" id="cognome2">
+
+      <label for="via2">Via</label>
+      <input type="text" id="via2">
+
+      <label for="citta2">Città</label>
+      <input type="text" id="citta2">
+
+      <label for="telefono2">Telefono</label>
+      <input type="text" id="telefono2" placeholder="+393206337370">
+
+      <label for="email2">Email</label>
+      <input type="email" id="email2">
+
+      <!-- Servizio -->
       <label for="servizio">Tipo di Servizio</label>
       <select id="servizio" required>
         <option value="">-- Seleziona --</option>
@@ -229,14 +265,15 @@
         <option value="Evento">Evento</option>
       </select>
 
+      <!-- NUOVI CAMPI -->
+      <label for="chiesa">Chiesa</label>
+      <input type="text" id="chiesa" placeholder="Nome della chiesa (se applicabile)">
+
+      <label for="location">Location</label>
+      <input type="text" id="location" placeholder="Luogo dell'evento">
+
       <label for="dataEvento">Data dell'evento</label>
       <input type="date" id="dataEvento" required>
-
-      <label for="telefono">Telefono</label>
-      <input type="text" id="telefono" required placeholder="+393669381103">
-
-      <label for="email">Email</label>
-      <input type="email" id="email">
 
       <!-- SERVIZIO COMMISSIONATO -->
       <h3>SERVIZIO COMMISSIONATO:</h3>
@@ -439,25 +476,30 @@
     });
 
     function aggiungiCliente() {
-      const nome = document.getElementById('nome').value.trim();
-      const cognome = document.getElementById('cognome').value.trim();
+      // Cliente 1 (obbligatorio)
+      const nome1 = document.getElementById('nome1').value.trim();
+      const cognome1 = document.getElementById('cognome1').value.trim();
+      const via1 = document.getElementById('via1').value.trim();
+      const citta1 = document.getElementById('citta1').value.trim();
+      const telefono1 = document.getElementById('telefono1').value.trim();
+      const email1 = document.getElementById('email1').value.trim();
+
+      // Cliente 2 (opzionale)
+      const nome2 = document.getElementById('nome2').value.trim();
+      const cognome2 = document.getElementById('cognome2').value.trim();
+      const via2 = document.getElementById('via2').value.trim();
+      const citta2 = document.getElementById('citta2').value.trim();
+      const telefono2 = document.getElementById('telefono2').value.trim();
+      const email2 = document.getElementById('email2').value.trim();
+
       const servizio = document.getElementById('servizio').value;
+      const chiesa = document.getElementById('chiesa').value.trim();
+      const location = document.getElementById('location').value.trim();
       const dataEvento = document.getElementById('dataEvento').value;
-      const telefono = document.getElementById('telefono').value.trim();
-      const email = document.getElementById('email').value.trim();
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
-      const album = document.getElementById('album').value;
-      const miniAlbum = document.getElementById('miniAlbum').value;
-      const copertina = document.getElementById('copertina').value;
-      const effetti = document.getElementById('effetti').value;
-      const interni = document.getElementById('interni').value;
-      const anteprima = document.getElementById('anteprima').value;
-      const postServizio = document.getElementById('postServizio').value;
-      const video = document.getElementById('video').value;
-
-      if (!nome || !cognome || !servizio || !dataEvento || !telefono || prezzo <= 0) {
-        alert("Compila tutti i campi obbligatori.");
+      if (!nome1 || !cognome1 || !via1 || !citta1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
+        alert("Compila tutti i campi obbligatori per Cliente 1.");
         return;
       }
 
@@ -465,22 +507,22 @@
 
       const nuovoCliente = {
         id: Date.now(),
-        nome,
-        cognome,
+        cliente1: { nome: nome1, cognome: cognome1, via: via1, citta: citta1, telefono: telefono1, email: email1 },
+        cliente2: nome2 ? { nome: nome2, cognome: cognome2, via: via2, citta: citta2, telefono: telefono2, email: email2 } : null,
         servizio,
+        chiesa: chiesa || null,
+        location: location || null,
         dataEvento: dataEventoFormattata,
-        telefono,
-        email,
         prezzo,
         servizioCommissionato: {
-          album: album || null,
-          miniAlbum: miniAlbum || null,
-          copertina: copertina || null,
-          effetti: effetti || null,
-          interni: interni || null,
-          anteprima: anteprima || null,
-          postServizio: postServizio || null,
-          video: video || null
+          album: document.getElementById('album').value || null,
+          miniAlbum: document.getElementById('miniAlbum').value || null,
+          copertina: document.getElementById('copertina').value || null,
+          effetti: document.getElementById('effetti').value || null,
+          interni: document.getElementById('interni').value || null,
+          anteprima: document.getElementById('anteprima').value || null,
+          postServizio: document.getElementById('postServizio').value || null,
+          video: document.getElementById('video').value || null
         },
         acconti: [],
         dataInserimento: new Date().toISOString().split('T')[0]
@@ -542,40 +584,7 @@
     }
 
     function modificaCliente(id) {
-      let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-      const cliente = clienti.find(c => c.id == id);
-      if (!cliente) return;
-
-      const nome = prompt("Nome:", cliente.nome);
-      if (nome === null) return;
-      const cognome = prompt("Cognome:", cliente.cognome);
-      if (cognome === null) return;
-      const servizio = prompt("Tipo di servizio:", cliente.servizio);
-      if (servizio === null) return;
-      
-      const dataEvento = prompt("Data evento (gg/mm/aaaa):", cliente.dataEvento);
-      if (dataEvento === null) return;
-
-      const telefono = prompt("Telefono:", cliente.telefono);
-      if (telefono === null) return;
-      const email = prompt("Email:", cliente.email || "");
-      const prezzoStr = prompt("Importo totale (€):", cliente.prezzo.toString());
-      const prezzo = parseFloat(prezzoStr);
-      if (isNaN(prezzo) || prezzo <= 0) {
-        alert("Importo non valido.");
-        return;
-      }
-
-      cliente.nome = nome.trim();
-      cliente.cognome = cognome.trim();
-      cliente.servizio = servizio.trim();
-      cliente.dataEvento = dataEvento.trim();
-      cliente.telefono = telefono.trim();
-      cliente.email = email.trim();
-      cliente.prezzo = prezzo;
-
-      localStorage.setItem('clienti', JSON.stringify(clienti));
-      caricaClienti();
+      alert("La modifica avanzata non è ancora supportata per due anagrafiche.\nPuoi eliminare e ricreare il cliente.");
     }
 
     function eliminaCliente(id) {
@@ -641,9 +650,10 @@
         const saldo = calcolaSaldo(c.prezzo, c.acconti);
         const totaleAcconti = calcolaTotaleAcconti(c.acconti);
 
+        const nomePrincipale = c.cliente1.nome + ' ' + c.cliente1.cognome;
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${c.nome} ${c.cognome}</td>
+          <td>${nomePrincipale}</td>
           <td>${c.servizio} (${c.dataEvento})</td>
           <td>€${c.prezzo.toFixed(2)}</td>
           <td>€${totaleAcconti.toFixed(2)}</td>
@@ -651,6 +661,33 @@
           <td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button></td>
         `;
         tbody.appendChild(tr);
+
+        // --- Dati Anagrafici ---
+        let anagraficaHtml = `
+          <div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.nome} ${c.cliente1.cognome}</div>
+          <div class="campo"><strong>Via:</strong> ${c.cliente1.via}</div>
+          <div class="campo"><strong>Città:</strong> ${c.cliente1.citta}</div>
+          <div class="campo"><strong>Telefono:</strong> ${c.cliente1.telefono}</div>
+          <div class="campo"><strong>Email:</strong> ${c.cliente1.email || 'Non fornita'}</div>
+        `;
+        if (c.cliente2) {
+          anagraficaHtml += `
+            <div class="campo" style="margin-top: 12px;"><strong>Cliente 2:</strong> ${c.cliente2.nome} ${c.cliente2.cognome}</div>
+            <div class="campo"><strong>Via:</strong> ${c.cliente2.via}</div>
+            <div class="campo"><strong>Città:</strong> ${c.cliente2.citta}</div>
+            <div class="campo"><strong>Telefono:</strong> ${c.cliente2.telefono}</div>
+            <div class="campo"><strong>Email:</strong> ${c.cliente2.email || 'Non fornita'}</div>
+          `;
+        }
+
+        // --- Luoghi ---
+        let luoghiHtml = '';
+        if (c.chiesa || c.location) {
+          luoghiHtml = `
+            <div class="campo"><strong>Chiesa:</strong> ${c.chiesa || 'Non specificata'}</div>
+            <div class="campo"><strong>Location:</strong> ${c.location || 'Non specificata'}</div>
+          `;
+        }
 
         let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
         const sc = c.servizioCommissionato || {};
@@ -694,16 +731,15 @@
         div.className = 'scheda-cliente';
         div.innerHTML = `
           <div class="intestazione">
-            <h3>Scheda Cliente – ${c.nome} ${c.cognome}</h3>
+            <h3>Scheda Cliente – ${nomePrincipale}</h3>
           </div>
 
           <div class="sezione">
             <div class="sezione-titolo">Dati Anagrafici</div>
-            <div class="campo"><strong>Nome:</strong> ${c.nome}</div>
-            <div class="campo"><strong>Cognome:</strong> ${c.cognome}</div>
-            <div class="campo"><strong>Telefono:</strong> ${c.telefono}</div>
-            <div class="campo"><strong>Email:</strong> ${c.email || 'Non fornita'}</div>
+            ${anagraficaHtml}
           </div>
+
+          ${luoghiHtml ? `<div class="sezione"><div class="sezione-titolo">Luoghi</div>${luoghiHtml}</div>` : ''}
 
           <div class="sezione">
             <div class="sezione-titolo">Servizio Commissionato</div>
@@ -726,7 +762,8 @@
             
             <button type="button" onclick="apriModaleAcconto(${c.id})">+ Aggiungi acconto</button>
             <button type="button" style="background:#1976d2;" onclick="modificaCliente(${c.id})">Modifica dati</button>
-            <button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.telefono}')">💬 WhatsApp</button>
+            <button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente1.telefono}')">💬 WhatsApp Cliente 1</button>
+            ${c.cliente2 ? `<button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente2.telefono}')">💬 WhatsApp Cliente 2</button>` : ''}
             <button type="button" class="btn-elimina" onclick="eliminaCliente(${c.id})">❌ Elimina cliente</button>
             <button type="button" class="btn-stampa" onclick="stampaScheda(${c.id})">🖨️ Stampa Scheda</button>
             
