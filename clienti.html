@@ -219,16 +219,10 @@
       <label for="interni">Interni</label>
       <select id="interni">
         <option value="">-- Seleziona --</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
+        <!-- Opzioni da 1 a 50 -->
+        <script>
+          document.write(Array.from({length: 50}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+        </script>
       </select>
 
       <label for="anteprima">Anteprima</label>
@@ -239,8 +233,8 @@
         <option value="FOTO+VIDEO">FOTO+VIDEO</option>
       </select>
 
-      <label for="postServ">Post-Serv.</label>
-      <select id="postServ">
+      <label for="postServizio">Post Servizio</label>
+      <select id="postServizio">
         <option value="">-- Seleziona --</option>
         <option value="FOTO">FOTO</option>
         <option value="VIDEO">VIDEO</option>
@@ -374,7 +368,7 @@
       const effetti = document.getElementById('effetti').value;
       const interni = document.getElementById('interni').value;
       const anteprima = document.getElementById('anteprima').value;
-      const postServ = document.getElementById('postServ').value;
+      const postServizio = document.getElementById('postServizio').value; // RINOMINATO
       const video = document.getElementById('video').value;
 
       if (!nome || !cognome || !servizio || !dataEvento || !telefono || prezzo <= 0) {
@@ -401,7 +395,7 @@
           effetti: effetti || null,
           interni: interni || null,
           anteprima: anteprima || null,
-          postServ: postServ || null,
+          postServizio: postServizio || null, // RINOMINATO
           video: video || null
         },
         acconti: [],
@@ -488,9 +482,6 @@
         return;
       }
 
-      // Per ora non modifichiamo il servizio commissionato via prompt (troppo complesso)
-      // Potremmo aggiungere un modulo avanzato in futuro
-
       cliente.nome = nome.trim();
       cliente.cognome = cognome.trim();
       cliente.servizio = servizio.trim();
@@ -554,7 +545,7 @@
         // --- Servizio Commissionato ---
         let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
         const sc = c.servizioCommissionato || {};
-        if (sc.album || sc.miniAlbum || sc.copertina || sc.effetti || sc.interni || sc.anteprima || sc.postServ || sc.video) {
+        if (sc.album || sc.miniAlbum || sc.copertina || sc.effetti || sc.interni || sc.anteprima || sc.postServizio || sc.video) {
           servizioCommHtml = `
             <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
             <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
@@ -562,7 +553,7 @@
             <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
             <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
             <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
-            <div class="campo"><strong>Post-Serv.:</strong> ${sc.postServ || 'Non selezionato'}</div>
+            <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
             <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
           `;
         }
