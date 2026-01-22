@@ -265,7 +265,6 @@
         <option value="Evento">Evento</option>
       </select>
 
-      <!-- NUOVI CAMPI -->
       <label for="chiesa">Chiesa</label>
       <input type="text" id="chiesa" placeholder="Nome della chiesa (se applicabile)">
 
@@ -742,15 +741,15 @@
           ${luoghiHtml ? `<div class="sezione"><div class="sezione-titolo">Luoghi</div>${luoghiHtml}</div>` : ''}
 
           <div class="sezione">
-            <div class="sezione-titolo">Servizio Commissionato</div>
-            ${servizioCommHtml}
-          </div>
-
-          <div class="sezione">
             <div class="sezione-titolo">Servizio</div>
             <div class="campo"><strong>Tipo:</strong> ${c.servizio}</div>
             <div class="campo"><strong>Data evento:</strong> ${c.dataEvento}</div>
             <div class="campo"><strong>Data inserimento:</strong> ${c.dataInserimento}</div>
+          </div>
+
+          <div class="sezione">
+            <div class="sezione-titolo">Servizio Commissionato</div>
+            ${servizioCommHtml}
           </div>
 
           <div class="sezione">
