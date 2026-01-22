@@ -22,11 +22,6 @@
       text-align: center;
       width: 320px;
     }
-    .logo {
-      width: 100px;
-      height: auto;
-      margin-bottom: 15px;
-    }
     .address {
       margin: 0 0 20px;
       color: #555;
@@ -75,7 +70,6 @@
 </head>
 <body>
   <div class="login-box">
-    <img src="./logo.png" alt="G&L Studio Logo" class="logo">
     <h2>G&L Studio</h2>
     <div class="address">Via Ciarrocco n.21, Canicattì (AG)</div>
     <p>Accedi all'area riservata</p>
@@ -91,7 +85,6 @@
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value;
 
-      // Nuove credenziali
       if (u === 'G&LStudio' && p === '12763Mlg@') {
         localStorage.setItem('isLoggedIn', 'true');
         window.location.href = 'dashboard.html';
