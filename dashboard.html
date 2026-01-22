@@ -30,35 +30,35 @@
     }
 
     header h1 {
-      margin: 0 0 10px;
-      font-size: 28px;
+      margin: 0 0 8px;
+      font-size: 26px;
       color: #d32f2f;
       font-weight: 700;
     }
-
-    header p {
-      margin: 0 0 25px;
-      color: #666;
-      font-size: 16px;
+    header .address {
+      margin: 0 0 20px;
+      color: #555;
+      font-size: 14px;
+      line-height: 1.4;
     }
 
     .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
       margin: 25px 0;
     }
 
     .btn {
       display: block;
       width: 100%;
-      padding: 16px 20px;
-      font-size: 18px;
+      padding: 14px 20px;
+      font-size: 17px;
       font-weight: 600;
       text-decoration: none;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: center;
@@ -69,56 +69,31 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.12);
     }
 
-    .btn-gestione {
-      background: #1976d2;
-    }
-    .btn-gestione:hover {
-      background: #1565c0;
-    }
+    .btn-gestione { background: #1976d2; }
+    .btn-gestione:hover { background: #1565c0; }
 
-    .btn-archivio {
-      background: #388e3c;
-    }
-    .btn-archivio:hover {
-      background: #2e7d32;
-    }
+    .btn-archivio { background: #388e3c; }
+    .btn-archivio:hover { background: #2e7d32; }
 
-    .btn-backup {
-      background: #7b1fa2;
-    }
-    .btn-backup:hover {
-      background: #6a1b9a;
-    }
+    .btn-backup { background: #7b1fa2; }
+    .btn-backup:hover { background: #6a1b9a; }
 
-    .btn-restore {
-      background: #f57c00;
-    }
-    .btn-restore:hover {
-      background: #ef6c00;
-    }
+    .btn-restore { background: #f57c00; }
+    .btn-restore:hover { background: #ef6c00; }
 
-    .btn-esci {
-      background: #d32f2f;
-    }
-    .btn-esci:hover {
-      background: #b71c1c;
-    }
+    .btn-esci { background: #d32f2f; }
+    .btn-esci:hover { background: #b71c1c; }
 
     .info {
-      margin-top: 30px;
+      margin-top: 25px;
       font-size: 14px;
       color: #555;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-      .btn {
-        padding: 14px;
-        font-size: 16px;
-      }
+      .container { padding: 20px; }
+      .btn { padding: 12px; font-size: 16px; }
     }
   </style>
 </head>
@@ -126,7 +101,7 @@
   <div class="container">
     <header>
       <h1>G&L Studio</h1>
-      <p>Benvenuto nell’area riservata</p>
+      <div class="address">Via Ciarrocco n.21, Canicattì (AG)</div>
     </header>
 
     <div class="btn-group">
@@ -141,9 +116,8 @@
     <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="importaBackup(event)">
 
     <div class="info">
-      <p><strong>📍</strong> Via Ciarrocco n.21, Canicattì (AG)</p>
-      <p><strong>📞</strong> +39 366 9381103</p>
-      <p><strong>✉️</strong> weddinggel@aruba.it</p>
+      <p>Tel. +39 366 9381103 - 320 6337370<br>
+      Email: weddinggel@aruba.it</p>
     </div>
   </div>
 
