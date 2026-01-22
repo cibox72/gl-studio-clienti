@@ -212,7 +212,6 @@
         return;
       }
 
-      // Formatta la data come gg/mm/aaaa per la visualizzazione
       const dataEventoFormattata = new Date(dataEvento).toLocaleDateString('it-IT');
 
       const nuovoCliente = {
@@ -270,7 +269,6 @@
       const servizio = prompt("Tipo di servizio:", cliente.servizio);
       if (servizio === null) return;
       
-      // Per la data evento, chiediamo in formato gg/mm/aaaa
       const dataEvento = prompt("Data evento (gg/mm/aaaa):", cliente.dataEvento);
       if (dataEvento === null) return;
 
@@ -332,7 +330,6 @@
       clienti.forEach(c => {
         const saldo = calcolaSaldo(c.prezzo, c.acconti);
 
-        // --- Riga nell'elenco riassuntivo ---
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${c.nome} ${c.cognome}</td>
@@ -342,7 +339,6 @@
         `;
         tbody.appendChild(tr);
 
-        // --- Scheda espandibile (nascosta) ---
         let accontiHtml = '<em>Nessun acconto registrato.</em>';
         if (c.acconti.length > 0) {
           accontiHtml = `
@@ -406,6 +402,15 @@
         `;
         containerSchede.appendChild(div);
       });
+
+      // 🔑 Apertura automatica da Archivio
+      const idDaAprire = localStorage.getItem('apriSchedaId');
+      if (idDaAprire) {
+        setTimeout(() => {
+          mostraScheda(parseInt(idDaAprire));
+          localStorage.removeItem('apriSchedaId');
+        }, 300);
+      }
     }
   </script>
 </body>
