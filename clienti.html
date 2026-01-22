@@ -136,10 +136,30 @@
     .btn-elimina:hover {
       background: #880e0e;
     }
+    .btn-stampa {
+      background: #388e3c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+    .btn-stampa:hover {
+      background: #2e7d32;
+    }
     @media print {
       body { padding: 0; }
       .container { max-width: none; margin: 0; }
-      button, #clienteForm, a, .apri-btn, .btn-elimina { display: none !important; }
+      button, #clienteForm, a, .apri-btn, .btn-elimina, .btn-stampa {
+        display: none !important;
+      }
+      .scheda-cliente {
+        border: none;
+        box-shadow: none;
+        padding: 20px;
+      }
     }
   </style>
 </head>
@@ -219,7 +239,6 @@
       <label for="interni">Interni</label>
       <select id="interni">
         <option value="">-- Seleziona --</option>
-        <!-- Opzioni da 1 a 50 -->
         <script>
           document.write(Array.from({length: 50}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
         </script>
@@ -361,14 +380,13 @@
       const email = document.getElementById('email').value.trim();
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
-      // Nuovi campi - Servizio Commissionato
       const album = document.getElementById('album').value;
       const miniAlbum = document.getElementById('miniAlbum').value;
       const copertina = document.getElementById('copertina').value;
       const effetti = document.getElementById('effetti').value;
       const interni = document.getElementById('interni').value;
       const anteprima = document.getElementById('anteprima').value;
-      const postServizio = document.getElementById('postServizio').value; // RINOMINATO
+      const postServizio = document.getElementById('postServizio').value;
       const video = document.getElementById('video').value;
 
       if (!nome || !cognome || !servizio || !dataEvento || !telefono || prezzo <= 0) {
@@ -387,7 +405,6 @@
         telefono,
         email,
         prezzo,
-        // Salva i dettagli del servizio commissionato
         servizioCommissionato: {
           album: album || null,
           miniAlbum: miniAlbum || null,
@@ -395,7 +412,7 @@
           effetti: effetti || null,
           interni: interni || null,
           anteprima: anteprima || null,
-          postServizio: postServizio || null, // RINOMINATO
+          postServizio: postServizio || null,
           video: video || null
         },
         acconti: [],
@@ -512,6 +529,16 @@
       if (scheda) scheda.style.display = 'block';
     }
 
+    function stampaScheda(id) {
+      document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+      const scheda = document.getElementById(`scheda-${id}`);
+      if (scheda) scheda.style.display = 'block';
+      window.print();
+      setTimeout(() => {
+        caricaClienti();
+      }, 500);
+    }
+
     function caricaClienti() {
       const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const tbody = document.getElementById('tbodyRiassunto');
@@ -542,7 +569,6 @@
         `;
         tbody.appendChild(tr);
 
-        // --- Servizio Commissionato ---
         let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
         const sc = c.servizioCommissionato || {};
         if (sc.album || sc.miniAlbum || sc.copertina || sc.effetti || sc.interni || sc.anteprima || sc.postServizio || sc.video) {
@@ -618,6 +644,7 @@
             <button type="button" onclick="apriModaleAcconto(${c.id})">+ Aggiungi acconto</button>
             <button type="button" style="background:#1976d2;" onclick="modificaCliente(${c.id})">Modifica dati</button>
             <button type="button" class="btn-elimina" onclick="eliminaCliente(${c.id})">❌ Elimina cliente</button>
+            <button type="button" class="btn-stampa" onclick="stampaScheda(${c.id})">🖨️ Stampa Scheda</button>
             
             <div class="saldo-finale">
               Saldo da versare: €${saldo.toFixed(2)}
