@@ -180,6 +180,7 @@
         <tr>
           <th>Cliente</th>
           <th>Servizio</th>
+          <th>Acconti (€)</th>
           <th>Saldo (€)</th>
           <th>Azione</th>
         </tr>
@@ -348,6 +349,10 @@
       return prezzo - totaleAcconti;
     }
 
+    function calcolaTotaleAcconti(acconti) {
+      return acconti.reduce((sum, a) => sum + a.importo, 0);
+    }
+
     function modificaCliente(id) {
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const cliente = clienti.find(c => c.id == id);
@@ -412,7 +417,7 @@
       containerSchede.innerHTML = '';
 
       if (clienti.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4">Nessun cliente salvato.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5">Nessun cliente salvato.</td></tr>';
         return;
       }
 
@@ -420,11 +425,13 @@
 
       clienti.forEach(c => {
         const saldo = calcolaSaldo(c.prezzo, c.acconti);
+        const totaleAcconti = calcolaTotaleAcconti(c.acconti);
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${c.nome} ${c.cognome}</td>
           <td>${c.servizio} (${c.dataEvento})</td>
+          <td>€${totaleAcconti.toFixed(2)}</td>
           <td>€${saldo.toFixed(2)}</td>
           <td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button></td>
         `;
