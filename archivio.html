@@ -49,7 +49,6 @@
       background: #b71c1c;
     }
 
-    /* Pulsanti in fondo */
     .footer-btns {
       text-align: center;
       margin-top: 30px;
@@ -125,7 +124,6 @@
         return;
       }
 
-      // Ordina per data evento (più recente prima)
       clienti.sort((a, b) => {
         const [gA, mA, aA] = a.dataEvento.split('/');
         const [gB, mB, bB] = b.dataEvento.split('/');
