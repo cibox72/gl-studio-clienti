@@ -43,17 +43,20 @@
     }
 
     .btn-group {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px; /* spazio uniforme */
       margin: 25px 0;
     }
 
     .btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      padding: 14px 20px;
-      font-size: 17px;
+      height: 60px; /* altezza fissa */
+      padding: 0 20px;
+      font-size: 18px;
       font-weight: 600;
       text-decoration: none;
       color: white;
@@ -62,6 +65,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: center;
+      box-sizing: border-box;
     }
 
     .btn:hover {
@@ -93,7 +97,7 @@
 
     @media (max-width: 600px) {
       .container { padding: 20px; }
-      .btn { padding: 12px; font-size: 16px; }
+      .btn { height: 55px; font-size: 17px; }
     }
   </style>
 </head>
