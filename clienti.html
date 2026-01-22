@@ -180,6 +180,7 @@
         <tr>
           <th>Cliente</th>
           <th>Servizio</th>
+          <th>Costo servizio (€)</th>
           <th>Acconti (€)</th>
           <th>Saldo (€)</th>
           <th>Azione</th>
@@ -417,7 +418,7 @@
       containerSchede.innerHTML = '';
 
       if (clienti.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5">Nessun cliente salvato.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6">Nessun cliente salvato.</td></tr>';
         return;
       }
 
@@ -431,6 +432,7 @@
         tr.innerHTML = `
           <td>${c.nome} ${c.cognome}</td>
           <td>${c.servizio} (${c.dataEvento})</td>
+          <td>€${c.prezzo.toFixed(2)}</td>
           <td>€${totaleAcconti.toFixed(2)}</td>
           <td>€${saldo.toFixed(2)}</td>
           <td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button></td>
