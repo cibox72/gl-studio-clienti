@@ -659,8 +659,6 @@
       alert("✅ Cliente salvato e backup automatico creato!");
     }
 
-    // ... resto del codice (apriModaleAcconto, confermaAcconto, ecc.) rimane identico ...
-
     let clienteIdCorrente = null;
 
     function apriModaleAcconto(id) {
@@ -685,12 +683,14 @@
         return;
       }
 
+      // ✅ Converti la data in formato leggibile
       const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
 
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const cliente = clienti.find(c => c.id == clienteIdCorrente);
       if (cliente) {
-        cliente.acconti.push({ importo,  dataFormattata });
+        // ✅ Salva con chiave "data" (non "dataFormattata")
+        cliente.acconti.push({ importo, data: dataFormattata });
         localStorage.setItem('clienti', JSON.stringify(clienti));
         caricaClienti();
         chiudiModaleAcconto();
@@ -861,7 +861,7 @@
               <tbody>
                 ${c.acconti.map(a => `
                   <tr>
-                    <td>${a.data}</td>
+                    <td>${a.data}</td> <!-- ✅ Ora mostra la data correttamente -->
                     <td>€${a.importo.toFixed(2)}</td>
                   </tr>
                 `).join('')}
