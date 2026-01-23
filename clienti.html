@@ -4,9 +4,6 @@
 <meta charset="UTF-8" />
 <title>G&L Studio - Clienti</title>
 <link rel="stylesheet" href="style.css">
-<!-- ✅ Librerie per PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 body {
 font-family: Arial, sans-serif;
@@ -160,8 +157,7 @@ background: #b71c1c;
 .btn-elimina:hover {
 background: #880e0e;
 }
-.btn-stampa,
-.btn-pdf {
+.btn-stampa {
 background: #388e3c;
 color: white;
 border: none;
@@ -171,8 +167,7 @@ cursor: pointer;
 font-weight: bold;
 margin-top: 12px;
 }
-.btn-stampa:hover,
-.btn-pdf:hover {
+.btn-stampa:hover {
 background: #2e7d32;
 }
 .btn-whatsapp {
@@ -213,7 +208,7 @@ font-size: 14px;
 @media print {
 body { padding: 0; }
 .container { max-width: none; margin: 0; }
-button, #clienteForm, a, .apri-btn, .btn-elimina, .btn-whatsapp, .nota-box, .btn-pdf {
+button, #clienteForm, a, .apri-btn, .btn-elimina, .btn-stampa, .btn-whatsapp, .nota-box {
 display: none !important;
 }
 .scheda-cliente {
@@ -561,9 +556,6 @@ box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 </div>
 <script src="auth.js"></script>
 <script>
-// Inizializza jsPDF
-const { jsPDF } = window.jspdf;
-
 // Funzione per generare nome backup con numerazione progressiva
 function generaNomeBackup() {
 let contatore = parseInt(localStorage.getItem('backupContatore')) || 0;
@@ -572,7 +564,6 @@ localStorage.setItem('backupContatore', contatore.toString());
 const num = contatore.toString().padStart(3, '0');
 return `backup-gl-studio-clienti-${num}.json`;
 }
-
 // Gestione nota cliente
 function salvaNotaCliente() {
 const nota = document.getElementById('notaCliente').value.trim();
@@ -582,13 +573,10 @@ return;
 }
 alert("✅ Nota temporanea salvata — verrà associata al cliente al momento del salvataggio.");
 }
-
 let clienteDaModificare = null;
-
 document.addEventListener('DOMContentLoaded', () => {
 caricaClienti();
 });
-
 function separaIndirizzo(indirizzo) {
 if (!indirizzo) return ['', ''];
 const parti = indirizzo.split('–').map(p => p.trim());
@@ -597,7 +585,6 @@ return [parti.slice(0, -1).join(' – '), parti[parti.length - 1]];
 }
 return [indirizzo, ''];
 }
-
 function resettaForm() {
 document.getElementById('clienteForm').reset();
 document.getElementById('galleryEmail').value = '';
@@ -605,7 +592,6 @@ document.getElementById('galleryPassword').value = '';
 document.getElementById('galleryUrl').value = '';
 document.getElementById('notaCliente').value = '';
 }
-
 function apriGoogleMaps(idCampo) {
 const campo = document.getElementById(idCampo);
 const valore = campo.value.trim();
@@ -616,40 +602,33 @@ return;
 const query = encodeURIComponent(valore);
 window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
 }
-
 function salvaCliente() {
 const nome1 = document.getElementById('nome1').value.trim();
 const cognome1 = document.getElementById('cognome1').value.trim();
 const indirizzo1 = document.getElementById('indirizzo1').value.trim();
 const telefono1 = document.getElementById('telefono1').value.trim();
 const email1 = document.getElementById('email1').value.trim();
-
 const nome2 = document.getElementById('nome2').value.trim();
 const cognome2 = document.getElementById('cognome2').value.trim();
 const indirizzo2 = document.getElementById('indirizzo2').value.trim();
 const telefono2 = document.getElementById('telefono2').value.trim();
 const email2 = document.getElementById('email2').value.trim();
-
 const servizio = document.getElementById('servizio').value;
 const chiesa = document.getElementById('chiesa').value.trim();
 const location = document.getElementById('location').value.trim();
 const dataEvento = document.getElementById('dataEvento').value;
 const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
-
 const galleryEmail = document.getElementById('galleryEmail').value.trim();
 const galleryPassword = document.getElementById('galleryPassword').value.trim();
 const galleryUrl = document.getElementById('galleryUrl').value.trim();
 const notaCliente = document.getElementById('notaCliente').value.trim();
-
 if (!nome1 || !cognome1 || !indirizzo1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
 alert("Compila tutti i campi obbligatori per Cliente 1.");
 return;
 }
-
 const [via1, citta1] = separaIndirizzo(indirizzo1);
 const [via2, citta2] = separaIndirizzo(indirizzo2);
 const dataEventoFormattata = new Date(dataEvento).toLocaleDateString('it-IT');
-
 const nuovoCliente = {
 id: clienteDaModificare || Date.now(),
 cliente1: { nome: nome1, cognome: cognome1, via: via1, citta: citta1, telefono: telefono1, email: email1 },
@@ -685,17 +664,13 @@ notaCliente: notaCliente || null
 acconti: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.acconti || [] : [],
 dataInserimento: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.dataInserimento || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
 };
-
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-
 if (clienteDaModificare) {
 clienti = clienti.map(c => c.id === clienteDaModificare ? nuovoCliente : c);
 } else {
 clienti.push(nuovoCliente);
 }
-
 localStorage.setItem('clienti', JSON.stringify(clienti));
-
 // Backup automatico
 const nomeFile = generaNomeBackup();
 const blob = new Blob([JSON.stringify(clienti, null, 2)], { type: 'application/json' });
@@ -707,98 +682,12 @@ document.body.appendChild(a);
 a.click();
 document.body.removeChild(a);
 URL.revokeObjectURL(url);
-
 resettaForm();
 clienteDaModificare = null;
 caricaClienti();
 alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
-
-// ✅ CORREZIONE: ACCONTI CON DATA VISIBILE
-function confermaAcconto() {
-const importo = parseFloat(document.getElementById('inputImporto').value);
-const dataInput = document.getElementById('inputDataAcconto').value;
-
-if (!importo || importo <= 0 || !dataInput) {
-alert("Inserisci un importo valido e una data.");
-return;
-}
-
-// ✅ FORMATTA LA DATA IN GG/MM/AAAA
-const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
-
-let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-const cliente = clienti.find(c => c.id == clienteIdCorrente);
-if (cliente) {
-// ✅ Salva con chiave "data" (non "dataFormattata")
-cliente.acconti.push({ importo,  dataFormattata });
-localStorage.setItem('clienti', JSON.stringify(clienti));
-caricaClienti();
-chiudiModaleAcconto();
-alert("Acconto aggiunto con successo!");
-}
-}
-
-// ✅ STAMPA SCHEDA SINGOLA
-function stampaScheda(id) {
-const scheda = document.getElementById(`scheda-${id}`);
-if (!scheda) return;
-
-document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
-scheda.style.display = 'block';
-window.print();
-setTimeout(() => caricaClienti(), 500);
-}
-
-// ✅ ESPORTA IN PDF
-async function esportaPdf(id) {
-const scheda = document.getElementById(`scheda-${id}`);
-if (!scheda) {
-alert("Nessuna scheda da esportare.");
-return;
-}
-
-const pulsanti = scheda.querySelectorAll('.btn-stampa, .btn-pdf, .btn-elimina, .btn-whatsapp');
-pulsanti.forEach(btn => btn.style.display = 'none');
-
-try {
-const canvas = await html2canvas(scheda, { scale: 2, useCORS: true, logging: false });
-const imgData = canvas.toDataURL('image/png');
-const pdf = new jsPDF('p', 'mm', 'a4');
-const imgWidth = 210;
-const pageHeight = 297;
-const imgHeight = (canvas.height * imgWidth) / canvas.width;
-let heightLeft = imgHeight;
-let position = 0;
-
-pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-
-while (heightLeft >= 0) {
-position = heightLeft - imgHeight;
-pdf.addPage();
-pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-}
-
-const cliente = JSON.parse(localStorage.getItem('clienti')).find(c => c.id == id);
-const nomeFile = cliente 
-? `G&L_Studio_Cliente_${cliente.cliente1.nome}_${cliente.cliente1.cognome}.pdf`
-: `G&L_Studio_Cliente_${id}.pdf`;
-
-pdf.save(nomeFile);
-} catch (error) {
-console.error("Errore PDF:", error);
-alert("Errore durante la creazione del PDF.");
-} finally {
-pulsanti.forEach(btn => btn.style.display = '');
-}
-}
-
-// ... resto delle funzioni ...
-
 let clienteIdCorrente = null;
-
 function apriModaleAcconto(id) {
 clienteIdCorrente = id;
 const oggi = new Date().toISOString().split('T')[0];
@@ -806,60 +695,88 @@ document.getElementById('inputDataAcconto').value = oggi;
 document.getElementById('inputImporto').value = '';
 document.getElementById('modalAcconto').style.display = 'flex';
 }
-
 function chiudiModaleAcconto() {
 document.getElementById('modalAcconto').style.display = 'none';
 clienteIdCorrente = null;
 }
-
+function confermaAcconto() {
+const importo = parseFloat(document.getElementById('inputImporto').value);
+const dataInput = document.getElementById('inputDataAcconto').value;
+if (!importo || importo <= 0 || !dataInput) {
+alert("Inserisci un importo valido e una data.");
+return;
+}
+// ✅ CORREZIONE: salva la data in formato gg/mm/aaaa
+const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
+let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+const cliente = clienti.find(c => c.id == clienteIdCorrente);
+if (cliente) {
+cliente.acconti.push({ importo,  dataFormattata });
+localStorage.setItem('clienti', JSON.stringify(clienti));
+caricaClienti();
+chiudiModaleAcconto();
+alert("Acconto aggiunto con successo!");
+}
+}
+// ✅ NUOVA FUNZIONE: ELIMINA ACCONTO
+function eliminaAcconto(clienteId, index) {
+if (!confirm("⚠️ Eliminare questo acconto?")) return;
+let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+const cliente = clienti.find(c => c.id == clienteId);
+if (cliente && cliente.acconti[index]) {
+cliente.acconti.splice(index, 1);
+localStorage.setItem('clienti', JSON.stringify(clienti));
+caricaClienti();
+alert("Acconto eliminato.");
+}
+}
 function calcolaSaldo(prezzo, acconti) {
 const totaleAcconti = acconti.reduce((sum, a) => sum + a.importo, 0);
 return prezzo - totaleAcconti;
 }
-
 function calcolaTotaleAcconti(acconti) {
 return acconti.reduce((sum, a) => sum + a.importo, 0);
 }
-
 function eliminaCliente(id) {
-if (!confirm("⚠️ Sei sicuro di voler eliminare questo cliente?")) return;
+if (!confirm("⚠️ Sei sicuro di voler eliminare questo cliente? L'operazione è irreversibile.")) return;
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 clienti = clienti.filter(c => c.id != id);
 localStorage.setItem('clienti', JSON.stringify(clienti));
 caricaClienti();
-alert("Cliente eliminato.");
+alert("Cliente eliminato con successo.");
 }
-
 function mostraScheda(id) {
 document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
 const scheda = document.getElementById(`scheda-${id}`);
 if (scheda) scheda.style.display = 'block';
 }
-
+function stampaScheda(id) {
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+const scheda = document.getElementById(`scheda-${id}`);
+if (scheda) scheda.style.display = 'block';
+window.print();
+setTimeout(() => caricaClienti(), 500);
+}
 function apriWhatsApp(telefono) {
 let numeroPulito = telefono.replace(/\D/g, '');
 if (numeroPulito.startsWith('39') && numeroPulito.length === 11) {
 numeroPulito = '+' + numeroPulito;
 } else if (!numeroPulito.startsWith('+')) {
-if (!confirm("Assicurati che il numero sia nel formato: +393669381103")) return;
+if (!confirm("⚠️ Il numero potrebbe non essere in formato internazionale.\n\nAssicurati che sia nel formato: +393669381103\n\nVuoi continuare?")) return;
 if (!numeroPulito.startsWith('+')) numeroPulito = '+' + numeroPulito;
 }
 window.open(`https://wa.me/${numeroPulito}`, '_blank');
 }
-
 function caricaClientePerModifica(id) {
 const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == id);
 if (!cliente) return;
-
 clienteDaModificare = cliente.id;
-
 document.getElementById('nome1').value = cliente.cliente1.nome || '';
 document.getElementById('cognome1').value = cliente.cliente1.cognome || '';
 document.getElementById('indirizzo1').value = `${cliente.cliente1.via || ''}, ${cliente.cliente1.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
 document.getElementById('telefono1').value = cliente.cliente1.telefono || '';
 document.getElementById('email1').value = cliente.cliente1.email || '';
-
 if (cliente.cliente2) {
 document.getElementById('nome2').value = cliente.cliente2.nome || '';
 document.getElementById('cognome2').value = cliente.cliente2.cognome || '';
@@ -873,7 +790,6 @@ document.getElementById('indirizzo2').value = '';
 document.getElementById('telefono2').value = '';
 document.getElementById('email2').value = '';
 }
-
 document.getElementById('servizio').value = cliente.servizio || '';
 document.getElementById('chiesa').value = cliente.chiesa || '';
 document.getElementById('location').value = cliente.location || '';
@@ -893,32 +809,24 @@ document.getElementById('posterQuantita').value = cliente.servizioCommissionato?
 document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
 document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
 document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
-
 document.getElementById('galleryEmail').value = cliente.extra?.galleriaEmail || '';
 document.getElementById('galleryPassword').value = cliente.extra?.galleriaPassword || '';
 document.getElementById('galleryUrl').value = cliente.extra?.galleriaUrl || '';
 document.getElementById('notaCliente').value = cliente.extra?.notaCliente || '';
-
 document.getElementById('prezzo').value = cliente.prezzo || '';
-
 window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 function caricaClienti() {
 const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const tbody = document.getElementById('tbodyRiassunto');
 const containerSchede = document.getElementById('schedeEspandibili');
-
 tbody.innerHTML = '';
 containerSchede.innerHTML = '';
-
 if (clienti.length === 0) {
 tbody.innerHTML = '<tr><td colspan="6">Nessun cliente salvato.</td></tr>';
 return;
 }
-
 clienti.sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento));
-
 clienti.forEach(c => {
 const saldo = calcolaSaldo(c.prezzo, c.acconti);
 const totaleAcconti = calcolaTotaleAcconti(c.acconti);
@@ -936,7 +844,6 @@ tr.innerHTML = `
 </td>
 `;
 tbody.appendChild(tr);
-
 let anagraficaHtml = `
 <div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.nome} ${c.cliente1.cognome}</div>
 <div class="campo"><strong>Indirizzo:</strong> ${c.cliente1.via}, ${c.cliente1.citta}</div>
@@ -951,7 +858,6 @@ anagraficaHtml += `
 <div class="campo"><strong>Email:</strong> ${c.cliente2.email || 'Non fornita'}</div>
 `;
 }
-
 let luoghiHtml = '';
 if (c.chiesa || c.location) {
 luoghiHtml = `
@@ -959,7 +865,6 @@ luoghiHtml = `
 <div class="campo"><strong>Location:</strong> ${c.location || 'Non specificata'}</div>
 `;
 }
-
 let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
 const sc = c.servizioCommissionato || {};
 if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQuantita || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
@@ -980,7 +885,6 @@ servizioCommHtml = `
 <div class="campo"><strong>SERVIZIO LOCATION:</strong> ${sc.servizioLocation || 'Non selezionato'}</div>
 `;
 }
-
 let extraHtml = '<em>Nessun extra specificato.</em>';
 const ex = c.extra || {};
 if (ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl || ex.notaCliente) {
@@ -992,7 +896,6 @@ extraHtml = `
 ${ex.notaCliente ? `<div class="campo"><strong>NOTA CLIENTE:</strong> ${ex.notaCliente}</div>` : ''}
 `;
 }
-
 let accontiHtml = '<em>Nessun acconto registrato.</em>';
 if (c.acconti.length > 0) {
 accontiHtml = `
@@ -1001,15 +904,23 @@ accontiHtml = `
 <tr>
 <th>Data</th>
 <th>Importo (€)</th>
+<th>Azione</th>
 </tr>
 </thead>
 <tbody>
-${c.acconti.map(a => `<tr><td>${a.data}</td><td>€${a.importo.toFixed(2)}</td></tr>`).join('')}
+${c.acconti.map((a, idx) => `
+<tr>
+<td>${a.data}</td>
+<td>€${a.importo.toFixed(2)}</td>
+<td>
+<button type="button" style="background:#b71c1c; padding:2px 6px; font-size:11px;" onclick="eliminaAcconto(${c.id}, ${idx})">❌</button>
+</td>
+</tr>
+`).join('')}
 </tbody>
 </table>
 `;
 }
-
 const div = document.createElement('div');
 div.id = `scheda-${c.id}`;
 div.className = 'scheda-cliente';
@@ -1043,7 +954,6 @@ ${accontiHtml}
 ${c.cliente2 ? `<button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente2.telefono}')">💬 WhatsApp Cliente 2</button>` : ''}
 <button type="button" class="btn-elimina" onclick="eliminaCliente(${c.id})">❌ Elimina cliente</button>
 <button type="button" class="btn-stampa" onclick="stampaScheda(${c.id})">🖨️ Stampa Scheda</button>
-<button type="button" class="btn-pdf" onclick="esportaPdf(${c.id})">📥 PDF</button>
 <div class="saldo-finale">Saldo da versare: €${saldo.toFixed(2)}</div>
 </div>
 `;
