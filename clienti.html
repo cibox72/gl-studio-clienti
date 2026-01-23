@@ -330,7 +330,7 @@
         </div>
       </div>
 
-      <!-- ✅ CHIESA E LOCATION AFFIANCATI CON GOOGLE MAPS -->
+      <!-- Chiesa e Location con pulsanti Google Maps -->
       <div class="riga-doppia">
         <div style="display: flex; gap: 10px; align-items: flex-end;">
           <div style="flex: 1;">
@@ -360,27 +360,33 @@
         <option value="SERVIZIO SOLO FILES">SERVIZIO SOLO FILES</option>
       </select>
 
-      <label for="miniAlbum">Mini Album</label>
-      <select id="miniAlbum">
-        <option value="">-- Seleziona --</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-
-      <label for="copertina">Copertina</label>
-      <select id="copertina">
-        <option value="">-- Seleziona --</option>
-        <option value="TELATA">TELATA</option>
-        <option value="EXTRA LUX">EXTRA LUX</option>
-      </select>
+      <!-- ✅ COPERTINA E MINI ALBUM SULLA STESSA RIGA -->
+      <div class="riga-doppia">
+        <div>
+          <label for="copertina">Copertina</label>
+          <select id="copertina">
+            <option value="">-- Seleziona --</option>
+            <option value="TELATA">TELATA</option>
+            <option value="EXTRA LUX">EXTRA LUX</option>
+          </select>
+        </div>
+        <div>
+          <label for="miniAlbum">Mini Album</label>
+          <select id="miniAlbum">
+            <option value="">-- Seleziona --</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+      </div>
 
       <!-- ✅ INTERNI: multipli di 5 fino a 50 -->
       <label for="interni">Interni</label>
@@ -701,8 +707,8 @@
         prezzo,
         servizioCommissionato: {
           album: document.getElementById('album').value || null,
-          miniAlbum: document.getElementById('miniAlbum').value || null,
           copertina: document.getElementById('copertina').value || null,
+          miniAlbum: document.getElementById('miniAlbum').value || null,
           interni: document.getElementById('interni').value || null,
           fotoBook: document.getElementById('fotoBook').value || null,
           effetti: document.getElementById('effetti').value || null,
@@ -755,7 +761,6 @@
     }
 
     // ... resto delle funzioni (caricaClientePerModifica, acconti, WhatsApp, stampa, ecc.) ...
-    // (mantenute identiche per brevità — funzionano correttamente)
 
     function caricaClientePerModifica(id) {
       const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
@@ -789,8 +794,8 @@
       document.getElementById('location').value = cliente.location || '';
       document.getElementById('dataEvento').value = new Date(cliente.dataEvento.split('/').reverse().join('-')).toISOString().split('T')[0];
       document.getElementById('album').value = cliente.servizioCommissionato?.album || '';
-      document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
       document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
+      document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
       document.getElementById('interni').value = cliente.servizioCommissionato?.interni || '';
       document.getElementById('fotoBook').value = cliente.servizioCommissionato?.fotoBook || '';
       document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
@@ -953,11 +958,11 @@
 
         let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
         const sc = c.servizioCommissionato || {};
-        if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQuantita || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
+        if (sc.album || sc.copertina || sc.miniAlbum || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQuantita || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
           servizioCommHtml = `
             <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
-            <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
             <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
+            <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
             <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
             <div class="campo"><strong>Foto da selezionare per book:</strong> ${sc.fotoBook || 'Non selezionato'}</div>
             <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
