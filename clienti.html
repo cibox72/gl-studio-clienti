@@ -357,31 +357,48 @@
         <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
       </select>
 
-      <!-- ✅ SEZIONE EXTRA -->
-      <h3>EXTRA:</h3>
+      <!-- ✅ NUOVI CAMPI DOPO VIDEO -->
 
-      <label for="fotoExtra">Foto extra</label>
-      <select id="fotoExtra">
+      <label for="tela">TELA</label>
+      <select id="tela">
         <option value="">-- Seleziona --</option>
-        <script>
-          document.write(Array.from({length: 100}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
-        </script>
+        <option value="50x70 cm senza telaio">50x70 cm senza telaio</option>
+        <option value="50x70 cm con telaio">50x70 cm con telaio</option>
+        <option value="Misura extra">Misura extra</option>
+        <option value="Misura extra con telaio">Misura extra con telaio</option>
       </select>
 
-      <label for="videoExtra">Video extra</label>
-      <select id="videoExtra">
+      <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
+      <select id="posterCarta">
         <option value="">-- Seleziona --</option>
-        <option value="SI">SI</option>
-        <option value="NO">NO</option>
+        <option value="50X70 cm">50X70 cm</option>
+      </select>
+      <label for="posterQuantita">Quantità</label>
+      <input type="number" id="posterQuantita" min="1" max="50" step="1" placeholder="1">
+
+      <label for="miniPocket">MINI POCKET</label>
+      <input type="number" id="miniPocket" min="1" max="50" step="1" placeholder="Quantità">
+
+      <label for="salaPosa">SERVIZIO SALA POSA</label>
+      <select id="salaPosa">
+        <option value="">-- Seleziona --</option>
+        <option value="INCLUSO">INCLUSO</option>
+        <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
       </select>
 
-      <label for="altroExtra">Altro</label>
-      <input type="text" id="altroExtra" placeholder="Descrivi eventuali extra">
+      <label for="servizioLocation">SERVIZIO LOCATION</label>
+      <select id="servizioLocation">
+        <option value="">-- Seleziona --</option>
+        <option value="INCLUSO">INCLUSO</option>
+        <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
+      </select>
 
-      <label for="prezzo">Importo totale (€)</label>
-      <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required>
+      <!-- ✅ IMPORTO TOTALE PIÙ GRANDE E EVIDENZIATO -->
+      <label for="prezzo" style="font-size: 16px; font-weight: bold; color: #d32f2f;">Importo totale (€)</label>
+      <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required style="font-size: 18px; padding: 12px;">
 
-      <button type="button" onclick="aggiungiCliente()">Salva Cliente</button>
+      <!-- ✅ PULSANTE SALVA CLIENTE PIÙ GRANDE E ROSSO -->
+      <button type="button" onclick="aggiungiCliente()" style="background: #d32f2f; font-size: 16px; padding: 12px 24px; font-weight: bold;">🔴 Salva Cliente</button>
     </form>
 
     <!-- Riquadro NOTA -->
@@ -549,12 +566,21 @@
           effetti: document.getElementById('effetti').value || null,
           anteprima: document.getElementById('anteprima').value || null,
           postServizio: document.getElementById('postServizio').value || null,
-          video: document.getElementById('video').value || null
+          video: document.getElementById('video').value || null,
+          tela: document.getElementById('tela').value || null,
+          posterCarta: document.getElementById('posterCarta').value || null,
+          posterQuantita: document.getElementById('posterQuantita').value || null,
+          miniPocket: document.getElementById('miniPocket').value || null,
+          salaPosa: document.getElementById('salaPosa').value || null,
+          servizioLocation: document.getElementById('servizioLocation').value || null
         },
         extra: {
           fotoExtra: document.getElementById('fotoExtra').value || null,
           videoExtra: document.getElementById('videoExtra').value || null,
-          altroExtra: document.getElementById('altroExtra').value.trim() || null
+          altroExtra: document.getElementById('altroExtra').value.trim() || null,
+          // APPLICAZIONE GALLERIA
+          galleriaEmail: document.getElementById('galleriaEmail').value.trim() || null,
+          galleriaPassword: document.getElementById('galleriaPassword').value.trim() || null
         },
         acconti: [],
         dataInserimento: new Date().toISOString().split('T')[0]
@@ -734,7 +760,7 @@
 
         let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
         const sc = c.servizioCommissionato || {};
-        if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video) {
+        if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQuantita || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
           servizioCommHtml = `
             <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
             <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
@@ -745,17 +771,23 @@
             <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
             <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
             <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
+            <div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'}</div>
+            <div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'} (Quantità: ${sc.posterQuantita || '0'})</div>
+            <div class="campo"><strong>MINI POCKET:</strong> ${sc.miniPocket || '0'}</div>
+            <div class="campo"><strong>SERVIZIO SALA POSA:</strong> ${sc.salaPosa || 'Non selezionato'}</div>
+            <div class="campo"><strong>SERVIZIO LOCATION:</strong> ${sc.servizioLocation || 'Non selezionato'}</div>
           `;
         }
 
         // ✅ EXTRA
         let extraHtml = '<em>Nessun extra specificato.</em>';
         const ex = c.extra || {};
-        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra) {
+        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword) {
           extraHtml = `
             <div class="campo"><strong>Foto extra:</strong> ${ex.fotoExtra || 'Non specificato'}</div>
             <div class="campo"><strong>Video extra:</strong> ${ex.videoExtra || 'Non specificato'}</div>
             <div class="campo"><strong>Altro:</strong> ${ex.altroExtra || 'Non specificato'}</div>
+            <div class="campo"><strong>APPLICAZIONE GALLERIA:</strong> Email: ${ex.galleriaEmail || 'Non specificato'} | Password: ${ex.galleriaPassword || 'Non specificata'}</div>
           `;
         }
 
