@@ -723,7 +723,7 @@ caricaClienti();
 alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
-// ✅ CORREZIONE: ACCONTI CON DATA VISIBILE
+// ✅ CORREZIONE: SALVA CON CHIAVE "data"
 let clienteIdCorrente = null;
 
 function apriModaleAcconto(id) {
@@ -748,13 +748,14 @@ alert("Inserisci un importo valido e una data.");
 return;
 }
 
-// ✅ FORMATTA LA DATA IN GG/MM/AAAA
+// ✅ CORRETTO: usa "data" come chiave
 const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
 
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == clienteIdCorrente);
 if (cliente) {
-cliente.acconti.push({ importo,  dataFormattata });
+// ✅ SALVA CON CHIAVE "data"
+cliente.acconti.push({ importo, data: dataFormattata });
 localStorage.setItem('clienti', JSON.stringify(clienti));
 caricaClienti();
 chiudiModaleAcconto();
