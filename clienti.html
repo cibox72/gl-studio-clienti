@@ -420,10 +420,10 @@
     <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #ccc;">
       <h3 style="margin-top: 0; color: #1976d2;">📱 APP. GALLERY</h3>
       <label for="galleryEmail">Email</label>
-      <input type="email" id="galleryEmail" placeholder="Email per la galleria">
+      <input type="email" id="galleryEmail" placeholder="Email per la galleria" autocomplete="off">
 
       <label for="galleryPassword">Password</label>
-      <input type="password" id="galleryPassword" placeholder="Password per la galleria">
+      <input type="password" id="galleryPassword" placeholder="Password per la galleria" autocomplete="new-password">
 
       <label for="galleryUrl">URL</label>
       <input type="url" id="galleryUrl" placeholder="https://tuagalleria.com">
@@ -578,7 +578,7 @@
       const dataEvento = document.getElementById('dataEvento').value;
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
-      // ✅ Dati APP. GALLERY
+      // ✅ Dati APP. GALLERY (sempre presi dal modulo corrente)
       const galleryEmail = document.getElementById('galleryEmail').value.trim();
       const galleryPassword = document.getElementById('galleryPassword').value.trim();
       const galleryUrl = document.getElementById('galleryUrl').value.trim();
@@ -617,10 +617,10 @@
           servizioLocation: document.getElementById('servizioLocation').value || null
         },
         extra: {
-          fotoExtra: document.getElementById('fotoExtra').value || null,
-          videoExtra: document.getElementById('videoExtra').value || null,
-          altroExtra: document.getElementById('altroExtra').value.trim() || null,
-          // ✅ APP. GALLERY
+          fotoExtra: document.getElementById('fotoExtra')?.value || null,
+          videoExtra: document.getElementById('videoExtra')?.value || null,
+          altroExtra: document.getElementById('altroExtra')?.value?.trim() || null,
+          // ✅ APP. GALLERY: dati presi SEMPRE dal modulo corrente
           galleriaEmail: galleryEmail || null,
           galleriaPassword: galleryPassword || null,
           galleriaUrl: galleryUrl || null
@@ -646,15 +646,18 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      // ✅ Resetta anche i campi APP. GALLERY
+      // ✅ Resetta TUTTI i campi, inclusi quelli di APP. GALLERY
       document.getElementById('clienteForm').reset();
       document.getElementById('galleryEmail').value = '';
       document.getElementById('galleryPassword').value = '';
       document.getElementById('galleryUrl').value = '';
+      document.getElementById('notaGenerale').value = '';
 
       caricaClienti();
       alert("✅ Cliente salvato e backup automatico creato!");
     }
+
+    // ... resto del codice (apriModaleAcconto, confermaAcconto, ecc.) rimane identico ...
 
     let clienteIdCorrente = null;
 
