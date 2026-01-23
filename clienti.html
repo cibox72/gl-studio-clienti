@@ -385,8 +385,14 @@
         </select>
       </div>
 
+      <!-- ✅ MINI POCKET: quantità da 1 a 10 -->
       <label for="miniPocket">MINI POCKET</label>
-      <input type="number" id="miniPocket" min="1" max="50" step="1" placeholder="Quantità">
+      <select id="miniPocket">
+        <option value="">-- Seleziona --</option>
+        <script>
+          document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+        </script>
+      </select>
 
       <label for="salaPosa">SERVIZIO SALA POSA</label>
       <select id="salaPosa">
@@ -409,6 +415,19 @@
       <!-- ✅ PULSANTE SALVA CLIENTE PIÙ GRANDE E ROSSO -->
       <button type="button" onclick="aggiungiCliente()" style="background: #d32f2f; font-size: 16px; padding: 12px 24px; font-weight: bold;">🔴 Salva Cliente</button>
     </form>
+
+    <!-- ✅ NUOVA SEZIONE: APP. GALLERY -->
+    <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #ccc;">
+      <h3 style="margin-top: 0; color: #1976d2;">📱 APP. GALLERY</h3>
+      <label for="galleryEmail">Email</label>
+      <input type="email" id="galleryEmail" placeholder="Email per la galleria">
+
+      <label for="galleryPassword">Password</label>
+      <input type="password" id="galleryPassword" placeholder="Password per la galleria">
+
+      <label for="galleryUrl">URL</label>
+      <input type="url" id="galleryUrl" placeholder="https://tuagalleria.com">
+    </div>
 
     <!-- Riquadro NOTA -->
     <div class="nota-box">
@@ -512,6 +531,15 @@
 
   <script src="auth.js"></script>
   <script>
+    // Funzione per generare nome backup con numerazione progressiva
+    function generaNomeBackup() {
+      let contatore = parseInt(localStorage.getItem('backupContatore')) || 0;
+      contatore++;
+      localStorage.setItem('backupContatore', contatore.toString());
+      const num = contatore.toString().padStart(3, '0'); // 001, 002, ...
+      return `backup-gl-studio-clienti-${num}.json`;
+    }
+
     // Gestione nota generale
     function salvaNota() {
       const nota = document.getElementById('notaGenerale').value;
@@ -550,6 +578,11 @@
       const dataEvento = document.getElementById('dataEvento').value;
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
+      // ✅ Dati APP. GALLERY
+      const galleryEmail = document.getElementById('galleryEmail').value.trim();
+      const galleryPassword = document.getElementById('galleryPassword').value.trim();
+      const galleryUrl = document.getElementById('galleryUrl').value.trim();
+
       if (!nome1 || !cognome1 || !via1 || !citta1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
         alert("Compila tutti i campi obbligatori per Cliente 1.");
         return;
@@ -587,8 +620,10 @@
           fotoExtra: document.getElementById('fotoExtra').value || null,
           videoExtra: document.getElementById('videoExtra').value || null,
           altroExtra: document.getElementById('altroExtra').value.trim() || null,
-          galleriaEmail: document.getElementById('galleriaEmail').value.trim() || null,
-          galleriaPassword: document.getElementById('galleriaPassword').value.trim() || null
+          // ✅ APP. GALLERY
+          galleriaEmail: galleryEmail || null,
+          galleriaPassword: galleryPassword || null,
+          galleriaUrl: galleryUrl || null
         },
         acconti: [],
         dataInserimento: new Date().toISOString().split('T')[0]
@@ -598,8 +633,8 @@
       clienti.push(nuovoCliente);
       localStorage.setItem('clienti', JSON.stringify(clienti));
 
-      // ✅ BACKUP AUTOMATICO CON NOME FISSO
-      const nomeFile = 'backup-gl-studio-clienti-ULTIMO.json';
+      // ✅ BACKUP AUTOMATICO CON NUMERO PROGRESSIVO
+      const nomeFile = generaNomeBackup();
       const datiJSON = JSON.stringify(clienti, null, 2);
       const blob = new Blob([datiJSON], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -611,7 +646,12 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
+      // ✅ Resetta anche i campi APP. GALLERY
       document.getElementById('clienteForm').reset();
+      document.getElementById('galleryEmail').value = '';
+      document.getElementById('galleryPassword').value = '';
+      document.getElementById('galleryUrl').value = '';
+
       caricaClienti();
       alert("✅ Cliente salvato e backup automatico creato!");
     }
@@ -787,15 +827,18 @@
           `;
         }
 
-        // ✅ EXTRA
+        // ✅ EXTRA (inclusa APP. GALLERY)
         let extraHtml = '<em>Nessun extra specificato.</em>';
         const ex = c.extra || {};
-        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword) {
+        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl) {
           extraHtml = `
             <div class="campo"><strong>Foto extra:</strong> ${ex.fotoExtra || 'Non specificato'}</div>
             <div class="campo"><strong>Video extra:</strong> ${ex.videoExtra || 'Non specificato'}</div>
             <div class="campo"><strong>Altro:</strong> ${ex.altroExtra || 'Non specificato'}</div>
-            <div class="campo"><strong>APPLICAZIONE GALLERIA:</strong> Email: ${ex.galleriaEmail || 'Non specificato'} | Password: ${ex.galleriaPassword || 'Non specificata'}</div>
+            <div class="campo"><strong>APP. GALLERY:</strong></div>
+            <div class="campo" style="padding-left: 20px;"><strong>Email:</strong> ${ex.galleriaEmail || 'Non specificata'}</div>
+            <div class="campo" style="padding-left: 20px;"><strong>Password:</strong> ${ex.galleriaPassword || 'Non specificata'}</div>
+            <div class="campo" style="padding-left: 20px;"><strong>URL:</strong> ${ex.galleriaUrl || 'Non specificato'}</div>
           `;
         }
 
