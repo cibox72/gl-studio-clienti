@@ -429,11 +429,11 @@
       <input type="url" id="galleryUrl" placeholder="https://tuagalleria.com">
     </div>
 
-    <!-- Riquadro NOTA -->
+    <!-- ✅ Riquadro NOTA per cliente (vuoto all’apertura) -->
     <div class="nota-box">
       <h3>📝 NOTA</h3>
-      <textarea id="notaGenerale" placeholder="Inserisci qui eventuali annotazioni generali..."></textarea>
-      <button type="button" style="margin-top: 10px; background: #ff8f00;" onclick="salvaNota()">Salva Nota</button>
+      <textarea id="notaCliente" placeholder="Inserisci qui annotazioni specifiche per questo cliente..."></textarea>
+      <button type="button" style="margin-top: 10px; background: #ff8f00;" onclick="salvaNotaCliente()">Salva Nota</button>
     </div>
 
     <!-- Elenco riassuntivo -->
@@ -540,20 +540,18 @@
       return `backup-gl-studio-clienti-${num}.json`;
     }
 
-    // Gestione nota generale
-    function salvaNota() {
-      const nota = document.getElementById('notaGenerale').value;
-      localStorage.setItem('notaArchivio', nota);
-      alert("Nota salvata!");
-    }
-
-    function caricaNota() {
-      const nota = localStorage.getItem('notaArchivio') || '';
-      document.getElementById('notaGenerale').value = nota;
+    // Gestione nota cliente (locale al cliente)
+    function salvaNotaCliente() {
+      const nota = document.getElementById('notaCliente').value.trim();
+      if (!nota) {
+        alert("Scrivi qualcosa prima di salvare!");
+        return;
+      }
+      // La nota verrà salvata insieme al cliente quando si clicca "Salva Cliente"
+      alert("✅ Nota temporanea salvata — verrà associata al cliente al momento del salvataggio.");
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      caricaNota();
       caricaClienti();
     });
 
@@ -578,10 +576,13 @@
       const dataEvento = document.getElementById('dataEvento').value;
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
-      // ✅ Dati APP. GALLERY (sempre presi dal modulo corrente)
+      // ✅ Dati APP. GALLERY
       const galleryEmail = document.getElementById('galleryEmail').value.trim();
       const galleryPassword = document.getElementById('galleryPassword').value.trim();
       const galleryUrl = document.getElementById('galleryUrl').value.trim();
+
+      // ✅ NOTA DEL CLIENTE (se presente)
+      const notaCliente = document.getElementById('notaCliente').value.trim();
 
       if (!nome1 || !cognome1 || !via1 || !citta1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
         alert("Compila tutti i campi obbligatori per Cliente 1.");
@@ -620,10 +621,11 @@
           fotoExtra: document.getElementById('fotoExtra')?.value || null,
           videoExtra: document.getElementById('videoExtra')?.value || null,
           altroExtra: document.getElementById('altroExtra')?.value?.trim() || null,
-          // ✅ APP. GALLERY: dati presi SEMPRE dal modulo corrente
           galleriaEmail: galleryEmail || null,
           galleriaPassword: galleryPassword || null,
-          galleriaUrl: galleryUrl || null
+          galleriaUrl: galleryUrl || null,
+          // ✅ NOTA CLIENTE (salvata solo se non vuota)
+          notaCliente: notaCliente || null
         },
         acconti: [],
         dataInserimento: new Date().toISOString().split('T')[0]
@@ -646,12 +648,12 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      // ✅ Resetta TUTTI i campi, inclusi quelli di APP. GALLERY
+      // ✅ Resetta TUTTI i campi, inclusa la nota
       document.getElementById('clienteForm').reset();
       document.getElementById('galleryEmail').value = '';
       document.getElementById('galleryPassword').value = '';
       document.getElementById('galleryUrl').value = '';
-      document.getElementById('notaGenerale').value = '';
+      document.getElementById('notaCliente').value = '';
 
       caricaClienti();
       alert("✅ Cliente salvato e backup automatico creato!");
@@ -830,10 +832,10 @@
           `;
         }
 
-        // ✅ EXTRA (inclusa APP. GALLERY)
+        // ✅ EXTRA (inclusa APP. GALLERY e NOTA CLIENTE)
         let extraHtml = '<em>Nessun extra specificato.</em>';
         const ex = c.extra || {};
-        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl) {
+        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl || ex.notaCliente) {
           extraHtml = `
             <div class="campo"><strong>Foto extra:</strong> ${ex.fotoExtra || 'Non specificato'}</div>
             <div class="campo"><strong>Video extra:</strong> ${ex.videoExtra || 'Non specificato'}</div>
@@ -842,6 +844,7 @@
             <div class="campo" style="padding-left: 20px;"><strong>Email:</strong> ${ex.galleriaEmail || 'Non specificata'}</div>
             <div class="campo" style="padding-left: 20px;"><strong>Password:</strong> ${ex.galleriaPassword || 'Non specificata'}</div>
             <div class="campo" style="padding-left: 20px;"><strong>URL:</strong> ${ex.galleriaUrl || 'Non specificato'}</div>
+            ${ex.notaCliente ? `<div class="campo"><strong>NOTA CLIENTE:</strong> ${ex.notaCliente}</div>` : ''}
           `;
         }
 
