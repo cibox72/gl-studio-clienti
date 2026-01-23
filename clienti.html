@@ -443,7 +443,7 @@
   </div>
 </div>
 
-<!-- ✅ RIGA 5: Video | TELA -->
+<!-- ✅ RIGA 5: Video | TELA + Qtà -->
 <div class="riga-doppia">
   <div>
     <label for="video">Video</label>
@@ -454,14 +454,58 @@
       <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
     </select>
   </div>
+  <div style="display: flex; gap: 10px; align-items: flex-end;">
+    <div style="flex: 1;">
+      <label for="tela">TELA</label>
+      <select id="tela">
+        <option value="">-- Seleziona --</option>
+        <option value="50x70 cm senza telaio">50x70 cm senza telaio</option>
+        <option value="50x70 cm con telaio">50x70 cm con telaio</option>
+        <option value="Misura extra">Misura extra</option>
+        <option value="Misura extra con telaio">Misura extra con telaio</option>
+      </select>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <label for="telaQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+      <select id="telaQtà" style="width: 60px; font-size: 13px;">
+        <option value="">--</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ RIGA 6: POSTER CARTA FOTOGRAFICA + Qtà | MINI POCKET -->
+<div class="riga-doppia">
+  <div style="display: flex; gap: 10px; align-items: flex-end;">
+    <div style="flex: 1;">
+      <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
+      <select id="posterCarta">
+        <option value="">-- Seleziona --</option>
+        <option value="50X70 cm">50X70 cm</option>
+      </select>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <label for="posterQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+      <select id="posterQtà" style="width: 60px; font-size: 13px;">
+        <option value="">--</option>
+        <script>
+          document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+        </script>
+      </select>
+    </div>
+  </div>
   <div>
-    <label for="tela">TELA</label>
-    <select id="tela">
+    <label for="miniPocket">MINI POCKET</label>
+    <select id="miniPocket">
       <option value="">-- Seleziona --</option>
-      <option value="50x70 cm senza telaio">50x70 cm senza telaio</option>
-      <option value="50x70 cm con telaio">50x70 cm con telaio</option>
-      <option value="Misura extra">Misura extra</option>
-      <option value="Misura extra con telaio">Misura extra con telaio</option>
+      <script>
+        document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+      </script>
     </select>
   </div>
 </div>
