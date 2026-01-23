@@ -186,6 +186,22 @@
       font-size: 14px;
     }
 
+    /* Pulsante Google Maps */
+    .btn-maps {
+      background: #4285F4;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 5px;
+      font-weight: normal;
+    }
+    .btn-maps:hover {
+      background: #3367D6;
+    }
+
     @media print {
       body { padding: 0; }
       .container { max-width: none; margin: 0; }
@@ -216,7 +232,10 @@
       <label for="cognome1">Cognome</label>
       <input type="text" id="cognome1" required>
 
-      <label for="indirizzo1">Indirizzo (Via, Città)</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <label for="indirizzo1" style="flex: 1;">Indirizzo (Via, Città)</label>
+        <button type="button" class="btn-maps" onclick="apriGoogleMaps('indirizzo1')">📍</button>
+      </div>
       <input type="text" id="indirizzo1" placeholder="Via Roma, 12 – Canicattì" required>
 
       <label for="telefono1">Telefono</label>
@@ -233,7 +252,10 @@
       <label for="cognome2">Cognome</label>
       <input type="text" id="cognome2">
 
-      <label for="indirizzo2">Indirizzo (Via, Città)</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <label for="indirizzo2" style="flex: 1;">Indirizzo (Via, Città)</label>
+        <button type="button" class="btn-maps" onclick="apriGoogleMaps('indirizzo2')">📍</button>
+      </div>
       <input type="text" id="indirizzo2" placeholder="Via Verdi, 5 – Palermo">
 
       <label for="telefono2">Telefono</label>
@@ -261,10 +283,16 @@
         <option value="Evento">Evento</option>
       </select>
 
-      <label for="chiesa">Chiesa</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <label for="chiesa" style="flex: 1;">Chiesa</label>
+        <button type="button" class="btn-maps" onclick="apriGoogleMaps('chiesa')">📍</button>
+      </div>
       <input type="text" id="chiesa" placeholder="Nome della chiesa (se applicabile)">
 
-      <label for="location">Location</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <label for="location" style="flex: 1;">Location</label>
+        <button type="button" class="btn-maps" onclick="apriGoogleMaps('location')">📍</button>
+      </div>
       <input type="text" id="location" placeholder="Luogo dell'evento">
 
       <label for="dataEvento">Data dell'evento</label>
@@ -740,6 +768,19 @@
       document.getElementById('notaCliente').value = '';
     }
 
+    // ✅ FUNZIONE GOOGLE MAPS
+    function apriGoogleMaps(idCampo) {
+      const campo = document.getElementById(idCampo);
+      const valore = campo.value.trim();
+      if (!valore) {
+        alert("Inserisci un indirizzo prima di cercarlo su Google Maps.");
+        return;
+      }
+      const query = encodeURIComponent(valore);
+      const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
+      window.open(url, '_blank');
+    }
+
     // ... resto del codice (acconti, WhatsApp, stampa, ecc.) ...
 
     let clienteIdCorrente = null;
@@ -771,7 +812,7 @@
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const cliente = clienti.find(c => c.id == clienteIdCorrente);
       if (cliente) {
-        cliente.acconti.push({ importo, data: dataFormattata });
+        cliente.acconti.push({ importo,  dataFormattata });
         localStorage.setItem('clienti', JSON.stringify(clienti));
         caricaClienti();
         chiudiModaleAcconto();
