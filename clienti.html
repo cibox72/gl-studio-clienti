@@ -559,8 +559,8 @@ box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 <h3 style="margin-top: 0; color: #d32f2f;">➕ Aggiungi Acconto</h3>
 <label for="inputImporto" style="display: block; margin-top: 15px; font-weight: bold;">Importo (€)</label>
 <input type="number" id="inputImporto" step="0.01" min="0.01" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
-<label for="inputDataAcconto" style="display: block; margin-top: 15px; font-weight: bold;">Data dell'acconto</label>
-<input type="date" id="inputDataAcconto" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
+<label for="inputDataAcconto" style="display: block; margin-top: 15px; font-weight: bold;">Data (gg/mm/aaaa)</label>
+<input type="text" id="inputDataAcconto" placeholder="es. 10/02/2026" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
 <div style="margin-top: 20px; text-align: right;">
 <button onclick="chiudiModaleAcconto()" style="background: #999; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-right: 8px;">Annulla</button>
 <button onclick="confermaAcconto()" style="background: #d32f2f; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Salva</button>
@@ -723,13 +723,12 @@ caricaClienti();
 alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
-// ✅ CORREZIONE: SALVA CON CHIAVE "data"
+// ✅ MODIFICATO: campo testo per data
 let clienteIdCorrente = null;
 
 function apriModaleAcconto(id) {
 clienteIdCorrente = id;
-const oggi = new Date().toISOString().split('T')[0];
-document.getElementById('inputDataAcconto').value = oggi;
+document.getElementById('inputDataAcconto').value = ''; // lascia vuoto
 document.getElementById('inputImporto').value = '';
 document.getElementById('modalAcconto').style.display = 'flex';
 }
@@ -741,21 +740,18 @@ clienteIdCorrente = null;
 
 function confermaAcconto() {
 const importo = parseFloat(document.getElementById('inputImporto').value);
-const dataInput = document.getElementById('inputDataAcconto').value;
+const dataManuale = document.getElementById('inputDataAcconto').value.trim();
 
-if (!importo || importo <= 0 || !dataInput) {
-alert("Inserisci un importo valido e una data.");
+if (!importo || importo <= 0 || !dataManuale) {
+alert("Inserisci un importo valido e una data (es. 10/02/2026).");
 return;
 }
-
-// ✅ CORRETTO: usa "data" come chiave
-const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
 
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == clienteIdCorrente);
 if (cliente) {
-// ✅ SALVA CON CHIAVE "data"
-cliente.acconti.push({ importo, data: dataFormattata });
+// ✅ Salva la data ESATTAMENTE come digitata
+cliente.acconti.push({ importo,  data: dataManuale });
 localStorage.setItem('clienti', JSON.stringify(clienti));
 caricaClienti();
 chiudiModaleAcconto();
@@ -763,7 +759,7 @@ alert("Acconto aggiunto con successo!");
 }
 }
 
-// ✅ NUOVA FUNZIONE: ELIMINA ACCONTO
+// ✅ ELIMINA ACCONTO
 function eliminaAcconto(clienteId, index) {
 if (!confirm("⚠️ Eliminare questo acconto?")) return;
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
