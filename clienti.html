@@ -351,6 +351,9 @@
 <!-- ✅ RIGA 1: Album | Copertina | Mini Album -->
 <div class="riga-tripla">
   <div>
+    <!-- ✅ RIGA 1: Album | Copertina -->
+<div class="riga-doppia">
+  <div>
     <label for="album">Album</label>
     <select id="album">
       <option value="">-- Seleziona --</option>
@@ -370,6 +373,10 @@
       <option value="EXTRA LUX">EXTRA LUX</option>
     </select>
   </div>
+</div>
+
+<!-- ✅ RIGA 2: Mini Album | Interni -->
+<div class="riga-doppia">
   <div>
     <label for="miniAlbum">Mini Album</label>
     <select id="miniAlbum">
@@ -386,10 +393,6 @@
       <option value="10">10</option>
     </select>
   </div>
-</div>
-
-<!-- ✅ RIGA 2: Interni | Foto da selezionare per book | Effetti -->
-<div class="riga-tripla">
   <div>
     <label for="interni">Interni</label>
     <select id="interni">
@@ -397,6 +400,10 @@
       <script>document.write(Array.from({length:10}, (_, i) => `<option value="${(i+1)*5}">${(i+1)*5}</option>`).join(''));</script>
     </select>
   </div>
+</div>
+
+<!-- ✅ RIGA 3: Foto da selezionare per book | Effetti -->
+<div class="riga-doppia">
   <div>
     <label for="fotoBook">Foto da selezionare per book</label>
     <select id="fotoBook">
@@ -414,8 +421,8 @@
   </div>
 </div>
 
-<!-- ✅ RIGA 3: Anteprima | Post Servizio | Video -->
-<div class="riga-tripla">
+<!-- ✅ RIGA 4: Anteprima | Post Servizio -->
+<div class="riga-doppia">
   <div>
     <label for="anteprima">Anteprima</label>
     <select id="anteprima">
@@ -434,6 +441,10 @@
       <option value="FOTO+VIDEO">FOTO+VIDEO</option>
     </select>
   </div>
+</div>
+
+<!-- ✅ RIGA 5: Video | TELA -->
+<div class="riga-doppia">
   <div>
     <label for="video">Video</label>
     <select id="video">
@@ -443,10 +454,6 @@
       <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
     </select>
   </div>
-</div>
-
-<!-- ✅ RIGA 4: TELA | POSTER CARTA FOTOGRAFICA | MINI POCKET -->
-<div class="riga-tripla">
   <div>
     <label for="tela">TELA</label>
     <select id="tela">
@@ -457,6 +464,10 @@
       <option value="Misura extra con telaio">Misura extra con telaio</option>
     </select>
   </div>
+</div>
+
+<!-- ✅ RIGA 6: POSTER CARTA FOTOGRAFICA | MINI POCKET -->
+<div class="riga-doppia">
   <div>
     <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
     <select id="posterCarta">
@@ -470,6 +481,8 @@
       <option value="">-- Seleziona --</option>
       <script>document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));</script>
     </select>
+  </div>
+</div>
   </div>
 </div>
 
