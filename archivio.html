@@ -116,7 +116,7 @@
 <body>
   <div class="container">
     <h1>🗄️ Archivio Clienti</h1>
-    
+
     <!-- Riquadro NOTA -->
     <div class="nota-box">
       <h3>📝 NOTA</h3>
@@ -144,7 +144,8 @@
 
   <script src="auth.js"></script>
   <script>
-    // Gestione nota generale
+    document.addEventListener('DOMContentLoaded', caricaArchivio);
+
     function salvaNota() {
       const nota = document.getElementById('notaGenerale').value;
       localStorage.setItem('notaArchivio', nota);
@@ -156,12 +157,8 @@
       document.getElementById('notaGenerale').value = nota;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      caricaNota();
-      caricaArchivio();
-    });
-
     function caricaArchivio() {
+      caricaNota();
       const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const tbody = document.getElementById('tbodyClienti');
       
@@ -180,9 +177,17 @@
 
       tbody.innerHTML = '';
       clienti.forEach(c => {
+        // Costruisci il nome principale
+        let nomePrincipale = '';
+        if (c.cliente1 && c.cliente1.nome && c.cliente1.cognome) {
+          nomePrincipale = `${c.cliente1.nome} ${c.cliente1.cognome}`;
+        } else {
+          nomePrincipale = 'Cliente sconosciuto';
+        }
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${c.nome} ${c.cognome}</td>
+          <td>${nomePrincipale}</td>
           <td>${c.servizio}</td>
           <td>${c.dataEvento}</td>
           <td><button class="btn-apri" onclick="apriScheda(${c.id})">Apri</button></td>
