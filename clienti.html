@@ -206,7 +206,7 @@
 
     <!-- Modulo Nuovo Cliente -->
     <form id="clienteForm">
-      <h2>➕ Aggiungi Nuovo Cliente</h2>
+      <h2>➕ Aggiungi / Modifica Cliente</h2>
 
       <!-- Cliente 1 -->
       <h3 style="margin-top: 20px; margin-bottom: 12px; font-size: 16px; color: #1976d2;">👤 Cliente 1</h3>
@@ -216,11 +216,8 @@
       <label for="cognome1">Cognome</label>
       <input type="text" id="cognome1" required>
 
-      <label for="via1">Via</label>
-      <input type="text" id="via1" required>
-
-      <label for="citta1">Città</label>
-      <input type="text" id="citta1" required>
+      <label for="indirizzo1">Indirizzo (Via, Città)</label>
+      <input type="text" id="indirizzo1" placeholder="Via Roma, 12 – Canicattì" required>
 
       <label for="telefono1">Telefono</label>
       <input type="text" id="telefono1" required placeholder="+393669381103">
@@ -236,11 +233,8 @@
       <label for="cognome2">Cognome</label>
       <input type="text" id="cognome2">
 
-      <label for="via2">Via</label>
-      <input type="text" id="via2">
-
-      <label for="citta2">Città</label>
-      <input type="text" id="citta2">
+      <label for="indirizzo2">Indirizzo (Via, Città)</label>
+      <input type="text" id="indirizzo2" placeholder="Via Verdi, 5 – Palermo">
 
       <label for="telefono2">Telefono</label>
       <input type="text" id="telefono2" placeholder="+393206337370">
@@ -412,8 +406,10 @@
       <label for="prezzo" style="font-size: 16px; font-weight: bold; color: #d32f2f;">Importo totale (€)</label>
       <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required style="font-size: 18px; padding: 12px;">
 
-      <!-- ✅ PULSANTE SALVA CLIENTE PIÙ GRANDE E ROSSO -->
-      <button type="button" onclick="aggiungiCliente()" style="background: #d32f2f; font-size: 16px; padding: 12px 24px; font-weight: bold;">🔴 Salva Cliente</button>
+      <!-- ✅ PULSANTE SALVA CLIENTE CENTRATO E ROSSO -->
+      <div style="text-align: center; margin-top: 20px;">
+        <button type="button" onclick="salvaCliente()" style="background: #d32f2f; font-size: 16px; padding: 12px 24px; font-weight: bold;">🔴 Salva Cliente</button>
+      </div>
     </form>
 
     <!-- ✅ NUOVA SEZIONE: APP. GALLERY -->
@@ -551,22 +547,85 @@
       alert("✅ Nota temporanea salvata — verrà associata al cliente al momento del salvataggio.");
     }
 
+    let clienteDaModificare = null;
+
     document.addEventListener('DOMContentLoaded', () => {
       caricaClienti();
     });
 
-    function aggiungiCliente() {
+    function caricaClientePerModifica(id) {
+      const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      const cliente = clienti.find(c => c.id == id);
+      if (!cliente) return;
+
+      clienteDaModificare = cliente.id;
+
+      // Cliente 1
+      document.getElementById('nome1').value = cliente.cliente1.nome || '';
+      document.getElementById('cognome1').value = cliente.cliente1.cognome || '';
+      document.getElementById('indirizzo1').value = `${cliente.cliente1.via || ''}, ${cliente.cliente1.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
+      document.getElementById('telefono1').value = cliente.cliente1.telefono || '';
+      document.getElementById('email1').value = cliente.cliente1.email || '';
+
+      // Cliente 2
+      if (cliente.cliente2) {
+        document.getElementById('nome2').value = cliente.cliente2.nome || '';
+        document.getElementById('cognome2').value = cliente.cliente2.cognome || '';
+        document.getElementById('indirizzo2').value = `${cliente.cliente2.via || ''}, ${cliente.cliente2.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
+        document.getElementById('telefono2').value = cliente.cliente2.telefono || '';
+        document.getElementById('email2').value = cliente.cliente2.email || '';
+      } else {
+        document.getElementById('nome2').value = '';
+        document.getElementById('cognome2').value = '';
+        document.getElementById('indirizzo2').value = '';
+        document.getElementById('telefono2').value = '';
+        document.getElementById('email2').value = '';
+      }
+
+      // Servizio Commissionato
+      document.getElementById('servizio').value = cliente.servizio || '';
+      document.getElementById('chiesa').value = cliente.chiesa || '';
+      document.getElementById('location').value = cliente.location || '';
+      document.getElementById('dataEvento').value = new Date(cliente.dataEvento.split('/').reverse().join('-')).toISOString().split('T')[0];
+      document.getElementById('album').value = cliente.servizioCommissionato?.album || '';
+      document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
+      document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
+      document.getElementById('interni').value = cliente.servizioCommissionato?.interni || '';
+      document.getElementById('fotoBook').value = cliente.servizioCommissionato?.fotoBook || '';
+      document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
+      document.getElementById('anteprima').value = cliente.servizioCommissionato?.anteprima || '';
+      document.getElementById('postServizio').value = cliente.servizioCommissionato?.postServizio || '';
+      document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
+      document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
+      document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
+      document.getElementById('posterQuantita').value = cliente.servizioCommissionato?.posterQuantita || '';
+      document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
+      document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
+      document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
+
+      // Extra
+      document.getElementById('galleryEmail').value = cliente.extra?.galleriaEmail || '';
+      document.getElementById('galleryPassword').value = cliente.extra?.galleriaPassword || '';
+      document.getElementById('galleryUrl').value = cliente.extra?.galleriaUrl || '';
+      document.getElementById('notaCliente').value = cliente.extra?.notaCliente || '';
+
+      // Prezzo
+      document.getElementById('prezzo').value = cliente.prezzo || '';
+
+      // Scorri in alto
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function salvaCliente() {
       const nome1 = document.getElementById('nome1').value.trim();
       const cognome1 = document.getElementById('cognome1').value.trim();
-      const via1 = document.getElementById('via1').value.trim();
-      const citta1 = document.getElementById('citta1').value.trim();
+      const indirizzo1 = document.getElementById('indirizzo1').value.trim();
       const telefono1 = document.getElementById('telefono1').value.trim();
       const email1 = document.getElementById('email1').value.trim();
 
       const nome2 = document.getElementById('nome2').value.trim();
       const cognome2 = document.getElementById('cognome2').value.trim();
-      const via2 = document.getElementById('via2').value.trim();
-      const citta2 = document.getElementById('citta2').value.trim();
+      const indirizzo2 = document.getElementById('indirizzo2').value.trim();
       const telefono2 = document.getElementById('telefono2').value.trim();
       const email2 = document.getElementById('email2').value.trim();
 
@@ -580,19 +639,21 @@
       const galleryEmail = document.getElementById('galleryEmail').value.trim();
       const galleryPassword = document.getElementById('galleryPassword').value.trim();
       const galleryUrl = document.getElementById('galleryUrl').value.trim();
-
-      // ✅ NOTA DEL CLIENTE (se presente)
       const notaCliente = document.getElementById('notaCliente').value.trim();
 
-      if (!nome1 || !cognome1 || !via1 || !citta1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
+      if (!nome1 || !cognome1 || !indirizzo1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
         alert("Compila tutti i campi obbligatori per Cliente 1.");
         return;
       }
 
+      // ✅ Separa via e città
+      const [via1, citta1] = separaIndirizzo(indirizzo1);
+      const [via2, citta2] = separaIndirizzo(indirizzo2);
+
       const dataEventoFormattata = new Date(dataEvento).toLocaleDateString('it-IT');
 
       const nuovoCliente = {
-        id: Date.now(),
+        id: clienteDaModificare || Date.now(),
         cliente1: { nome: nome1, cognome: cognome1, via: via1, citta: citta1, telefono: telefono1, email: email1 },
         cliente2: nome2 ? { nome: nome2, cognome: cognome2, via: via2, citta: citta2, telefono: telefono2, email: email2 } : null,
         servizio,
@@ -624,15 +685,22 @@
           galleriaEmail: galleryEmail || null,
           galleriaPassword: galleryPassword || null,
           galleriaUrl: galleryUrl || null,
-          // ✅ NOTA CLIENTE (salvata solo se non vuota)
           notaCliente: notaCliente || null
         },
-        acconti: [],
-        dataInserimento: new Date().toISOString().split('T')[0]
+        acconti: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.acconti || [] : [],
+        dataInserimento: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.dataInserimento || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
       };
 
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-      clienti.push(nuovoCliente);
+
+      if (clienteDaModificare) {
+        // Aggiorna
+        clienti = clienti.map(c => c.id === clienteDaModificare ? nuovoCliente : c);
+      } else {
+        // Nuovo
+        clienti.push(nuovoCliente);
+      }
+
       localStorage.setItem('clienti', JSON.stringify(clienti));
 
       // ✅ BACKUP AUTOMATICO CON NUMERO PROGRESSIVO
@@ -648,16 +716,31 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      // ✅ Resetta TUTTI i campi, inclusa la nota
+      // ✅ Resetta tutto
+      resettaForm();
+      clienteDaModificare = null;
+      caricaClienti();
+      alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
+    }
+
+    function separaIndirizzo(indirizzo) {
+      if (!indirizzo) return ['', ''];
+      const parti = indirizzo.split('–').map(p => p.trim());
+      if (parti.length >= 2) {
+        return [parti.slice(0, -1).join(' – '), parti[parti.length - 1]];
+      }
+      return [indirizzo, ''];
+    }
+
+    function resettaForm() {
       document.getElementById('clienteForm').reset();
       document.getElementById('galleryEmail').value = '';
       document.getElementById('galleryPassword').value = '';
       document.getElementById('galleryUrl').value = '';
       document.getElementById('notaCliente').value = '';
-
-      caricaClienti();
-      alert("✅ Cliente salvato e backup automatico creato!");
     }
+
+    // ... resto del codice (acconti, WhatsApp, stampa, ecc.) ...
 
     let clienteIdCorrente = null;
 
@@ -683,13 +766,11 @@
         return;
       }
 
-      // ✅ Converti la data in formato leggibile
       const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
 
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const cliente = clienti.find(c => c.id == clienteIdCorrente);
       if (cliente) {
-        // ✅ Salva con chiave "data" (non "dataFormattata")
         cliente.acconti.push({ importo, data: dataFormattata });
         localStorage.setItem('clienti', JSON.stringify(clienti));
         caricaClienti();
@@ -705,10 +786,6 @@
 
     function calcolaTotaleAcconti(acconti) {
       return acconti.reduce((sum, a) => sum + a.importo, 0);
-    }
-
-    function modificaCliente(id) {
-      alert("La modifica avanzata non è ancora supportata per due anagrafiche.\nPuoi eliminare e ricreare il cliente.");
     }
 
     function eliminaCliente(id) {
@@ -782,22 +859,24 @@
           <td>€${c.prezzo.toFixed(2)}</td>
           <td>€${totaleAcconti.toFixed(2)}</td>
           <td>€${saldo.toFixed(2)}</td>
-          <td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button></td>
+          <td>
+            <button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button>
+            <button class="btn-dashboard" style="background:#1976d2; padding:4px 8px; font-size:12px;" onclick="caricaClientePerModifica(${c.id})">✏️ Modifica</button>
+          </td>
         `;
         tbody.appendChild(tr);
 
+        // ... resto della scheda cliente (uguale al codice precedente) ...
         let anagraficaHtml = `
           <div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.nome} ${c.cliente1.cognome}</div>
-          <div class="campo"><strong>Via:</strong> ${c.cliente1.via}</div>
-          <div class="campo"><strong>Città:</strong> ${c.cliente1.citta}</div>
+          <div class="campo"><strong>Indirizzo:</strong> ${c.cliente1.via}, ${c.cliente1.citta}</div>
           <div class="campo"><strong>Telefono:</strong> ${c.cliente1.telefono}</div>
           <div class="campo"><strong>Email:</strong> ${c.cliente1.email || 'Non fornita'}</div>
         `;
         if (c.cliente2) {
           anagraficaHtml += `
             <div class="campo" style="margin-top: 12px;"><strong>Cliente 2:</strong> ${c.cliente2.nome} ${c.cliente2.cognome}</div>
-            <div class="campo"><strong>Via:</strong> ${c.cliente2.via}</div>
-            <div class="campo"><strong>Città:</strong> ${c.cliente2.citta}</div>
+            <div class="campo"><strong>Indirizzo:</strong> ${c.cliente2.via}, ${c.cliente2.citta}</div>
             <div class="campo"><strong>Telefono:</strong> ${c.cliente2.telefono}</div>
             <div class="campo"><strong>Email:</strong> ${c.cliente2.email || 'Non fornita'}</div>
           `;
@@ -832,7 +911,6 @@
           `;
         }
 
-        // ✅ EXTRA (inclusa APP. GALLERY e NOTA CLIENTE)
         let extraHtml = '<em>Nessun extra specificato.</em>';
         const ex = c.extra || {};
         if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl || ex.notaCliente) {
@@ -861,7 +939,7 @@
               <tbody>
                 ${c.acconti.map(a => `
                   <tr>
-                    <td>${a.data}</td> <!-- ✅ Ora mostra la data correttamente -->
+                    <td>${a.data}</td>
                     <td>€${a.importo.toFixed(2)}</td>
                   </tr>
                 `).join('')}
@@ -904,7 +982,7 @@
             ${accontiHtml}
             
             <button type="button" onclick="apriModaleAcconto(${c.id})">+ Aggiungi acconto</button>
-            <button type="button" style="background:#1976d2;" onclick="modificaCliente(${c.id})">Modifica dati</button>
+            <button type="button" style="background:#1976d2;" onclick="caricaClientePerModifica(${c.id})">✏️ Modifica dati</button>
             <button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente1.telefono}')">💬 WhatsApp Cliente 1</button>
             ${c.cliente2 ? `<button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente2.telefono}')">💬 WhatsApp Cliente 2</button>` : ''}
             <button type="button" class="btn-elimina" onclick="eliminaCliente(${c.id})">❌ Elimina cliente</button>
@@ -917,14 +995,6 @@
         `;
         containerSchede.appendChild(div);
       });
-
-      const idDaAprire = localStorage.getItem('apriSchedaId');
-      if (idDaAprire) {
-        setTimeout(() => {
-          mostraScheda(parseInt(idDaAprire));
-          localStorage.removeItem('apriSchedaId');
-        }, 300);
-      }
     }
   </script>
 </body>
