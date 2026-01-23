@@ -431,15 +431,28 @@
         <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
       </select>
 
-      <!-- ✅ TELA -->
-      <label for="tela">TELA</label>
-      <select id="tela">
-        <option value="">-- Seleziona --</option>
-        <option value="50x70 cm senza telaio">50x70 cm senza telaio</option>
-        <option value="50x70 cm con telaio">50x70 cm con telaio</option>
-        <option value="Misura extra">Misura extra</option>
-        <option value="Misura extra con telaio">Misura extra con telaio</option>
-      </select>
+      <!-- ✅ TELA con quantità fino a 10 -->
+<div style="display: flex; gap: 10px; align-items: flex-end;">
+  <div style="flex: 1;">
+    <label for="tela">TELA</label>
+    <select id="tela">
+      <option value="">-- Seleziona --</option>
+      <option value="50x70 cm senza telaio">50x70 cm senza telaio</option>
+      <option value="50x70 cm con telaio">50x70 cm con telaio</option>
+      <option value="Misura extra">Misura extra</option>
+      <option value="Misura extra con telaio">Misura extra con telaio</option>
+    </select>
+  </div>
+  <div style="display: flex; flex-direction: column;">
+    <label for="telaQuantita" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+    <select id="telaQuantita" style="width: 60px; font-size: 13px;">
+      <option value="">--</option>
+      <script>
+        document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+      </script>
+    </select>
+  </div>
+</div>
 
       <!-- ✅ POSTER CARTA FOTOGRAFICA -->
       <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
