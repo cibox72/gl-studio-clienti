@@ -717,105 +717,105 @@
       const query = encodeURIComponent(valore);
       window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
     }
+<script>
+function salvaCliente() {
+  const nome1 = document.getElementById('nome1').value.trim();
+  const cognome1 = document.getElementById('cognome1').value.trim();
+  const indirizzo1 = document.getElementById('indirizzo1').value.trim();
+  const telefono1 = document.getElementById('telefono1').value.trim();
+  const email1 = document.getElementById('email1').value.trim();
 
-    function salvaCliente() {
-      const nome1 = document.getElementById('nome1').value.trim();
-      const cognome1 = document.getElementById('cognome1').value.trim();
-      const indirizzo1 = document.getElementById('indirizzo1').value.trim();
-      const telefono1 = document.getElementById('telefono1').value.trim();
-      const email1 = document.getElementById('email1').value.trim();
+  const nome2 = document.getElementById('nome2').value.trim();
+  const cognome2 = document.getElementById('cognome2').value.trim();
+  const indirizzo2 = document.getElementById('indirizzo2').value.trim();
+  const telefono2 = document.getElementById('telefono2').value.trim();
+  const email2 = document.getElementById('email2').value.trim();
 
-      const nome2 = document.getElementById('nome2').value.trim();
-      const cognome2 = document.getElementById('cognome2').value.trim();
-      const indirizzo2 = document.getElementById('indirizzo2').value.trim();
-      const telefono2 = document.getElementById('telefono2').value.trim();
-      const email2 = document.getElementById('email2').value.trim();
+  const servizio = document.getElementById('servizio').value;
+  const chiesa = document.getElementById('chiesa').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const dataEvento = document.getElementById('dataEvento').value;
+  const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
-      const servizio = document.getElementById('servizio').value;
-      const chiesa = document.getElementById('chiesa').value.trim();
-      const location = document.getElementById('location').value.trim();
-      const dataEvento = document.getElementById('dataEvento').value;
-      const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
+  const galleryEmail = document.getElementById('galleryEmail').value.trim();
+  const galleryPassword = document.getElementById('galleryPassword').value.trim();
+  const galleryUrl = document.getElementById('galleryUrl').value.trim();
+  const notaCliente = document.getElementById('notaCliente').value.trim();
 
-      const galleryEmail = document.getElementById('galleryEmail').value.trim();
-      const galleryPassword = document.getElementById('galleryPassword').value.trim();
-      const galleryUrl = document.getElementById('galleryUrl').value.trim();
-      const notaCliente = document.getElementById('notaCliente').value.trim();
+  if (!nome1 || !cognome1 || !indirizzo1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
+    alert("Compila tutti i campi obbligatori per Cliente 1.");
+    return;
+  }
 
-      if (!nome1 || !cognome1 || !indirizzo1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
-        alert("Compila tutti i campi obbligatori per Cliente 1.");
-        return;
-      }
+  const [via1, citta1] = separaIndirizzo(indirizzo1);
+  const [via2, citta2] = separaIndirizzo(indirizzo2);
+  const dataEventoFormattata = new Date(dataEvento).toLocaleDateString('it-IT');
 
-      const [via1, citta1] = separaIndirizzo(indirizzo1);
-      const [via2, citta2] = separaIndirizzo(indirizzo2);
-      const dataEventoFormattata = new Date(dataEvento).toLocaleDateString('it-IT');
+  const nuovoCliente = {
+    id: clienteDaModificare || Date.now(),
+    cliente1: { nome: nome1, cognome: cognome1, via: via1, citta: citta1, telefono: telefono1, email: email1 },
+    cliente2: nome2 ? { nome: nome2, cognome: cognome2, via: via2, citta: citta2, telefono: telefono2, email: email2 } : null,
+    servizio,
+    chiesa: chiesa || null,
+    location: location || null,
+    dataEvento: dataEventoFormattata,
+    prezzo,
+    servizioCommissionato: {
+      album: document.getElementById('album').value || null,
+      copertina: document.getElementById('copertina').value || null,
+      miniAlbum: document.getElementById('miniAlbum').value || null,
+      interni: document.getElementById('interni').value || null,
+      fotoBook: document.getElementById('fotoBook').value || null,
+      effetti: document.getElementById('effetti').value || null,
+      anteprima: document.getElementById('anteprima').value || null,
+      postServizio: document.getElementById('postServizio').value || null,
+      video: document.getElementById('video').value || null,
+      tela: document.getElementById('tela').value || null,
+      telaQtà: document.getElementById('telaQtà').value || null, // ✅ QUANTITÀ TELA
+      posterCarta: document.getElementById('posterCarta').value || null,
+      posterQtà: document.getElementById('posterQtà').value || null, // ✅ QUANTITÀ POSTER
+      miniPocket: document.getElementById('miniPocket').value || null,
+      salaPosa: document.getElementById('salaPosa').value || null,
+      servizioLocation: document.getElementById('servizioLocation').value || null
+    },
+    extra: {
+      galleriaEmail: galleryEmail || null,
+      galleriaPassword: galleryPassword || null,
+      galleriaUrl: galleryUrl || null,
+      notaCliente: notaCliente || null
+    },
+    acconti: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.acconti || [] : [],
+    dataInserimento: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.dataInserimento || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+  };
 
-      const nuovoCliente = {
-        id: clienteDaModificare || Date.now(),
-        cliente1: { nome: nome1, cognome: cognome1, via: via1, citta: citta1, telefono: telefono1, email: email1 },
-        cliente2: nome2 ? { nome: nome2, cognome: cognome2, via: via2, citta: citta2, telefono: telefono2, email: email2 } : null,
-        servizio,
-        chiesa: chiesa || null,
-        location: location || null,
-        dataEvento: dataEventoFormattata,
-        prezzo,
-        servizioCommissionato: {
-          album: document.getElementById('album').value || null,
-          copertina: document.getElementById('copertina').value || null,
-          miniAlbum: document.getElementById('miniAlbum').value || null,
-          interni: document.getElementById('interni').value || null,
-          fotoBook: document.getElementById('fotoBook').value || null,
-          effetti: document.getElementById('effetti').value || null,
-          anteprima: document.getElementById('anteprima').value || null,
-          postServizio: document.getElementById('postServizio').value || null,
-          video: document.getElementById('video').value || null,
-          tela: document.getElementById('tela').value || null,
-          posterCarta: document.getElementById('posterCarta').value || null,
-          posterQuantita: document.getElementById('posterQuantita').value || null,
-          miniPocket: document.getElementById('miniPocket').value || null,
-          salaPosa: document.getElementById('salaPosa').value || null,
-          servizioLocation: document.getElementById('servizioLocation').value || null
-        },
-        extra: {
-          galleriaEmail: galleryEmail || null,
-          galleriaPassword: galleryPassword || null,
-          galleriaUrl: galleryUrl || null,
-          notaCliente: notaCliente || null
-        },
-        acconti: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.acconti || [] : [],
-        dataInserimento: clienteDaModificare ? JSON.parse(localStorage.getItem('clienti'))?.find(c => c.id == clienteDaModificare)?.dataInserimento || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
-      };
+  let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 
-      let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+  if (clienteDaModificare) {
+    clienti = clienti.map(c => c.id === clienteDaModificare ? nuovoCliente : c);
+  } else {
+    clienti.push(nuovoCliente);
+  }
 
-      if (clienteDaModificare) {
-        clienti = clienti.map(c => c.id === clienteDaModificare ? nuovoCliente : c);
-      } else {
-        clienti.push(nuovoCliente);
-      }
+  localStorage.setItem('clienti', JSON.stringify(clienti));
 
-      localStorage.setItem('clienti', JSON.stringify(clienti));
+  // Backup automatico
+  const nomeFile = generaNomeBackup();
+  const blob = new Blob([JSON.stringify(clienti, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomeFile;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-      // Backup automatico
-      const nomeFile = generaNomeBackup();
-      const blob = new Blob([JSON.stringify(clienti, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = nomeFile;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      resettaForm();
-      clienteDaModificare = null;
-      caricaClienti();
-      alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
-    }
-
-    // ... resto delle funzioni (caricaClientePerModifica, acconti, WhatsApp, stampa, ecc.) ...
+  resettaForm();
+  clienteDaModificare = null;
+  caricaClienti();
+  alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
+}
+</script>    // ... resto delle funzioni (caricaClientePerModifica, acconti, WhatsApp, stampa, ecc.) ...
 
     function caricaClientePerModifica(id) {
       const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
