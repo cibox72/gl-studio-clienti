@@ -529,9 +529,22 @@
       clienti.push(nuovoCliente);
       localStorage.setItem('clienti', JSON.stringify(clienti));
 
+      // ✅ BACKUP AUTOMATICO CON NOME FISSO
+      const nomeFile = 'backup-gl-studio-clienti-ULTIMO.json';
+      const datiJSON = JSON.stringify(clienti, null, 2);
+      const blob = new Blob([datiJSON], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomeFile;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
       document.getElementById('clienteForm').reset();
       caricaClienti();
-      alert("Cliente salvato con successo!");
+      alert("✅ Cliente salvato e backup automatico creato!");
     }
 
     let clienteIdCorrente = null;
