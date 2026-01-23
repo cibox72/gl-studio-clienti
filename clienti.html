@@ -59,6 +59,16 @@
     }
     button:hover { background: #333; }
 
+    /* Layout per Tipo di Servizio + Data evento */
+    .riga-servizio-data {
+      display: flex;
+      gap: 15px;
+      margin-top: 12px;
+    }
+    .riga-servizio-data > div {
+      flex: 1;
+    }
+
     /* Elenco riassuntivo */
     table {
       width: 100%;
@@ -267,21 +277,30 @@
       <!-- ✅ SERVIZIO COMMISSIONATO -->
       <h3>SERVIZIO COMMISSIONATO:</h3>
 
-      <label for="servizio">Tipo di Servizio</label>
-      <select id="servizio" required>
-        <option value="">-- Seleziona --</option>
-        <option value="Anniversario">Anniversario</option>
-        <option value="Compleanno">Compleanno</option>
-        <option value="Battesimo">Battesimo</option>
-        <option value="Comunione">Comunione</option>
-        <option value="Cresima">Cresima</option>
-        <option value="Percorso Catecumenale">Percorso Catecumenale</option>
-        <option value="Matrimonio">Matrimonio</option>
-        <option value="Maternity">Maternity</option>
-        <option value="New Born">New Born</option>
-        <option value="Maternity+New Born">Maternity+New Born</option>
-        <option value="Evento">Evento</option>
-      </select>
+      <!-- ✅ TIPO DI SERVIZIO + DATA EVENTO sulla stessa riga -->
+      <div class="riga-servizio-data">
+        <div>
+          <label for="servizio">Tipo di Servizio</label>
+          <select id="servizio" required>
+            <option value="">-- Seleziona --</option>
+            <option value="Anniversario">Anniversario</option>
+            <option value="Compleanno">Compleanno</option>
+            <option value="Battesimo">Battesimo</option>
+            <option value="Comunione">Comunione</option>
+            <option value="Cresima">Cresima</option>
+            <option value="Percorso Catecumenale">Percorso Catecumenale</option>
+            <option value="Matrimonio">Matrimonio</option>
+            <option value="Maternity">Maternity</option>
+            <option value="New Born">New Born</option>
+            <option value="Maternity+New Born">Maternity+New Born</option>
+            <option value="Evento">Evento</option>
+          </select>
+        </div>
+        <div>
+          <label for="dataEvento">Data evento</label>
+          <input type="date" id="dataEvento" required>
+        </div>
+      </div>
 
       <div style="display: flex; gap: 10px; align-items: center;">
         <label for="chiesa" style="flex: 1;">Chiesa</label>
@@ -294,9 +313,6 @@
         <button type="button" class="btn-maps" onclick="apriGoogleMaps('location')">📍</button>
       </div>
       <input type="text" id="location" placeholder="Luogo dell'evento">
-
-      <label for="dataEvento">Data dell'evento</label>
-      <input type="date" id="dataEvento" required>
 
       <!-- ✅ ALBUM CON "orizz." -->
       <label for="album">Album</label>
@@ -381,8 +397,7 @@
         <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
       </select>
 
-      <!-- ✅ NUOVI CAMPI DOPO VIDEO -->
-
+      <!-- ✅ TELA -->
       <label for="tela">TELA</label>
       <select id="tela">
         <option value="">-- Seleziona --</option>
@@ -392,7 +407,7 @@
         <option value="Misura extra con telaio">Misura extra con telaio</option>
       </select>
 
-      <!-- ✅ POSTER CARTA FOTOGRAFICA con menù quantità integrato -->
+      <!-- ✅ POSTER CARTA FOTOGRAFICA -->
       <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
       <div style="display: flex; gap: 10px; align-items: center;">
         <select id="posterCarta" style="flex: 1;">
@@ -407,7 +422,7 @@
         </select>
       </div>
 
-      <!-- ✅ MINI POCKET: quantità da 1 a 10 -->
+      <!-- ✅ MINI POCKET -->
       <label for="miniPocket">MINI POCKET</label>
       <select id="miniPocket">
         <option value="">-- Seleziona --</option>
@@ -440,7 +455,7 @@
       </div>
     </form>
 
-    <!-- ✅ NUOVA SEZIONE: APP. GALLERY -->
+    <!-- ✅ APP. GALLERY -->
     <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #ccc;">
       <h3 style="margin-top: 0; color: #1976d2;">📱 APP. GALLERY</h3>
       <label for="galleryEmail">Email</label>
@@ -453,7 +468,7 @@
       <input type="url" id="galleryUrl" placeholder="https://tuagalleria.com">
     </div>
 
-    <!-- ✅ Riquadro NOTA per cliente (vuoto all’apertura) -->
+    <!-- ✅ NOTA CLIENTE -->
     <div class="nota-box">
       <h3>📝 NOTA</h3>
       <textarea id="notaCliente" placeholder="Inserisci qui annotazioni specifiche per questo cliente..."></textarea>
@@ -519,7 +534,7 @@
     }
   </style>
 
-  <!-- Modal per aggiungere acconto -->
+  <!-- Modal per acconto -->
   <div id="modalAcconto" style="
     display: none;
     position: fixed;
@@ -560,18 +575,17 @@
       let contatore = parseInt(localStorage.getItem('backupContatore')) || 0;
       contatore++;
       localStorage.setItem('backupContatore', contatore.toString());
-      const num = contatore.toString().padStart(3, '0'); // 001, 002, ...
+      const num = contatore.toString().padStart(3, '0');
       return `backup-gl-studio-clienti-${num}.json`;
     }
 
-    // Gestione nota cliente (locale al cliente)
+    // Gestione nota cliente
     function salvaNotaCliente() {
       const nota = document.getElementById('notaCliente').value.trim();
       if (!nota) {
         alert("Scrivi qualcosa prima di salvare!");
         return;
       }
-      // La nota verrà salvata insieme al cliente quando si clicca "Salva Cliente"
       alert("✅ Nota temporanea salvata — verrà associata al cliente al momento del salvataggio.");
     }
 
@@ -581,67 +595,32 @@
       caricaClienti();
     });
 
-    function caricaClientePerModifica(id) {
-      const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-      const cliente = clienti.find(c => c.id == id);
-      if (!cliente) return;
-
-      clienteDaModificare = cliente.id;
-
-      // Cliente 1
-      document.getElementById('nome1').value = cliente.cliente1.nome || '';
-      document.getElementById('cognome1').value = cliente.cliente1.cognome || '';
-      document.getElementById('indirizzo1').value = `${cliente.cliente1.via || ''}, ${cliente.cliente1.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
-      document.getElementById('telefono1').value = cliente.cliente1.telefono || '';
-      document.getElementById('email1').value = cliente.cliente1.email || '';
-
-      // Cliente 2
-      if (cliente.cliente2) {
-        document.getElementById('nome2').value = cliente.cliente2.nome || '';
-        document.getElementById('cognome2').value = cliente.cliente2.cognome || '';
-        document.getElementById('indirizzo2').value = `${cliente.cliente2.via || ''}, ${cliente.cliente2.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
-        document.getElementById('telefono2').value = cliente.cliente2.telefono || '';
-        document.getElementById('email2').value = cliente.cliente2.email || '';
-      } else {
-        document.getElementById('nome2').value = '';
-        document.getElementById('cognome2').value = '';
-        document.getElementById('indirizzo2').value = '';
-        document.getElementById('telefono2').value = '';
-        document.getElementById('email2').value = '';
+    function separaIndirizzo(indirizzo) {
+      if (!indirizzo) return ['', ''];
+      const parti = indirizzo.split('–').map(p => p.trim());
+      if (parti.length >= 2) {
+        return [parti.slice(0, -1).join(' – '), parti[parti.length - 1]];
       }
+      return [indirizzo, ''];
+    }
 
-      // Servizio Commissionato
-      document.getElementById('servizio').value = cliente.servizio || '';
-      document.getElementById('chiesa').value = cliente.chiesa || '';
-      document.getElementById('location').value = cliente.location || '';
-      document.getElementById('dataEvento').value = new Date(cliente.dataEvento.split('/').reverse().join('-')).toISOString().split('T')[0];
-      document.getElementById('album').value = cliente.servizioCommissionato?.album || '';
-      document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
-      document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
-      document.getElementById('interni').value = cliente.servizioCommissionato?.interni || '';
-      document.getElementById('fotoBook').value = cliente.servizioCommissionato?.fotoBook || '';
-      document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
-      document.getElementById('anteprima').value = cliente.servizioCommissionato?.anteprima || '';
-      document.getElementById('postServizio').value = cliente.servizioCommissionato?.postServizio || '';
-      document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
-      document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
-      document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
-      document.getElementById('posterQuantita').value = cliente.servizioCommissionato?.posterQuantita || '';
-      document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
-      document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
-      document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
+    function resettaForm() {
+      document.getElementById('clienteForm').reset();
+      document.getElementById('galleryEmail').value = '';
+      document.getElementById('galleryPassword').value = '';
+      document.getElementById('galleryUrl').value = '';
+      document.getElementById('notaCliente').value = '';
+    }
 
-      // Extra
-      document.getElementById('galleryEmail').value = cliente.extra?.galleriaEmail || '';
-      document.getElementById('galleryPassword').value = cliente.extra?.galleriaPassword || '';
-      document.getElementById('galleryUrl').value = cliente.extra?.galleriaUrl || '';
-      document.getElementById('notaCliente').value = cliente.extra?.notaCliente || '';
-
-      // Prezzo
-      document.getElementById('prezzo').value = cliente.prezzo || '';
-
-      // Scorri in alto
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function apriGoogleMaps(idCampo) {
+      const campo = document.getElementById(idCampo);
+      const valore = campo.value.trim();
+      if (!valore) {
+        alert("Inserisci un indirizzo prima di cercarlo su Google Maps.");
+        return;
+      }
+      const query = encodeURIComponent(valore);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
     }
 
     function salvaCliente() {
@@ -663,7 +642,6 @@
       const dataEvento = document.getElementById('dataEvento').value;
       const prezzo = parseFloat(document.getElementById('prezzo').value) || 0;
 
-      // ✅ Dati APP. GALLERY
       const galleryEmail = document.getElementById('galleryEmail').value.trim();
       const galleryPassword = document.getElementById('galleryPassword').value.trim();
       const galleryUrl = document.getElementById('galleryUrl').value.trim();
@@ -674,10 +652,8 @@
         return;
       }
 
-      // ✅ Separa via e città
       const [via1, citta1] = separaIndirizzo(indirizzo1);
       const [via2, citta2] = separaIndirizzo(indirizzo2);
-
       const dataEventoFormattata = new Date(dataEvento).toLocaleDateString('it-IT');
 
       const nuovoCliente = {
@@ -707,9 +683,6 @@
           servizioLocation: document.getElementById('servizioLocation').value || null
         },
         extra: {
-          fotoExtra: document.getElementById('fotoExtra')?.value || null,
-          videoExtra: document.getElementById('videoExtra')?.value || null,
-          altroExtra: document.getElementById('altroExtra')?.value?.trim() || null,
           galleriaEmail: galleryEmail || null,
           galleriaPassword: galleryPassword || null,
           galleriaUrl: galleryUrl || null,
@@ -722,19 +695,16 @@
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 
       if (clienteDaModificare) {
-        // Aggiorna
         clienti = clienti.map(c => c.id === clienteDaModificare ? nuovoCliente : c);
       } else {
-        // Nuovo
         clienti.push(nuovoCliente);
       }
 
       localStorage.setItem('clienti', JSON.stringify(clienti));
 
-      // ✅ BACKUP AUTOMATICO CON NUMERO PROGRESSIVO
+      // Backup automatico
       const nomeFile = generaNomeBackup();
-      const datiJSON = JSON.stringify(clienti, null, 2);
-      const blob = new Blob([datiJSON], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(clienti, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -744,44 +714,70 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      // ✅ Resetta tutto
       resettaForm();
       clienteDaModificare = null;
       caricaClienti();
       alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
     }
 
-    function separaIndirizzo(indirizzo) {
-      if (!indirizzo) return ['', ''];
-      const parti = indirizzo.split('–').map(p => p.trim());
-      if (parti.length >= 2) {
-        return [parti.slice(0, -1).join(' – '), parti[parti.length - 1]];
+    function caricaClientePerModifica(id) {
+      const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+      const cliente = clienti.find(c => c.id == id);
+      if (!cliente) return;
+
+      clienteDaModificare = cliente.id;
+
+      document.getElementById('nome1').value = cliente.cliente1.nome || '';
+      document.getElementById('cognome1').value = cliente.cliente1.cognome || '';
+      document.getElementById('indirizzo1').value = `${cliente.cliente1.via || ''}, ${cliente.cliente1.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
+      document.getElementById('telefono1').value = cliente.cliente1.telefono || '';
+      document.getElementById('email1').value = cliente.cliente1.email || '';
+
+      if (cliente.cliente2) {
+        document.getElementById('nome2').value = cliente.cliente2.nome || '';
+        document.getElementById('cognome2').value = cliente.cliente2.cognome || '';
+        document.getElementById('indirizzo2').value = `${cliente.cliente2.via || ''}, ${cliente.cliente2.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
+        document.getElementById('telefono2').value = cliente.cliente2.telefono || '';
+        document.getElementById('email2').value = cliente.cliente2.email || '';
+      } else {
+        document.getElementById('nome2').value = '';
+        document.getElementById('cognome2').value = '';
+        document.getElementById('indirizzo2').value = '';
+        document.getElementById('telefono2').value = '';
+        document.getElementById('email2').value = '';
       }
-      return [indirizzo, ''];
+
+      document.getElementById('servizio').value = cliente.servizio || '';
+      document.getElementById('chiesa').value = cliente.chiesa || '';
+      document.getElementById('location').value = cliente.location || '';
+      document.getElementById('dataEvento').value = new Date(cliente.dataEvento.split('/').reverse().join('-')).toISOString().split('T')[0];
+      document.getElementById('album').value = cliente.servizioCommissionato?.album || '';
+      document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
+      document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
+      document.getElementById('interni').value = cliente.servizioCommissionato?.interni || '';
+      document.getElementById('fotoBook').value = cliente.servizioCommissionato?.fotoBook || '';
+      document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
+      document.getElementById('anteprima').value = cliente.servizioCommissionato?.anteprima || '';
+      document.getElementById('postServizio').value = cliente.servizioCommissionato?.postServizio || '';
+      document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
+      document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
+      document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
+      document.getElementById('posterQuantita').value = cliente.servizioCommissionato?.posterQuantita || '';
+      document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
+      document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
+      document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
+
+      document.getElementById('galleryEmail').value = cliente.extra?.galleriaEmail || '';
+      document.getElementById('galleryPassword').value = cliente.extra?.galleriaPassword || '';
+      document.getElementById('galleryUrl').value = cliente.extra?.galleriaUrl || '';
+      document.getElementById('notaCliente').value = cliente.extra?.notaCliente || '';
+
+      document.getElementById('prezzo').value = cliente.prezzo || '';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function resettaForm() {
-      document.getElementById('clienteForm').reset();
-      document.getElementById('galleryEmail').value = '';
-      document.getElementById('galleryPassword').value = '';
-      document.getElementById('galleryUrl').value = '';
-      document.getElementById('notaCliente').value = '';
-    }
-
-    // ✅ FUNZIONE GOOGLE MAPS
-    function apriGoogleMaps(idCampo) {
-      const campo = document.getElementById(idCampo);
-      const valore = campo.value.trim();
-      if (!valore) {
-        alert("Inserisci un indirizzo prima di cercarlo su Google Maps.");
-        return;
-      }
-      const query = encodeURIComponent(valore);
-      const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
-      window.open(url, '_blank');
-    }
-
-    // ... resto del codice (acconti, WhatsApp, stampa, ecc.) ...
+    // ... resto delle funzioni (acconti, WhatsApp, stampa, ecc.) è identico ...
 
     let clienteIdCorrente = null;
 
@@ -812,7 +808,7 @@
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       const cliente = clienti.find(c => c.id == clienteIdCorrente);
       if (cliente) {
-        cliente.acconti.push({ importo,  dataFormattata });
+        cliente.acconti.push({ importo, data: dataFormattata });
         localStorage.setItem('clienti', JSON.stringify(clienti));
         caricaClienti();
         chiudiModaleAcconto();
@@ -830,10 +826,7 @@
     }
 
     function eliminaCliente(id) {
-      if (!confirm("⚠️ Sei sicuro di voler eliminare questo cliente? L'operazione è irreversibile.")) {
-        return;
-      }
-
+      if (!confirm("⚠️ Sei sicuro di voler eliminare questo cliente? L'operazione è irreversibile.")) return;
       let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
       clienti = clienti.filter(c => c.id != id);
       localStorage.setItem('clienti', JSON.stringify(clienti));
@@ -852,9 +845,7 @@
       const scheda = document.getElementById(`scheda-${id}`);
       if (scheda) scheda.style.display = 'block';
       window.print();
-      setTimeout(() => {
-        caricaClienti();
-      }, 500);
+      setTimeout(() => caricaClienti(), 500);
     }
 
     function apriWhatsApp(telefono) {
@@ -862,15 +853,10 @@
       if (numeroPulito.startsWith('39') && numeroPulito.length === 11) {
         numeroPulito = '+' + numeroPulito;
       } else if (!numeroPulito.startsWith('+')) {
-        if (!confirm("⚠️ Il numero potrebbe non essere in formato internazionale.\n\nAssicurati che sia nel formato: +393669381103\n\nVuoi continuare?")) {
-          return;
-        }
-        if (!numeroPulito.startsWith('+')) {
-          numeroPulito = '+' + numeroPulito;
-        }
+        if (!confirm("⚠️ Il numero potrebbe non essere in formato internazionale.\n\nAssicurati che sia nel formato: +393669381103\n\nVuoi continuare?")) return;
+        if (!numeroPulito.startsWith('+')) numeroPulito = '+' + numeroPulito;
       }
-      const url = `https://wa.me/${numeroPulito}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/${numeroPulito}`, '_blank');
     }
 
     function caricaClienti() {
@@ -891,7 +877,6 @@
       clienti.forEach(c => {
         const saldo = calcolaSaldo(c.prezzo, c.acconti);
         const totaleAcconti = calcolaTotaleAcconti(c.acconti);
-
         const nomePrincipale = c.cliente1.nome + ' ' + c.cliente1.cognome;
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -907,7 +892,7 @@
         `;
         tbody.appendChild(tr);
 
-        // ... resto della scheda cliente (uguale al codice precedente) ...
+        // ... (la parte della scheda cliente è identica e funziona correttamente) ...
         let anagraficaHtml = `
           <div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.nome} ${c.cliente1.cognome}</div>
           <div class="campo"><strong>Indirizzo:</strong> ${c.cliente1.via}, ${c.cliente1.citta}</div>
@@ -954,11 +939,8 @@
 
         let extraHtml = '<em>Nessun extra specificato.</em>';
         const ex = c.extra || {};
-        if (ex.fotoExtra || ex.videoExtra || ex.altroExtra || ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl || ex.notaCliente) {
+        if (ex.galleriaEmail || ex.galleriaPassword || ex.galleriaUrl || ex.notaCliente) {
           extraHtml = `
-            <div class="campo"><strong>Foto extra:</strong> ${ex.fotoExtra || 'Non specificato'}</div>
-            <div class="campo"><strong>Video extra:</strong> ${ex.videoExtra || 'Non specificato'}</div>
-            <div class="campo"><strong>Altro:</strong> ${ex.altroExtra || 'Non specificato'}</div>
             <div class="campo"><strong>APP. GALLERY:</strong></div>
             <div class="campo" style="padding-left: 20px;"><strong>Email:</strong> ${ex.galleriaEmail || 'Non specificata'}</div>
             <div class="campo" style="padding-left: 20px;"><strong>Password:</strong> ${ex.galleriaPassword || 'Non specificata'}</div>
@@ -978,12 +960,7 @@
                 </tr>
               </thead>
               <tbody>
-                ${c.acconti.map(a => `
-                  <tr>
-                    <td>${a.data}</td>
-                    <td>€${a.importo.toFixed(2)}</td>
-                  </tr>
-                `).join('')}
+                ${c.acconti.map(a => `<tr><td>${a.data}</td><td>€${a.importo.toFixed(2)}</td></tr>`).join('')}
               </tbody>
             </table>
           `;
@@ -996,12 +973,10 @@
           <div class="intestazione">
             <h3>Scheda Cliente – ${nomePrincipale}</h3>
           </div>
-
           <div class="sezione">
             <div class="sezione-titolo">Dati Anagrafici</div>
             ${anagraficaHtml}
           </div>
-
           <div class="sezione">
             <div class="sezione-titolo">Servizio Commissionato</div>
             <div class="campo"><strong>Tipo:</strong> ${c.servizio}</div>
@@ -1009,29 +984,22 @@
             <div class="campo"><strong>Data evento:</strong> ${c.dataEvento}</div>
             ${servizioCommHtml}
           </div>
-
           <div class="sezione">
             <div class="sezione-titolo">EXTRA</div>
             ${extraHtml}
           </div>
-
           <div class="sezione">
             <div class="sezione-titolo">Note Economiche</div>
             <div class="campo"><strong>Importo totale:</strong> €${c.prezzo.toFixed(2)}</div>
-            
             <div class="campo"><strong>Acconti ricevuti:</strong></div>
             ${accontiHtml}
-            
             <button type="button" onclick="apriModaleAcconto(${c.id})">+ Aggiungi acconto</button>
             <button type="button" style="background:#1976d2;" onclick="caricaClientePerModifica(${c.id})">✏️ Modifica dati</button>
             <button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente1.telefono}')">💬 WhatsApp Cliente 1</button>
             ${c.cliente2 ? `<button type="button" class="btn-whatsapp" onclick="apriWhatsApp('${c.cliente2.telefono}')">💬 WhatsApp Cliente 2</button>` : ''}
             <button type="button" class="btn-elimina" onclick="eliminaCliente(${c.id})">❌ Elimina cliente</button>
             <button type="button" class="btn-stampa" onclick="stampaScheda(${c.id})">🖨️ Stampa Scheda</button>
-            
-            <div class="saldo-finale">
-              Saldo da versare: €${saldo.toFixed(2)}
-            </div>
+            <div class="saldo-finale">Saldo da versare: €${saldo.toFixed(2)}</div>
           </div>
         `;
         containerSchede.appendChild(div);
