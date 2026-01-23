@@ -292,7 +292,7 @@ padding: 20px;
 </div>
 <!-- ✅ SERVIZIO COMMISSIONATO -->
 <h3>SERVIZIO COMMISSIONATO:</h3>
-<!-- RIGA 1: Tipo di Servizio | Data evento -->
+<!-- Tipo di Servizio + Data evento -->
 <div class="riga-doppia">
 <div>
 <label for="servizio">Tipo di Servizio</label>
@@ -316,7 +316,7 @@ padding: 20px;
 <input type="date" id="dataEvento" required>
 </div>
 </div>
-<!-- RIGA 2: Chiesa | Location (con Google Maps) -->
+<!-- ✅ CHIESA E LOCATION_AFFIANCATI CON GOOGLE MAPS -->
 <div class="riga-doppia">
 <div style="display: flex; gap: 10px; align-items: flex-end;">
 <div style="flex: 1;">
@@ -333,9 +333,7 @@ padding: 20px;
 <button type="button" class="btn-maps" onclick="apriGoogleMaps('location')">📍</button>
 </div>
 </div>
-<!-- RIGA 3: Album | Copertina -->
-<div class="riga-doppia">
-<div>
+<!-- ✅ ALBUM CON "orizz." -->
 <label for="album">Album</label>
 <select id="album">
 <option value="">-- Seleziona --</option>
@@ -346,19 +344,6 @@ padding: 20px;
 <option value="DIGITALE 35x45 cm orizz.">DIGITALE 35x45 cm orizz.</option>
 <option value="SERVIZIO SOLO FILES">SERVIZIO SOLO FILES</option>
 </select>
-</div>
-<div>
-<label for="copertina">Copertina</label>
-<select id="copertina">
-<option value="">-- Seleziona --</option>
-<option value="TELATA">TELATA</option>
-<option value="EXTRA LUX">EXTRA LUX</option>
-</select>
-</div>
-</div>
-<!-- RIGA 4: Mini Album | Interni -->
-<div class="riga-doppia">
-<div>
 <label for="miniAlbum">Mini Album</label>
 <select id="miniAlbum">
 <option value="">-- Seleziona --</option>
@@ -373,8 +358,13 @@ padding: 20px;
 <option value="9">9</option>
 <option value="10">10</option>
 </select>
-</div>
-<div>
+<label for="copertina">Copertina</label>
+<select id="copertina">
+<option value="">-- Seleziona --</option>
+<option value="TELATA">TELATA</option>
+<option value="EXTRA LUX">EXTRA LUX</option>
+</select>
+<!-- ✅ INTERNI: multipli di 5 fino a 50 -->
 <label for="interni">Interni</label>
 <select id="interni">
 <option value="">-- Seleziona --</option>
@@ -382,11 +372,7 @@ padding: 20px;
 document.write(Array.from({length:10}, (_, i) => `<option value="${(i+1)*5}">${(i+1)*5}</option>`).join(''));
 </script>
 </select>
-</div>
-</div>
-<!-- RIGA 5: Foto da selezionare per book | Effetti -->
-<div class="riga-doppia">
-<div>
+<!-- ✅ FOTO DA SELEZIONARE PER BOOK: multipli di 10 fino a 150 -->
 <label for="fotoBook">Foto da selezionare per book</label>
 <select id="fotoBook">
 <option value="">-- Seleziona --</option>
@@ -394,19 +380,12 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${(i+1)*5}">${(
 document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${(i+1)*10}</option>`).join(''));
 </script>
 </select>
-</div>
-<div>
 <label for="effetti">Effetti</label>
 <select id="effetti">
 <option value="">-- Seleziona --</option>
 <option value="SI">SI</option>
 <option value="NO">NO</option>
 </select>
-</div>
-</div>
-<!-- RIGA 6: Anteprima | Post Servizio -->
-<div class="riga-doppia">
-<div>
 <label for="anteprima">Anteprima</label>
 <select id="anteprima">
 <option value="">-- Seleziona --</option>
@@ -414,8 +393,6 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="VIDEO">VIDEO</option>
 <option value="FOTO+VIDEO">FOTO+VIDEO</option>
 </select>
-</div>
-<div>
 <label for="postServizio">Post Servizio</label>
 <select id="postServizio">
 <option value="">-- Seleziona --</option>
@@ -423,11 +400,6 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="VIDEO">VIDEO</option>
 <option value="FOTO+VIDEO">FOTO+VIDEO</option>
 </select>
-</div>
-</div>
-<!-- RIGA 7: Video | TELA + Qtà -->
-<div class="riga-doppia">
-<div>
 <label for="video">Video</label>
 <select id="video">
 <option value="">-- Seleziona --</option>
@@ -435,9 +407,7 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="GIORNATA+DRONE">GIORNATA+DRONE</option>
 <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
 </select>
-</div>
-<div style="display: flex; gap: 10px; align-items: flex-end;">
-<div style="flex: 1;">
+<!-- ✅ TELA -->
 <label for="tela">TELA</label>
 <select id="tela">
 <option value="">-- Seleziona --</option>
@@ -446,39 +416,21 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="Misura extra">Misura extra</option>
 <option value="Misura extra con telaio">Misura extra con telaio</option>
 </select>
-</div>
-<div style="display: flex; flex-direction: column;">
-<label for="telaQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
-<select id="telaQtà" style="width: 60px; font-size: 13px;">
-<option value="">--</option>
-<script>
-document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
-</script>
-</select>
-</div>
-</div>
-</div>
-<!-- RIGA 8: POSTER CARTA FOTOGRAFICA + Qtà | MINI POCKET -->
-<div class="riga-doppia">
-<div style="display: flex; gap: 10px; align-items: flex-end;">
-<div style="flex: 1;">
+<!-- ✅ POSTER CARTA FOTOGRAFICA -->
 <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
-<select id="posterCarta">
+<div style="display: flex; gap: 10px; align-items: center;">
+<select id="posterCarta" style="flex: 1;">
 <option value="">-- Seleziona --</option>
 <option value="50X70 cm">50X70 cm</option>
 </select>
-</div>
-<div style="display: flex; flex-direction: column;">
-<label for="posterQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
-<select id="posterQtà" style="width: 60px; font-size: 13px;">
-<option value="">--</option>
+<select id="posterQuantita" style="width: auto; min-width: 80px;">
+<option value="">Qtà</option>
 <script>
-document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+document.write(Array.from({length:10}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join(''))
 </script>
 </select>
 </div>
-</div>
-<div>
+<!-- ✅ MINI POCKET -->
 <label for="miniPocket">MINI POCKET</label>
 <select id="miniPocket">
 <option value="">-- Seleziona --</option>
@@ -486,27 +438,18 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
 </script>
 </select>
-</div>
-</div>
-<!-- RIGA 9: SERVIZIO SALA POSA | SERVIZIO LOCATION -->
-<div class="riga-doppia">
-<div>
 <label for="salaPosa">SERVIZIO SALA POSA</label>
 <select id="salaPosa">
 <option value="">-- Seleziona --</option>
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
-</div>
-<div>
 <label for="servizioLocation">SERVIZIO LOCATION</label>
 <select id="servizioLocation">
 <option value="">-- Seleziona --</option>
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
-</div>
-</div>
 <!-- ✅ IMPORTO TOTALE PIÙ GRANDE E EVIDENZIATO -->
 <label for="prezzo" style="font-size: 16px; font-weight: bold; color: #d32f2f;">Importo totale (€)</label>
 <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required style="font-size: 18px; padding: 12px;">
@@ -718,8 +661,8 @@ dataEvento: dataEventoFormattata,
 prezzo,
 servizioCommissionato: {
 album: document.getElementById('album').value || null,
-copertina: document.getElementById('copertina').value || null,
 miniAlbum: document.getElementById('miniAlbum').value || null,
+copertina: document.getElementById('copertina').value || null,
 interni: document.getElementById('interni').value || null,
 fotoBook: document.getElementById('fotoBook').value || null,
 effetti: document.getElementById('effetti').value || null,
@@ -727,9 +670,8 @@ anteprima: document.getElementById('anteprima').value || null,
 postServizio: document.getElementById('postServizio').value || null,
 video: document.getElementById('video').value || null,
 tela: document.getElementById('tela').value || null,
-telaQtà: document.getElementById('telaQtà').value || null,
 posterCarta: document.getElementById('posterCarta').value || null,
-posterQtà: document.getElementById('posterQtà').value || null,
+posterQuantita: document.getElementById('posterQuantita').value || null,
 miniPocket: document.getElementById('miniPocket').value || null,
 salaPosa: document.getElementById('salaPosa').value || null,
 servizioLocation: document.getElementById('servizioLocation').value || null
@@ -773,21 +715,6 @@ alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
 // ✅ CORREZIONE: ACCONTI CON DATA VISIBILE
-let clienteIdCorrente = null;
-
-function apriModaleAcconto(id) {
-clienteIdCorrente = id;
-const oggi = new Date().toISOString().split('T')[0];
-document.getElementById('inputDataAcconto').value = oggi;
-document.getElementById('inputImporto').value = '';
-document.getElementById('modalAcconto').style.display = 'flex';
-}
-
-function chiudiModaleAcconto() {
-document.getElementById('modalAcconto').style.display = 'none';
-clienteIdCorrente = null;
-}
-
 function confermaAcconto() {
 const importo = parseFloat(document.getElementById('inputImporto').value);
 const dataInput = document.getElementById('inputDataAcconto').value;
@@ -803,7 +730,7 @@ const dataFormattata = new Date(dataInput).toLocaleDateString('it-IT');
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == clienteIdCorrente);
 if (cliente) {
-// ✅ Salva con chiave "data"
+// ✅ Salva con chiave "data" (non "dataFormattata")
 cliente.acconti.push({ importo,  dataFormattata });
 localStorage.setItem('clienti', JSON.stringify(clienti));
 caricaClienti();
@@ -812,34 +739,11 @@ alert("Acconto aggiunto con successo!");
 }
 }
 
-function calcolaSaldo(prezzo, acconti) {
-const totaleAcconti = acconti.reduce((sum, a) => sum + a.importo, 0);
-return prezzo - totaleAcconti;
-}
-
-function calcolaTotaleAcconti(acconti) {
-return acconti.reduce((sum, a) => sum + a.importo, 0);
-}
-
-function eliminaCliente(id) {
-if (!confirm("⚠️ Sei sicuro di voler eliminare questo cliente?")) return;
-let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-clienti = clienti.filter(c => c.id != id);
-localStorage.setItem('clienti', JSON.stringify(clienti));
-caricaClienti();
-alert("Cliente eliminato.");
-}
-
-function mostraScheda(id) {
-document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
-const scheda = document.getElementById(`scheda-${id}`);
-if (scheda) scheda.style.display = 'block';
-}
-
 // ✅ STAMPA SCHEDA SINGOLA
 function stampaScheda(id) {
 const scheda = document.getElementById(`scheda-${id}`);
 if (!scheda) return;
+
 document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
 scheda.style.display = 'block';
 window.print();
@@ -891,6 +795,47 @@ pulsanti.forEach(btn => btn.style.display = '');
 }
 }
 
+// ... resto delle funzioni ...
+
+let clienteIdCorrente = null;
+
+function apriModaleAcconto(id) {
+clienteIdCorrente = id;
+const oggi = new Date().toISOString().split('T')[0];
+document.getElementById('inputDataAcconto').value = oggi;
+document.getElementById('inputImporto').value = '';
+document.getElementById('modalAcconto').style.display = 'flex';
+}
+
+function chiudiModaleAcconto() {
+document.getElementById('modalAcconto').style.display = 'none';
+clienteIdCorrente = null;
+}
+
+function calcolaSaldo(prezzo, acconti) {
+const totaleAcconti = acconti.reduce((sum, a) => sum + a.importo, 0);
+return prezzo - totaleAcconti;
+}
+
+function calcolaTotaleAcconti(acconti) {
+return acconti.reduce((sum, a) => sum + a.importo, 0);
+}
+
+function eliminaCliente(id) {
+if (!confirm("⚠️ Sei sicuro di voler eliminare questo cliente?")) return;
+let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
+clienti = clienti.filter(c => c.id != id);
+localStorage.setItem('clienti', JSON.stringify(clienti));
+caricaClienti();
+alert("Cliente eliminato.");
+}
+
+function mostraScheda(id) {
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+const scheda = document.getElementById(`scheda-${id}`);
+if (scheda) scheda.style.display = 'block';
+}
+
 function apriWhatsApp(telefono) {
 let numeroPulito = telefono.replace(/\D/g, '');
 if (numeroPulito.startsWith('39') && numeroPulito.length === 11) {
@@ -934,8 +879,8 @@ document.getElementById('chiesa').value = cliente.chiesa || '';
 document.getElementById('location').value = cliente.location || '';
 document.getElementById('dataEvento').value = new Date(cliente.dataEvento.split('/').reverse().join('-')).toISOString().split('T')[0];
 document.getElementById('album').value = cliente.servizioCommissionato?.album || '';
-document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
 document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
+document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
 document.getElementById('interni').value = cliente.servizioCommissionato?.interni || '';
 document.getElementById('fotoBook').value = cliente.servizioCommissionato?.fotoBook || '';
 document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
@@ -943,9 +888,8 @@ document.getElementById('anteprima').value = cliente.servizioCommissionato?.ante
 document.getElementById('postServizio').value = cliente.servizioCommissionato?.postServizio || '';
 document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
 document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
-document.getElementById('telaQtà').value = cliente.servizioCommissionato?.telaQtà || '';
 document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
-document.getElementById('posterQtà').value = cliente.servizioCommissionato?.posterQtà || '';
+document.getElementById('posterQuantita').value = cliente.servizioCommissionato?.posterQuantita || '';
 document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
 document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
 document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
@@ -1018,19 +962,19 @@ luoghiHtml = `
 
 let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
 const sc = c.servizioCommissionato || {};
-if (sc.album || sc.copertina || sc.miniAlbum || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.telaQtà || sc.posterCarta || sc.posterQtà || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
+if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQuantita || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
 servizioCommHtml = `
 <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
-<div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
 <div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
+<div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
 <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
 <div class="campo"><strong>Foto da selezionare per book:</strong> ${sc.fotoBook || 'Non selezionato'}</div>
 <div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
 <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
 <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
 <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
-<div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'} (Quantità: ${sc.telaQtà || '0'})</div>
-<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'} (Quantità: ${sc.posterQtà || '0'})</div>
+<div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'}</div>
+<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'} (Quantità: ${sc.posterQuantita || '0'})</div>
 <div class="campo"><strong>MINI POCKET:</strong> ${sc.miniPocket || '0'}</div>
 <div class="campo"><strong>SERVIZIO SALA POSA:</strong> ${sc.salaPosa || 'Non selezionato'}</div>
 <div class="campo"><strong>SERVIZIO LOCATION:</strong> ${sc.servizioLocation || 'Non selezionato'}</div>
