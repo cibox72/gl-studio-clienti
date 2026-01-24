@@ -458,9 +458,14 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
-<!-- ✅ IMPORTO TOTALE PIÙ GRANDE E EVIDENZIATO -->
-<label for="prezzo" style="font-size: 16px; font-weight: bold; color: #d32f2f;">Importo totale (€)</label>
-<input type="number" id="prezzo" step="0.01" placeholder="2500.00" required style="font-size: 18px; padding: 12px;">
+
+<!-- ✅ IMPORTO TOTALE MOLTO PIÙ GRANDE E EVIDENZIATO -->
+<div style="margin-top: 25px; padding: 20px; background: #fff8f8; border: 3px solid #d32f2f; border-radius: 10px; text-align: center;">
+  <label for="prezzo" style="font-size: 20px; font-weight: bold; color: #d32f2f; display: block; margin-bottom: 12px;">IMPORTO TOTALE (€)</label>
+  <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required 
+         style="font-size: 28px; padding: 16px; width: 100%; border: 2px solid #d32f2f; border-radius: 8px; text-align: center; font-weight: bold; background: #fff9f9;">
+</div>
+
 <!-- ✅ PULSANTE SALVA CLIENTE CENTRATO E ROSSO -->
 <div style="text-align: center; margin-top: 20px;">
 <button type="button" onclick="salvaCliente()" style="background: #d32f2f; font-size: 16px; padding: 12px 24px; font-weight: bold;">🔴 Salva Cliente</button>
