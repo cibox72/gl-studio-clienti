@@ -232,26 +232,25 @@ padding: 20px;
 <h2>➕ Aggiungi / Modifica Cliente</h2>
 <!-- Cliente 1 -->
 <h3 style="margin-top: 20px; margin-bottom: 12px; font-size: 16px; color: #1976d2;">👤 Cliente 1</h3>
-<!-- Cognome e Nome -->
-<div class="riga-tripla">
-<div>
-<label for="cognome1">Cognome</label>
-<input type="text" id="cognome1" required>
-</div>
+<!-- Nome e Cognome -->
+<div class="riga-doppia">
 <div>
 <label for="nome1">Nome</label>
 <input type="text" id="nome1" required>
 </div>
-<div></div>
+<div>
+<label for="cognome1">Cognome</label>
+<input type="text" id="cognome1" required>
+</div>
 </div>
 <!-- Indirizzo -->
-<div style="display: flex; gap: 10px; align-items: center; margin-top: 12px;">
+<div style="display: flex; gap: 10px; align-items: center;">
 <label for="indirizzo1" style="flex: 1;">Indirizzo (Via, Città)</label>
 <button type="button" class="btn-maps" onclick="apriGoogleMaps('indirizzo1')">📍</button>
 </div>
-<input type="text" id="indirizzo1" placeholder="Via Roma, 12 – Canicattì" required style="margin-top: 5px;">
+<input type="text" id="indirizzo1" placeholder="Via Roma, 12 – Canicattì" required>
 <!-- Telefono ed Email -->
-<div class="riga-tripla" style="margin-top: 12px;">
+<div class="riga-doppia">
 <div>
 <label for="telefono1">Telefono</label>
 <input type="text" id="telefono1" required placeholder="+393669381103">
@@ -260,31 +259,28 @@ padding: 20px;
 <label for="email1">Email</label>
 <input type="email" id="email1">
 </div>
-<div></div>
 </div>
-
 <!-- Cliente 2 -->
 <h3 style="margin-top: 20px; margin-bottom: 12px; font-size: 16px; color: #1976d2;">👤 Cliente 2 (opzionale)</h3>
-<!-- Cognome e Nome -->
-<div class="riga-tripla">
-<div>
-<label for="cognome2">Cognome</label>
-<input type="text" id="cognome2">
-</div>
+<!-- Nome e Cognome -->
+<div class="riga-doppia">
 <div>
 <label for="nome2">Nome</label>
 <input type="text" id="nome2">
 </div>
-<div></div>
+<div>
+<label for="cognome2">Cognome</label>
+<input type="text" id="cognome2">
+</div>
 </div>
 <!-- Indirizzo -->
-<div style="display: flex; gap: 10px; align-items: center; margin-top: 12px;">
+<div style="display: flex; gap: 10px; align-items: center;">
 <label for="indirizzo2" style="flex: 1;">Indirizzo (Via, Città)</label>
 <button type="button" class="btn-maps" onclick="apriGoogleMaps('indirizzo2')">📍</button>
 </div>
-<input type="text" id="indirizzo2" placeholder="Via Verdi, 5 – Palermo" style="margin-top: 5px;">
+<input type="text" id="indirizzo2" placeholder="Via Verdi, 5 – Palermo">
 <!-- Telefono ed Email -->
-<div class="riga-tripla" style="margin-top: 12px;">
+<div class="riga-doppia">
 <div>
 <label for="telefono2">Telefono</label>
 <input type="text" id="telefono2" placeholder="+393206337370">
@@ -293,13 +289,11 @@ padding: 20px;
 <label for="email2">Email</label>
 <input type="email" id="email2">
 </div>
-<div></div>
 </div>
-
 <!-- ✅ SERVIZIO COMMISSIONATO -->
 <h3>SERVIZIO COMMISSIONATO:</h3>
 <!-- Tipo di Servizio + Data evento -->
-<div class="riga-tripla">
+<div class="riga-doppia">
 <div>
 <label for="servizio">Tipo di Servizio</label>
 <select id="servizio" required>
@@ -321,11 +315,9 @@ padding: 20px;
 <label for="dataEvento">Data evento</label>
 <input type="date" id="dataEvento" required>
 </div>
-<div></div>
 </div>
-
-<!-- ✅ CHIESA E LOCATION -->
-<div class="riga-tripla">
+<!-- ✅ CHIESA E LOCATION_AFFIANCATI CON GOOGLE MAPS -->
+<div class="riga-doppia">
 <div style="display: flex; gap: 10px; align-items: flex-end;">
 <div style="flex: 1;">
 <label for="chiesa">Chiesa</label>
@@ -340,7 +332,6 @@ padding: 20px;
 </div>
 <button type="button" class="btn-maps" onclick="apriGoogleMaps('location')">📍</button>
 </div>
-<div></div>
 </div>
 
 <!-- ✅ RIGA 1: Album | Copertina | Mini Album -->
@@ -444,11 +435,9 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 </div>
 </div>
 
-<!-- ✅ RIGA 4: TELA + Qtà | Stampe carta fotog. + Qtà | MINI POCKET -->
+<!-- ✅ RIGA 4: TELA | POSTER CARTA FOTOGRAFICA + Qtà | MINI POCKET -->
 <div class="riga-tripla">
-<!-- TELA con quantità -->
-<div style="display: flex; gap: 10px; align-items: flex-end;">
-<div style="flex: 1;">
+<div>
 <label for="tela">TELA</label>
 <select id="tela">
 <option value="">-- Seleziona --</option>
@@ -458,32 +447,17 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="Misura extra con telaio">Misura extra con telaio</option>
 </select>
 </div>
-<div style="display: flex; flex-direction: column;">
-<label for="telaQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
-<select id="telaQtà" style="width: 60px; font-size: 13px;">
-<option value="">--</option>
-<script>
-document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
-</script>
-</select>
-</div>
-</div>
-
-<!-- Stampe carta fotog. con quantità -->
 <div style="display: flex; gap: 10px; align-items: flex-end;">
 <div style="flex: 1;">
-<label for="stampeCartaFotog">Stampe carta fotog.</label>
-<select id="stampeCartaFotog">
+<label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
+<select id="posterCarta">
 <option value="">-- Seleziona --</option>
-<option value="50x70 cm">50x70 cm</option>
-<option value="30x40 cm">30x40 cm</option>
-<option value="20x30 cm">20x30 cm</option>
-<option value="15x20 cm">15x20 cm</option>
+<option value="50X70 cm">50X70 cm</option>
 </select>
 </div>
 <div style="display: flex; flex-direction: column;">
-<label for="stampeQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
-<select id="stampeQtà" style="width: 60px; font-size: 13px;">
+<label for="posterQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+<select id="posterQtà" style="width: 60px; font-size: 13px;">
 <option value="">--</option>
 <script>
 document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
@@ -491,8 +465,6 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 </select>
 </div>
 </div>
-
-<!-- MINI POCKET -->
 <div>
 <label for="miniPocket">MINI POCKET</label>
 <select id="miniPocket">
@@ -522,16 +494,16 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
 </div>
-<div></div>
+<div></div> <!-- Spazio vuoto per bilanciare -->
 </div>
 
-<!-- ✅ IMPORTO TOTALE -->
-<div class="riga-tripla" style="margin-top: 20px;">
-<div style="flex: 1; text-align: center; grid-column: span 3;">
-<label for="prezzo" style="font-size: 16px; font-weight: bold; color: #d32f2f; display: block; margin-bottom: 8px;">IMPORTO TOTALE (€)</label>
-<input type="number" id="prezzo" step="0.01" placeholder="2500.00" required 
-       style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #d32f2f; border-radius: 6px; text-align: center; font-weight: bold; background: #fff9f9;">
-</div>
+<!-- ✅ IMPORTO TOTALE - LAYOUT SISTEMATO -->
+<div class="riga-doppia" style="margin-top: 20px;">
+  <div style="flex: 1; text-align: center;">
+    <label for="prezzo" style="font-size: 16px; font-weight: bold; color: #d32f2f; display: block; margin-bottom: 8px;">IMPORTO TOTALE (€)</label>
+    <input type="number" id="prezzo" step="0.01" placeholder="2500.00" required 
+           style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #d32f2f; border-radius: 6px; text-align: center; font-weight: bold; background: #fff9f9;">
+  </div>
 </div>
 
 <!-- ✅ PULSANTE SALVA CLIENTE CENTRATO E ROSSO -->
@@ -539,7 +511,6 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 <button type="button" onclick="salvaCliente()" style="background: #d32f2f; font-size: 16px; padding: 12px 24px; font-weight: bold;">🔴 Salva Cliente</button>
 </div>
 </form>
-
 <!-- ✅ APP. GALLERY -->
 <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #ccc;">
 <h3 style="margin-top: 0; color: #1976d2;">📱 APP. GALLERY</h3>
@@ -550,14 +521,12 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 <label for="galleryUrl">URL</label>
 <input type="url" id="galleryUrl" placeholder="https://tuagalleria.com">
 </div>
-
 <!-- ✅ NOTA CLIENTE -->
 <div class="nota-box">
 <h3>📝 NOTA</h3>
 <textarea id="notaCliente" placeholder="Inserisci qui annotazioni specifiche per questo cliente..."></textarea>
 <button type="button" style="margin-top: 10px; background: #ff8f00;" onclick="salvaNotaCliente()">Salva Nota</button>
 </div>
-
 <!-- Elenco riassuntivo -->
 <h2>📋 Elenco Clienti</h2>
 <table id="elencoRiassunto">
@@ -573,17 +542,14 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 </thead>
 <tbody id="tbodyRiassunto"></tbody>
 </table>
-
 <!-- Schede espandibili -->
 <div id="schedeEspandibili"></div>
 </div>
-
 <!-- Pulsanti in fondo -->
 <div style="text-align: center; margin-top: 30px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
 <a href="dashboard.html" class="btn-dashboard">← Torna alla dashboard</a>
 <a href="logout.html" class="btn-esci">🚪 Esci</a>
 </div>
-
 <style>
 .btn-dashboard,
 .btn-esci {
@@ -616,7 +582,6 @@ transform: translateY(-2px);
 box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 </style>
-
 <!-- Modal per acconto -->
 <div id="modalAcconto" style="
 display: none;
@@ -647,7 +612,6 @@ box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 </div>
 </div>
 </div>
-
 <script src="auth.js"></script>
 <script>
 // Inizializza jsPDF
@@ -753,7 +717,7 @@ const galleryPassword = document.getElementById('galleryPassword').value.trim();
 const galleryUrl = document.getElementById('galleryUrl').value.trim();
 const notaCliente = document.getElementById('notaCliente').value.trim();
 
-if (!cognome1 || !nome1 || !indirizzo1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
+if (!nome1 || !cognome1 || !indirizzo1 || !telefono1 || !servizio || !dataEvento || prezzo <= 0) {
 alert("Compila tutti i campi obbligatori per Cliente 1.");
 return;
 }
@@ -782,9 +746,8 @@ anteprima: document.getElementById('anteprima').value || null,
 postServizio: document.getElementById('postServizio').value || null,
 video: document.getElementById('video').value || null,
 tela: document.getElementById('tela').value || null,
-telaQtà: document.getElementById('telaQtà').value || null,
-stampeCartaFotog: document.getElementById('stampeCartaFotog').value || null,
-stampeQtà: document.getElementById('stampeQtà').value || null,
+posterCarta: document.getElementById('posterCarta').value || null,
+posterQtà: document.getElementById('posterQtà').value || null,
 miniPocket: document.getElementById('miniPocket').value || null,
 salaPosa: document.getElementById('salaPosa').value || null,
 servizioLocation: document.getElementById('servizioLocation').value || null
@@ -827,21 +790,12 @@ caricaClienti();
 alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
-// ✅ FUNZIONE CORRETTA: mostraScheda
-function mostraScheda(id) {
-document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
-const scheda = document.getElementById(`scheda-${id}`);
-if (scheda) {
-scheda.style.display = 'block';
-}
-}
-
-// ✅ RESTO DELLO SCRIPT
+// ✅ MODIFICATO: campo testo per data con formattazione automatica
 let clienteIdCorrente = null;
 
 function apriModaleAcconto(id) {
 clienteIdCorrente = id;
-document.getElementById('inputDataAcconto').value = '';
+document.getElementById('inputDataAcconto').value = ''; // lascia vuoto
 document.getElementById('inputImporto').value = '';
 document.getElementById('modalAcconto').style.display = 'flex';
 }
@@ -863,6 +817,7 @@ return;
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == clienteIdCorrente);
 if (cliente) {
+// ✅ Salva la data ESATTAMENTE come digitata (già formattata)
 cliente.acconti.push({ importo,   dataManuale });
 localStorage.setItem('clienti', JSON.stringify(clienti));
 caricaClienti();
@@ -871,6 +826,7 @@ alert("Acconto aggiunto con successo!");
 }
 }
 
+// ✅ ELIMINA ACCONTO
 function eliminaAcconto(clienteId, index) {
 if (!confirm("⚠️ Eliminare questo acconto?")) return;
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
@@ -901,6 +857,78 @@ caricaClienti();
 alert("Cliente eliminato con successo.");
 }
 
+function mostraScheda(id) {
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+const scheda = document.getElementById(`scheda-${id}`);
+if (scheda) scheda.style.display = 'block';
+}
+
+// ✅ STAMPA SCHEDA SINGOLA
+function stampaScheda(id) {
+const scheda = document.getElementById(`scheda-${id}`);
+if (!scheda) return;
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+scheda.style.display = 'block';
+window.print();
+setTimeout(() => caricaClienti(), 500);
+}
+
+// ✅ ESPORTA IN PDF
+async function esportaPdf(id) {
+const scheda = document.getElementById(`scheda-${id}`);
+if (!scheda) {
+alert("Nessuna scheda da esportare.");
+return;
+}
+
+const pulsanti = scheda.querySelectorAll('.btn-stampa, .btn-pdf, .btn-elimina, .btn-whatsapp');
+pulsanti.forEach(btn => btn.style.display = 'none');
+
+try {
+const canvas = await html2canvas(scheda, { scale: 2, useCORS: true, logging: false });
+const imgData = canvas.toDataURL('image/png');
+const pdf = new jsPDF('p', 'mm', 'a4');
+const imgWidth = 210;
+const pageHeight = 297;
+const imgHeight = (canvas.height * imgWidth) / canvas.width;
+let heightLeft = imgHeight;
+let position = 0;
+
+pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+heightLeft -= pageHeight;
+
+while (heightLeft >= 0) {
+position = heightLeft - imgHeight;
+pdf.addPage();
+pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+heightLeft -= pageHeight;
+}
+
+const cliente = JSON.parse(localStorage.getItem('clienti')).find(c => c.id == id);
+const nomeFile = cliente 
+? `G&L_Studio_Cliente_${cliente.cliente1.nome}_${cliente.cliente1.cognome}.pdf`
+: `G&L_Studio_Cliente_${id}.pdf`;
+
+pdf.save(nomeFile);
+} catch (error) {
+console.error("Errore nella generazione del PDF:", error);
+alert("Errore durante la creazione del PDF. Riprova.");
+} finally {
+pulsanti.forEach(btn => btn.style.display = '');
+}
+}
+
+function apriWhatsApp(telefono) {
+let numeroPulito = telefono.replace(/\D/g, '');
+if (numeroPulito.startsWith('39') && numeroPulito.length === 11) {
+numeroPulito = '+' + numeroPulito;
+} else if (!numeroPulito.startsWith('+')) {
+if (!confirm("⚠️ Il numero potrebbe non essere in formato internazionale.\n\nAssicurati che sia nel formato: +393669381103\n\nVuoi continuare?")) return;
+if (!numeroPulito.startsWith('+')) numeroPulito = '+' + numeroPulito;
+}
+window.open(`https://wa.me/${numeroPulito}`, '_blank');
+}
+
 function caricaClientePerModifica(id) {
 const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == id);
@@ -908,21 +936,21 @@ if (!cliente) return;
 
 clienteDaModificare = cliente.id;
 
-document.getElementById('cognome1').value = cliente.cliente1.cognome || '';
 document.getElementById('nome1').value = cliente.cliente1.nome || '';
+document.getElementById('cognome1').value = cliente.cliente1.cognome || '';
 document.getElementById('indirizzo1').value = `${cliente.cliente1.via || ''}, ${cliente.cliente1.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
 document.getElementById('telefono1').value = cliente.cliente1.telefono || '';
 document.getElementById('email1').value = cliente.cliente1.email || '';
 
 if (cliente.cliente2) {
-document.getElementById('cognome2').value = cliente.cliente2.cognome || '';
 document.getElementById('nome2').value = cliente.cliente2.nome || '';
+document.getElementById('cognome2').value = cliente.cliente2.cognome || '';
 document.getElementById('indirizzo2').value = `${cliente.cliente2.via || ''}, ${cliente.cliente2.citta || ''}`.replace(/^,\s*|,\s*$/g, '').replace(/,,/g, ',');
 document.getElementById('telefono2').value = cliente.cliente2.telefono || '';
 document.getElementById('email2').value = cliente.cliente2.email || '';
 } else {
-document.getElementById('cognome2').value = '';
 document.getElementById('nome2').value = '';
+document.getElementById('cognome2').value = '';
 document.getElementById('indirizzo2').value = '';
 document.getElementById('telefono2').value = '';
 document.getElementById('email2').value = '';
@@ -942,9 +970,8 @@ document.getElementById('anteprima').value = cliente.servizioCommissionato?.ante
 document.getElementById('postServizio').value = cliente.servizioCommissionato?.postServizio || '';
 document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
 document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
-document.getElementById('telaQtà').value = cliente.servizioCommissionato?.telaQtà || '';
-document.getElementById('stampeCartaFotog').value = cliente.servizioCommissionato?.stampeCartaFotog || '';
-document.getElementById('stampeQtà').value = cliente.servizioCommissionato?.stampeQtà || '';
+document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
+document.getElementById('posterQtà').value = cliente.servizioCommissionato?.posterQtà || '';
 document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
 document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
 document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
@@ -977,7 +1004,7 @@ clienti.sort((a, b) => new Date(b.dataInserimento) - new Date(a.dataInserimento)
 clienti.forEach(c => {
 const saldo = calcolaSaldo(c.prezzo, c.acconti);
 const totaleAcconti = calcolaTotaleAcconti(c.acconti);
-const nomePrincipale = c.cliente1.cognome + ' ' + c.cliente1.nome;
+const nomePrincipale = c.cliente1.nome + ' ' + c.cliente1.cognome;
 const tr = document.createElement('tr');
 tr.innerHTML = `
 <td>${nomePrincipale}</td>
@@ -993,14 +1020,14 @@ tr.innerHTML = `
 tbody.appendChild(tr);
 
 let anagraficaHtml = `
-<div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.cognome} ${c.cliente1.nome}</div>
+<div class="campo"><strong>Cliente 1:</strong> ${c.cliente1.nome} ${c.cliente1.cognome}</div>
 <div class="campo"><strong>Indirizzo:</strong> ${c.cliente1.via}, ${c.cliente1.citta}</div>
 <div class="campo"><strong>Telefono:</strong> ${c.cliente1.telefono}</div>
 <div class="campo"><strong>Email:</strong> ${c.cliente1.email || 'Non fornita'}</div>
 `;
 if (c.cliente2) {
 anagraficaHtml += `
-<div class="campo" style="margin-top: 12px;"><strong>Cliente 2:</strong> ${c.cliente2.cognome} ${c.cliente2.nome}</div>
+<div class="campo" style="margin-top: 12px;"><strong>Cliente 2:</strong> ${c.cliente2.nome} ${c.cliente2.cognome}</div>
 <div class="campo"><strong>Indirizzo:</strong> ${c.cliente2.via}, ${c.cliente2.citta}</div>
 <div class="campo"><strong>Telefono:</strong> ${c.cliente2.telefono}</div>
 <div class="campo"><strong>Email:</strong> ${c.cliente2.email || 'Non fornita'}</div>
@@ -1017,7 +1044,7 @@ luoghiHtml = `
 
 let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
 const sc = c.servizioCommissionato || {};
-if (sc.album || sc.copertina || sc.miniAlbum || sc.effetti || sc.interni || sc.fotoBook || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.telaQtà || sc.stampeCartaFotog || sc.stampeQtà || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
+if (sc.album || sc.copertina || sc.miniAlbum || sc.effetti || sc.interni || sc.fotoBook || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQtà || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
 servizioCommHtml = `
 <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
 <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
@@ -1028,8 +1055,8 @@ servizioCommHtml = `
 <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
 <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
 <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
-<div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'} (Quantità: ${sc.telaQtà || '0'})</div>
-<div class="campo"><strong>Stampe carta fotog.:</strong> ${sc.stampeCartaFotog || 'Non selezionato'} (Quantità: ${sc.stampeQtà || '0'})</div>
+<div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'}</div>
+<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'} (Quantità: ${sc.posterQtà || '0'})</div>
 <div class="campo"><strong>MINI POCKET:</strong> ${sc.miniPocket || '0'}</div>
 <div class="campo"><strong>SERVIZIO SALA POSA:</strong> ${sc.salaPosa || 'Non selezionato'}</div>
 <div class="campo"><strong>SERVIZIO LOCATION:</strong> ${sc.servizioLocation || 'Non selezionato'}</div>
@@ -1114,48 +1141,6 @@ ${c.cliente2 ? `<button type="button" class="btn-whatsapp" onclick="apriWhatsApp
 containerSchede.appendChild(div);
 });
 }
-
-// ✅ STAMPA SCHEDA SINGOLA
-function stampaScheda(id) {
-const scheda = document.getElementById(`scheda-${id}`);
-if (!scheda) return;
-document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
-scheda.style.display = 'block';
-window.print();
-setTimeout(() => caricaClienti(), 500);
-}
-
-// ✅ ESPORTA IN PDF
-async function esportaPdf(id) {
-const scheda = document.getElementById(`scheda-${id}`);
-if (!scheda) {
-alert("Nessuna scheda da esportare.");
-return;
-}
-
-const pulsanti = scheda.querySelectorAll('.btn-stampa, .btn-pdf, .btn-elimina, .btn-whatsapp');
-pulsanti.forEach(btn => btn.style.display = 'none');
-
-try {
-const canvas = await html2canvas(scheda, { scale: 2, useCORS: true, logging: false });
-const imgData = canvas.toDataURL('image/png');
-const pdf = new jsPDF('p', 'mm', 'a4');
-const imgWidth = 210;
-const pageHeight = 297;
-const imgHeight = (canvas.height * imgWidth) / canvas.width;
-let heightLeft = imgHeight;
-let position = 0;
-
-pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-
-while (heightLeft >= 0) {
-position = heightLeft - imgHeight;
-pdf.addPage();
-pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-}
-
-const cliente = JSON.parse(localStorage.getItem('clienti')).find(c => c.id == id);
-const nomeFile = cliente 
-?
+</script>
+</body>
+</html>
