@@ -392,7 +392,7 @@ function mostraScheda(id){document.querySelectorAll('.scheda-cliente').forEach(x
 let clienteIdCorrente=null;
 function apriModaleAcconto(id){clienteIdCorrente=id;document.getElementById('inputDataAcconto').value='';document.getElementById('inputImporto').value='';document.getElementById('modalAcconto').style.display='flex';}
 function chiudiModaleAcconto(){document.getElementById('modalAcconto').style.display='none';clienteIdCorrente=null;}
-function confermaAcconto(){const imp=parseFloat(document.getElementById('inputImporto').value),dt=document.getElementById('inputDataAcconto').value.trim();if(!imp||imp<=0||!dt){alert("Inserisci un importo valido e una data (es. 10/02/2026).");return;}let cl=JSON.parse(localStorage.getItem('clienti'))||[];const cli=cl.find(x=>x.id==clienteIdCorrente);if(cli){cli.acconti.push({importo:imp,dt});localStorage.setItem('clienti',JSON.stringify(cl));caricaClienti();chiudiModaleAcconto();alert("Acconto aggiunto con successo!");}}
+function confermaAcconto(){const imp=parseFloat(document.getElementById('inputImporto').value),dt=document.getElementById('inputDataAcconto').value.trim();if(!imp||imp<=0||!dt){alert("Inserisci un importo valido e una data (es. 10/02/2026).");return;}let cl=JSON.parse(localStorage.getItem('clienti'))||[];const cli=cl.find(x=>x.id==clienteIdCorrente);if(cli){cli.acconti.push({importo:imp,data:dt});localStorage.setItem('clienti',JSON.stringify(cl));caricaClienti();chiudiModaleAcconto();alert("Acconto aggiunto con successo!");}}
 function eliminaAcconto(id,idx){if(!confirm("⚠️ Eliminare questo acconto?"))return;let cl=JSON.parse(localStorage.getItem('clienti'))||[];const cli=cl.find(x=>x.id==id);if(cli&&cli.acconti[idx]){cli.acconti.splice(idx,1);localStorage.setItem('clienti',JSON.stringify(cl));caricaClienti();alert("Acconto eliminato.");}}
 function calcolaSaldo(p,a){return p-a.reduce((s,x)=>s+x.importo,0);}
 function calcolaTotaleAcconti(a){return a.reduce((s,x)=>s+x.importo,0);}
@@ -461,15 +461,51 @@ ${c.cliente2?`<button type="button" class="btn-whatsapp" onclick="apriWhatsApp('
 cs.appendChild(div);
 });
 }
-function stampaScheda(id){const s=document.getElementById(`scheda-${id}`);if(!s)return;document.querySelectorAll('.scheda-cliente').forEach(x=>x.style.display='none');s.style.display='block';window.print();setTimeout(()=>caricaClienti(),500);}
+function stampaScheda(id){
+const scheda = document.getElementById(`scheda-${id}`);
+if (!scheda) return;
+// Nascondi tutto tranne la scheda
+document.querySelectorAll('.container > *').forEach(el => {
+if (!el.classList.contains('scheda-cliente')) el.style.display = 'none';
+});
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+scheda.style.display = 'block';
+window.print();
+// Ripristina
+setTimeout(() => caricaClienti(), 500);
+}
 async function esportaPdf(id){
-const s=document.getElementById(`scheda-${id}`);if(!s){alert("Nessuna scheda da esportare.");return;}
-const btn=s.querySelectorAll('.btn-stampa,.btn-pdf,.btn-elimina,.btn-whatsapp');btn.forEach(x=>x.style.display='none');
-try{
-const c=await html2canvas(s,{scale:2,useCORS:true,logging:false}),d=c.toDataURL('image/png'),pdf=new jsPDF('p','mm','a4'),w=210,h=297,imgH=(c.height*w)/c.width,ht=imgH,pos=0;
-pdf.addImage(d,'PNG',0,pos,w,imgH);ht-=h;while(ht>=0){pos=ht-imgH;pdf.addPage();pdf.addImage(d,'PNG',0,pos,w,imgH);ht-=h;}
-const cl=JSON.parse(localStorage.getItem('clienti')).find(x=>x.id==id),nf=cl?`G&L_Studio_Cliente_${cl.cliente1.nome}_${cl.cliente1.cognome}.pdf`:`G&L_Studio_Cliente_${id}.pdf`;pdf.save(nf);
-}catch(e){console.error("Errore PDF:",e);alert("Errore durante la creazione del PDF. Riprova.");}finally{btn.forEach(x=>x.style.display='');}
+const scheda = document.getElementById(`scheda-${id}`);
+if (!scheda) { alert("Nessuna scheda da esportare."); return; }
+// Nascondi pulsanti PDF/stampa durante l'esportazione
+const pulsanti = scheda.querySelectorAll('.btn-pdf, .btn-stampa, .btn-elimina, .btn-whatsapp');
+pulsanti.forEach(btn => btn.style.visibility = 'hidden');
+try {
+const canvas = await html2canvas(scheda, { scale: 2, useCORS: true, logging: false });
+const imgData = canvas.toDataURL('image/png');
+const pdf = new jsPDF('p', 'mm', 'a4');
+const imgWidth = 210;
+const pageHeight = 297;
+const imgHeight = (canvas.height * imgWidth) / canvas.width;
+let heightLeft = imgHeight;
+let position = 0;
+pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+heightLeft -= pageHeight;
+while (heightLeft >= 0) {
+position = heightLeft - imgHeight;
+pdf.addPage();
+pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+heightLeft -= pageHeight;
+}
+const cliente = JSON.parse(localStorage.getItem('clienti')).find(c => c.id == id);
+const nomeFile = cliente ? `G&L_Studio_Cliente_${cliente.cliente1.nome}_${cliente.cliente1.cognome}.pdf` : `G&L_Studio_Cliente_${id}.pdf`;
+pdf.save(nomeFile);
+} catch (error) {
+console.error("Errore nella generazione del PDF:", error);
+alert("Errore durante la creazione del PDF. Riprova.");
+} finally {
+pulsanti.forEach(btn => btn.style.visibility = 'visible');
+}
 }
 function apriWhatsApp(t){let n=t.replace(/\D/g,'');if(n.startsWith('39')&&n.length===11)n='+'+n;else if(!n.startsWith('+')){if(!confirm("⚠️ Il numero potrebbe non essere in formato internazionale.\n\nAssicurati che sia nel formato: +393669381103\n\nVuoi continuare?"))return;if(!n.startsWith('+'))n='+'+n;}window.open(`https://wa.me/${n}`,'_blank');}
 </script>
