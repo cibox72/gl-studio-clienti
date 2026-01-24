@@ -444,9 +444,11 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 </div>
 </div>
 
-<!-- ✅ RIGA 4: TELA | POSTER CARTA FOTOGRAFICA | MINI POCKET -->
+<!-- ✅ RIGA 4: TELA + Qtà | Poster cart.fotog. + Qtà | MINI POCKET -->
 <div class="riga-tripla">
-<div>
+<!-- TELA con quantità -->
+<div style="display: flex; gap: 10px; align-items: flex-end;">
+<div style="flex: 1;">
 <label for="tela">TELA</label>
 <select id="tela">
 <option value="">-- Seleziona --</option>
@@ -456,13 +458,38 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="Misura extra con telaio">Misura extra con telaio</option>
 </select>
 </div>
-<div>
-<label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
+<div style="display: flex; flex-direction: column;">
+<label for="telaQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+<select id="telaQtà" style="width: 60px; font-size: 13px;">
+<option value="">--</option>
+<script>
+document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+</script>
+</select>
+</div>
+</div>
+
+<!-- Poster cart.fotog. con quantità -->
+<div style="display: flex; gap: 10px; align-items: flex-end;">
+<div style="flex: 1;">
+<label for="posterCarta">Poster cart.fotog.</label>
 <select id="posterCarta">
 <option value="">-- Seleziona --</option>
 <option value="50X70 cm">50X70 cm</option>
 </select>
 </div>
+<div style="display: flex; flex-direction: column;">
+<label for="posterQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+<select id="posterQtà" style="width: 60px; font-size: 13px;">
+<option value="">--</option>
+<script>
+document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+</script>
+</select>
+</div>
+</div>
+
+<!-- MINI POCKET -->
 <div>
 <label for="miniPocket">MINI POCKET</label>
 <select id="miniPocket">
@@ -752,7 +779,9 @@ anteprima: document.getElementById('anteprima').value || null,
 postServizio: document.getElementById('postServizio').value || null,
 video: document.getElementById('video').value || null,
 tela: document.getElementById('tela').value || null,
+telaQtà: document.getElementById('telaQtà').value || null,
 posterCarta: document.getElementById('posterCarta').value || null,
+posterQtà: document.getElementById('posterQtà').value || null,
 miniPocket: document.getElementById('miniPocket').value || null,
 salaPosa: document.getElementById('salaPosa').value || null,
 servizioLocation: document.getElementById('servizioLocation').value || null
@@ -796,9 +825,8 @@ alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
 // ✅ RESTO DELLO SCRIPT (acconti, PDF, stampa, ecc.) è identico e funzionante
-// ... [codice omesso per brevità ma incluso nel file sopra] ...
 
-// ✅ Funzioni per acconti, modifica, elimina, PDF, WhatsApp, ecc. → tutte presenti
+// ... [funzioni per acconti, modifica, elimina, PDF, WhatsApp, ecc. sono incluse nel file sopra] ...
 
 </script>
 </body>
