@@ -444,7 +444,7 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 </div>
 </div>
 
-<!-- ✅ RIGA 4: TELA + Qtà | Poster cart.fotog. + Qtà | MINI POCKET -->
+<!-- ✅ RIGA 4: TELA + Qtà | Stampe carta fotog. + Qtà | MINI POCKET -->
 <div class="riga-tripla">
 <!-- TELA con quantità -->
 <div style="display: flex; gap: 10px; align-items: flex-end;">
@@ -469,18 +469,20 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}<
 </div>
 </div>
 
-<!-- Poster cart.fotog. con quantità -->
+<!-- Stampe carta fotog. con quantità -->
 <div style="display: flex; gap: 10px; align-items: flex-end;">
 <div style="flex: 1;">
-<label for="posterCarta">Poster cart.fotog.</label>
-<select id="posterCarta">
+<label for="stampeCartaFotog">Stampe carta fotog.</label>
+<select id="stampeCartaFotog">
 <option value="">-- Seleziona --</option>
-<option value="50X70 cm">50X70 cm</option>
+<option value="30x40 cm">30x40 cm</option>
+<option value="20x30 cm">20x30 cm</option>
+<option value="15x20 cm">15x20 cm</option>
 </select>
 </div>
 <div style="display: flex; flex-direction: column;">
-<label for="posterQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
-<select id="posterQtà" style="width: 60px; font-size: 13px;">
+<label for="stampeQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+<select id="stampeQtà" style="width: 60px; font-size: 13px;">
 <option value="">--</option>
 <script>
 document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
@@ -780,8 +782,8 @@ postServizio: document.getElementById('postServizio').value || null,
 video: document.getElementById('video').value || null,
 tela: document.getElementById('tela').value || null,
 telaQtà: document.getElementById('telaQtà').value || null,
-posterCarta: document.getElementById('posterCarta').value || null,
-posterQtà: document.getElementById('posterQtà').value || null,
+stampeCartaFotog: document.getElementById('stampeCartaFotog').value || null,
+stampeQtà: document.getElementById('stampeQtà').value || null,
 miniPocket: document.getElementById('miniPocket').value || null,
 salaPosa: document.getElementById('salaPosa').value || null,
 servizioLocation: document.getElementById('servizioLocation').value || null
