@@ -409,7 +409,14 @@ function caricaClienti(){
 const cl=JSON.parse(localStorage.getItem('clienti'))||[],tb=document.getElementById('tbodyRiassunto'),cs=document.getElementById('schedeEspandibili');
 tb.innerHTML='';cs.innerHTML='';
 if(cl.length===0){tb.innerHTML='<tr><td colspan="6">Nessun cliente salvato.</td></tr>';return;}
-cl.sort((a,b)=>new Date(b.dataInserimento)-new Date(a.dataInserimento));
+// Ordina per data evento (crescente)
+cl.sort((a,b)=>{
+const [g1,m1,y1]=a.dataEvento.split('/');
+const [g2,m2,y2]=b.dataEvento.split('/');
+const dateA=new Date(`${y1}-${m1.padStart(2,'0')}-${g1.padStart(2,'0')}`);
+const dateB=new Date(`${y2}-${m2.padStart(2,'0')}-${g2.padStart(2,'0')}`);
+return dateA-dateB;
+});
 cl.forEach(c=>{
 const saldo=calcolaSaldo(c.prezzo,c.acconti),tot=calcolaTotaleAcconti(c.acconti),np=c.cliente1.cognome+' '+c.cliente1.nome,tr=document.createElement('tr');
 tr.innerHTML=`<td>${np}</td><td>${c.servizio} (${c.dataEvento})</td><td>€${c.prezzo.toFixed(2)}</td><td>€${tot.toFixed(2)}</td><td>€${saldo.toFixed(2)}</td><td><button class="apri-btn" onclick="mostraScheda(${c.id})">Apri</button><button class="btn-dashboard" style="background:#1976d2;padding:4px 8px;font-size:12px;" onclick="caricaClientePerModifica(${c.id})">✏️ Modifica</button></td>`;
