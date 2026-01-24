@@ -827,20 +827,29 @@ caricaClienti();
 alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
-// ✅ MODIFICATA: mostraScheda robusta
+// ✅ FUNZIONE CORRETTA: mostraScheda
 function mostraScheda(id) {
-document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+// Nascondi tutte le schede
+document.querySelectorAll('.scheda-cliente').forEach(el => {
+el.style.display = 'none';
+});
+// Mostra quella richiesta
 const scheda = document.getElementById(`scheda-${id}`);
 if (scheda) {
 scheda.style.display = 'block';
-} else {
-console.error("Scheda non trovata per ID:", id);
 }
 }
 
-// ✅ RESTO DELLO SCRIPT (acconti, PDF, stampa, ecc.) è identico e funzionante
+// ✅ RESTO DELLO SCRIPT (acconti, PDF, stampa, ecc.)
 
-// ... [funzioni per acconti, modifica, elimina, PDF, WhatsApp, ecc. sono incluse nel file sopra] ...
+let clienteIdCorrente = null;
+
+function apriModaleAcconto(id) {
+clienteIdCorrente = id;
+document.getElementById('inputDataAcconto').value = '';
+document.getElementById('inputImporto').value = '';
+document.getElementById('modalAcconto').style.display = 'flex';
+}
 
 function chiudiModaleAcconto() {
 document.getElementById('modalAcconto').style.display = 'none';
@@ -865,15 +874,6 @@ caricaClienti();
 chiudiModaleAcconto();
 alert("Acconto aggiunto con successo!");
 }
-}
-
-let clienteIdCorrente = null;
-
-function apriModaleAcconto(id) {
-clienteIdCorrente = id;
-document.getElementById('inputDataAcconto').value = '';
-document.getElementById('inputImporto').value = '';
-document.getElementById('modalAcconto').style.display = 'flex';
 }
 
 function eliminaAcconto(clienteId, index) {
@@ -1121,38 +1121,3 @@ containerSchede.appendChild(div);
 }
 
 // ✅ STAMPA SCHEDA SINGOLA
-function stampaScheda(id) {
-const scheda = document.getElementById(`scheda-${id}`);
-if (!scheda) return;
-document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
-scheda.style.display = 'block';
-window.print();
-setTimeout(() => caricaClienti(), 500);
-}
-
-// ✅ ESPORTA IN PDF
-async function esportaPdf(id) {
-const scheda = document.getElementById(`scheda-${id}`);
-if (!scheda) {
-alert("Nessuna scheda da esportare.");
-return;
-}
-
-const pulsanti = scheda.querySelectorAll('.btn-stampa, .btn-pdf, .btn-elimina, .btn-whatsapp');
-pulsanti.forEach(btn => btn.style.display = 'none');
-
-try {
-const canvas = await html2canvas(scheda, { scale: 2, useCORS: true, logging: false });
-const imgData = canvas.toDataURL('image/png');
-const pdf = new jsPDF('p', 'mm', 'a4');
-const imgWidth = 210;
-const pageHeight = 297;
-const imgHeight = (canvas.height * imgWidth) / canvas.width;
-let heightLeft = imgHeight;
-let position = 0;
-
-pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-
-while (heightLeft >= 0) {
-position =
