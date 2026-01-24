@@ -61,12 +61,12 @@ font-size: 13px;
 }
 button:hover { background: #333; }
 /* Layout per campi affiancati */
-.riga-doppia {
+.riga-tripla {
 display: flex;
 gap: 15px;
 margin-top: 12px;
 }
-.riga-doppia > div {
+.riga-tripla > div {
 flex: 1;
 }
 /* Pulsante Google Maps */
@@ -333,7 +333,10 @@ padding: 20px;
 <button type="button" class="btn-maps" onclick="apriGoogleMaps('location')">📍</button>
 </div>
 </div>
-<!-- ✅ ALBUM CON "orizz." -->
+
+<!-- ✅ RIGA 1: Album | Copertina | Mini Album -->
+<div class="riga-tripla">
+<div>
 <label for="album">Album</label>
 <select id="album">
 <option value="">-- Seleziona --</option>
@@ -344,6 +347,16 @@ padding: 20px;
 <option value="DIGITALE 35x45 cm orizz.">DIGITALE 35x45 cm orizz.</option>
 <option value="SERVIZIO SOLO FILES">SERVIZIO SOLO FILES</option>
 </select>
+</div>
+<div>
+<label for="copertina">Copertina</label>
+<select id="copertina">
+<option value="">-- Seleziona --</option>
+<option value="TELATA">TELATA</option>
+<option value="EXTRA LUX">EXTRA LUX</option>
+</select>
+</div>
+<div>
 <label for="miniAlbum">Mini Album</label>
 <select id="miniAlbum">
 <option value="">-- Seleziona --</option>
@@ -358,13 +371,20 @@ padding: 20px;
 <option value="9">9</option>
 <option value="10">10</option>
 </select>
-<label for="copertina">Copertina</label>
-<select id="copertina">
+</div>
+</div>
+
+<!-- ✅ RIGA 2: Effetti | Interni | Foto da selezionare per book -->
+<div class="riga-tripla">
+<div>
+<label for="effetti">Effetti</label>
+<select id="effetti">
 <option value="">-- Seleziona --</option>
-<option value="TELATA">TELATA</option>
-<option value="EXTRA LUX">EXTRA LUX</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
 </select>
-<!-- ✅ INTERNI: multipli di 5 fino a 50 -->
+</div>
+<div>
 <label for="interni">Interni</label>
 <select id="interni">
 <option value="">-- Seleziona --</option>
@@ -372,7 +392,8 @@ padding: 20px;
 document.write(Array.from({length:10}, (_, i) => `<option value="${(i+1)*5}">${(i+1)*5}</option>`).join(''));
 </script>
 </select>
-<!-- ✅ FOTO DA SELEZIONARE PER BOOK: multipli di 10 fino a 150 -->
+</div>
+<div>
 <label for="fotoBook">Foto da selezionare per book</label>
 <select id="fotoBook">
 <option value="">-- Seleziona --</option>
@@ -380,13 +401,12 @@ document.write(Array.from({length:10}, (_, i) => `<option value="${(i+1)*5}">${(
 document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${(i+1)*10}</option>`).join(''));
 </script>
 </select>
-<label for="effetti">Effetti</label>
-<select id="effetti">
-<option value="">-- Seleziona --</option>
-<option value="SI">SI</option>
-<option value="NO">NO</option>
-</select>
-<!-- ✅ ANTEPRIMA AGGIORNATA -->
+</div>
+</div>
+
+<!-- ✅ RIGA 3: Anteprima | Post Servizio | Video -->
+<div class="riga-tripla">
+<div>
 <label for="anteprima">Anteprima</label>
 <select id="anteprima">
 <option value="">-- Seleziona --</option>
@@ -394,7 +414,8 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="SOLO VIDEO">SOLO VIDEO</option>
 <option value="FOTO E VIDEO">FOTO E VIDEO</option>
 </select>
-<!-- ✅ POST SERVIZIO AGGIORNATO -->
+</div>
+<div>
 <label for="postServizio">Post Servizio</label>
 <select id="postServizio">
 <option value="">-- Seleziona --</option>
@@ -402,6 +423,8 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="SOLO VIDEO">SOLO VIDEO</option>
 <option value="FOTO E VIDEO">FOTO E VIDEO</option>
 </select>
+</div>
+<div>
 <label for="video">Video</label>
 <select id="video">
 <option value="">-- Seleziona --</option>
@@ -409,38 +432,29 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="GIORNATA+DRONE">GIORNATA+DRONE</option>
 <option value="GIORN.+DRONE+PROIEZIONE">GIORN.+DRONE+PROIEZIONE</option>
 </select>
-<!-- ✅ TELA CON QUANTITÀ -->
+</div>
+</div>
+
+<!-- ✅ RIGA 4: TELA | POSTER CARTA FOTOGRAFICA | MINI POCKET -->
+<div class="riga-tripla">
+<div>
 <label for="tela">TELA</label>
-<div style="display: flex; gap: 10px; align-items: flex-end;">
-<select id="tela" style="flex: 1;">
+<select id="tela">
 <option value="">-- Seleziona --</option>
 <option value="50x70 cm senza telaio">50x70 cm senza telaio</option>
 <option value="50x70 cm con telaio">50x70 cm con telaio</option>
 <option value="Misura extra">Misura extra</option>
 <option value="Misura extra con telaio">Misura extra con telaio</option>
 </select>
-<select id="telaQtà" style="width: auto; min-width: 80px;">
-<option value="">Qtà</option>
-<script>
-document.write(Array.from({length:10}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join(''))
-</script>
-</select>
 </div>
-<!-- ✅ POSTER CARTA FOTOGRAFICA -->
+<div>
 <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
-<div style="display: flex; gap: 10px; align-items: center;">
-<select id="posterCarta" style="flex: 1;">
+<select id="posterCarta">
 <option value="">-- Seleziona --</option>
 <option value="50X70 cm">50X70 cm</option>
 </select>
-<select id="posterQuantita" style="width: auto; min-width: 80px;">
-<option value="">Qtà</option>
-<script>
-document.write(Array.from({length:10}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join(''))
-</script>
-</select>
 </div>
-<!-- ✅ MINI POCKET -->
+<div>
 <label for="miniPocket">MINI POCKET</label>
 <select id="miniPocket">
 <option value="">-- Seleziona --</option>
@@ -448,18 +462,29 @@ document.write(Array.from({length:10}, (_,i)=>`<option value="${i+1}">${i+1}</op
 document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
 </script>
 </select>
+</div>
+</div>
+
+<!-- ✅ RIGA 5: SERVIZIO SALA POSA | SERVIZIO LOCATION -->
+<div class="riga-tripla">
+<div>
 <label for="salaPosa">SERVIZIO SALA POSA</label>
 <select id="salaPosa">
 <option value="">-- Seleziona --</option>
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
+</div>
+<div>
 <label for="servizioLocation">SERVIZIO LOCATION</label>
 <select id="servizioLocation">
 <option value="">-- Seleziona --</option>
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
+</div>
+<div></div> <!-- Spazio vuoto per bilanciare -->
+</div>
 
 <!-- ✅ IMPORTO TOTALE - LAYOUT SISTEMATO -->
 <div class="riga-doppia" style="margin-top: 20px;">
@@ -701,18 +726,16 @@ dataEvento: dataEventoFormattata,
 prezzo,
 servizioCommissionato: {
 album: document.getElementById('album').value || null,
-miniAlbum: document.getElementById('miniAlbum').value || null,
 copertina: document.getElementById('copertina').value || null,
+miniAlbum: document.getElementById('miniAlbum').value || null,
+effetti: document.getElementById('effetti').value || null,
 interni: document.getElementById('interni').value || null,
 fotoBook: document.getElementById('fotoBook').value || null,
-effetti: document.getElementById('effetti').value || null,
 anteprima: document.getElementById('anteprima').value || null,
 postServizio: document.getElementById('postServizio').value || null,
 video: document.getElementById('video').value || null,
 tela: document.getElementById('tela').value || null,
-telaQtà: document.getElementById('telaQtà').value || null,
 posterCarta: document.getElementById('posterCarta').value || null,
-posterQuantita: document.getElementById('posterQuantita').value || null,
 miniPocket: document.getElementById('miniPocket').value || null,
 salaPosa: document.getElementById('salaPosa').value || null,
 servizioLocation: document.getElementById('servizioLocation').value || null
@@ -926,18 +949,16 @@ document.getElementById('chiesa').value = cliente.chiesa || '';
 document.getElementById('location').value = cliente.location || '';
 document.getElementById('dataEvento').value = new Date(cliente.dataEvento.split('/').reverse().join('-')).toISOString().split('T')[0];
 document.getElementById('album').value = cliente.servizioCommissionato?.album || '';
-document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
 document.getElementById('copertina').value = cliente.servizioCommissionato?.copertina || '';
+document.getElementById('miniAlbum').value = cliente.servizioCommissionato?.miniAlbum || '';
+document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
 document.getElementById('interni').value = cliente.servizioCommissionato?.interni || '';
 document.getElementById('fotoBook').value = cliente.servizioCommissionato?.fotoBook || '';
-document.getElementById('effetti').value = cliente.servizioCommissionato?.effetti || '';
 document.getElementById('anteprima').value = cliente.servizioCommissionato?.anteprima || '';
 document.getElementById('postServizio').value = cliente.servizioCommissionato?.postServizio || '';
 document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
 document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
-document.getElementById('telaQtà').value = cliente.servizioCommissionato?.telaQtà || '';
 document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
-document.getElementById('posterQuantita').value = cliente.servizioCommissionato?.posterQuantita || '';
 document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
 document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
 document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
@@ -1010,19 +1031,19 @@ luoghiHtml = `
 
 let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
 const sc = c.servizioCommissionato || {};
-if (sc.album || sc.miniAlbum || sc.copertina || sc.interni || sc.fotoBook || sc.effetti || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.telaQtà || sc.posterCarta || sc.posterQuantita || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
+if (sc.album || sc.copertina || sc.miniAlbum || sc.effetti || sc.interni || sc.fotoBook || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
 servizioCommHtml = `
 <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
-<div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
 <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
+<div class="campo"><strong>Mini Album:</strong> ${sc.miniAlbum || 'Non selezionato'}</div>
+<div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
 <div class="campo"><strong>Interni:</strong> ${sc.interni || 'Non selezionato'}</div>
 <div class="campo"><strong>Foto da selezionare per book:</strong> ${sc.fotoBook || 'Non selezionato'}</div>
-<div class="campo"><strong>Effetti:</strong> ${sc.effetti || 'Non selezionato'}</div>
 <div class="campo"><strong>Anteprima:</strong> ${sc.anteprima || 'Non selezionato'}</div>
 <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
 <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
-<div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'} (Quantità: ${sc.telaQtà || '0'})</div>
-<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'} (Quantità: ${sc.posterQuantita || '0'})</div>
+<div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'}</div>
+<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'}</div>
 <div class="campo"><strong>MINI POCKET:</strong> ${sc.miniPocket || '0'}</div>
 <div class="campo"><strong>SERVIZIO SALA POSA:</strong> ${sc.salaPosa || 'Non selezionato'}</div>
 <div class="campo"><strong>SERVIZIO LOCATION:</strong> ${sc.servizioLocation || 'Non selezionato'}</div>
