@@ -829,19 +829,14 @@ alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 
 // ✅ FUNZIONE CORRETTA: mostraScheda
 function mostraScheda(id) {
-// Nascondi tutte le schede
-document.querySelectorAll('.scheda-cliente').forEach(el => {
-el.style.display = 'none';
-});
-// Mostra quella richiesta
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
 const scheda = document.getElementById(`scheda-${id}`);
 if (scheda) {
 scheda.style.display = 'block';
 }
 }
 
-// ✅ RESTO DELLO SCRIPT (acconti, PDF, stampa, ecc.)
-
+// ✅ RESTO DELLO SCRIPT
 let clienteIdCorrente = null;
 
 function apriModaleAcconto(id) {
@@ -1121,3 +1116,46 @@ containerSchede.appendChild(div);
 }
 
 // ✅ STAMPA SCHEDA SINGOLA
+function stampaScheda(id) {
+const scheda = document.getElementById(`scheda-${id}`);
+if (!scheda) return;
+document.querySelectorAll('.scheda-cliente').forEach(el => el.style.display = 'none');
+scheda.style.display = 'block';
+window.print();
+setTimeout(() => caricaClienti(), 500);
+}
+
+// ✅ ESPORTA IN PDF
+async function esportaPdf(id) {
+const scheda = document.getElementById(`scheda-${id}`);
+if (!scheda) {
+alert("Nessuna scheda da esportare.");
+return;
+}
+
+const pulsanti = scheda.querySelectorAll('.btn-stampa, .btn-pdf, .btn-elimina, .btn-whatsapp');
+pulsanti.forEach(btn => btn.style.display = 'none');
+
+try {
+const canvas = await html2canvas(scheda, { scale: 2, useCORS: true, logging: false });
+const imgData = canvas.toDataURL('image/png');
+const pdf = new jsPDF('p', 'mm', 'a4');
+const imgWidth = 210;
+const pageHeight = 297;
+const imgHeight = (canvas.height * imgWidth) / canvas.width;
+let heightLeft = imgHeight;
+let position = 0;
+
+pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+heightLeft -= pageHeight;
+
+while (heightLeft >= 0) {
+position = heightLeft - imgHeight;
+pdf.addPage();
+pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+heightLeft -= pageHeight;
+}
+
+const cliente = JSON.parse(localStorage.getItem('clienti')).find(c => c.id == id);
+const nomeFile = cliente 
+?
