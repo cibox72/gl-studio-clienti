@@ -560,7 +560,7 @@ box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 <label for="inputImporto" style="display: block; margin-top: 15px; font-weight: bold;">Importo (€)</label>
 <input type="number" id="inputImporto" step="0.01" min="0.01" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
 <label for="inputDataAcconto" style="display: block; margin-top: 15px; font-weight: bold;">Data (gg/mm/aaaa)</label>
-<input type="text" id="inputDataAcconto" placeholder="es. 10/02/2026" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
+<input type="text" id="inputDataAcconto" placeholder="gg/mm/aaaa" maxlength="10" oninput="formattaDataAcconto(this)" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace;" required>
 <div style="margin-top: 20px; text-align: right;">
 <button onclick="chiudiModaleAcconto()" style="background: #999; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-right: 8px;">Annulla</button>
 <button onclick="confermaAcconto()" style="background: #d32f2f; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Salva</button>
@@ -571,6 +571,29 @@ box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 <script>
 // Inizializza jsPDF
 const { jsPDF } = window.jspdf;
+
+// ✅ Funzione per formattare la data in tempo reale
+function formattaDataAcconto(input) {
+  let value = input.value.replace(/\D/g, '');
+  if (value.length > 8) value = value.substring(0, 8);
+  let formatted = '';
+  if (value.length >= 2) {
+    formatted = value.substring(0, 2) + '/';
+    if (value.length >= 4) {
+      formatted += value.substring(2, 4) + '/';
+      if (value.length >= 8) {
+        formatted += value.substring(4, 8);
+      } else {
+        formatted += value.substring(4);
+      }
+    } else {
+      formatted += value.substring(2);
+    }
+  } else {
+    formatted = value;
+  }
+  input.value = formatted;
+}
 
 // Funzione per generare nome backup con numerazione progressiva
 function generaNomeBackup() {
@@ -723,7 +746,7 @@ caricaClienti();
 alert(clienteDaModificare ? "✅ Cliente aggiornato!" : "✅ Cliente salvato!");
 }
 
-// ✅ MODIFICATO: campo testo per data
+// ✅ MODIFICATO: campo testo per data con formattazione automatica
 let clienteIdCorrente = null;
 
 function apriModaleAcconto(id) {
@@ -750,8 +773,8 @@ return;
 let clienti = JSON.parse(localStorage.getItem('clienti')) || [];
 const cliente = clienti.find(c => c.id == clienteIdCorrente);
 if (cliente) {
-// ✅ Salva la data ESATTAMENTE come digitata
-cliente.acconti.push({ importo,  data: dataManuale });
+// ✅ Salva la data ESATTAMENTE come digitata (già formattata)
+cliente.acconti.push({ importo,   dataManuale });
 localStorage.setItem('clienti', JSON.stringify(clienti));
 caricaClienti();
 chiudiModaleAcconto();
