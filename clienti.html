@@ -435,7 +435,7 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 </div>
 </div>
 
-<!-- ✅ RIGA 4: TELA | POSTER CARTA FOTOGRAFICA | MINI POCKET -->
+<!-- ✅ RIGA 4: TELA | POSTER CARTA FOTOGRAFICA + Qtà | MINI POCKET -->
 <div class="riga-tripla">
 <div>
 <label for="tela">TELA</label>
@@ -447,12 +447,23 @@ document.write(Array.from({length:15}, (_, i) => `<option value="${(i+1)*10}">${
 <option value="Misura extra con telaio">Misura extra con telaio</option>
 </select>
 </div>
-<div>
+<div style="display: flex; gap: 10px; align-items: flex-end;">
+<div style="flex: 1;">
 <label for="posterCarta">POSTER CARTA FOTOGRAFICA</label>
 <select id="posterCarta">
 <option value="">-- Seleziona --</option>
 <option value="50X70 cm">50X70 cm</option>
 </select>
+</div>
+<div style="display: flex; flex-direction: column;">
+<label for="posterQtà" style="font-size: 12px; margin-bottom: 4px;">Qtà</label>
+<select id="posterQtà" style="width: 60px; font-size: 13px;">
+<option value="">--</option>
+<script>
+document.write(Array.from({length:10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join(''));
+</script>
+</select>
+</div>
 </div>
 <div>
 <label for="miniPocket">MINI POCKET</label>
@@ -736,6 +747,7 @@ postServizio: document.getElementById('postServizio').value || null,
 video: document.getElementById('video').value || null,
 tela: document.getElementById('tela').value || null,
 posterCarta: document.getElementById('posterCarta').value || null,
+posterQtà: document.getElementById('posterQtà').value || null,
 miniPocket: document.getElementById('miniPocket').value || null,
 salaPosa: document.getElementById('salaPosa').value || null,
 servizioLocation: document.getElementById('servizioLocation').value || null
@@ -959,6 +971,7 @@ document.getElementById('postServizio').value = cliente.servizioCommissionato?.p
 document.getElementById('video').value = cliente.servizioCommissionato?.video || '';
 document.getElementById('tela').value = cliente.servizioCommissionato?.tela || '';
 document.getElementById('posterCarta').value = cliente.servizioCommissionato?.posterCarta || '';
+document.getElementById('posterQtà').value = cliente.servizioCommissionato?.posterQtà || '';
 document.getElementById('miniPocket').value = cliente.servizioCommissionato?.miniPocket || '';
 document.getElementById('salaPosa').value = cliente.servizioCommissionato?.salaPosa || '';
 document.getElementById('servizioLocation').value = cliente.servizioCommissionato?.servizioLocation || '';
@@ -1031,7 +1044,7 @@ luoghiHtml = `
 
 let servizioCommHtml = '<em>Nessun servizio commissionato specificato.</em>';
 const sc = c.servizioCommissionato || {};
-if (sc.album || sc.copertina || sc.miniAlbum || sc.effetti || sc.interni || sc.fotoBook || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
+if (sc.album || sc.copertina || sc.miniAlbum || sc.effetti || sc.interni || sc.fotoBook || sc.anteprima || sc.postServizio || sc.video || sc.tela || sc.posterCarta || sc.posterQtà || sc.miniPocket || sc.salaPosa || sc.servizioLocation) {
 servizioCommHtml = `
 <div class="campo"><strong>Album:</strong> ${sc.album || 'Non selezionato'}</div>
 <div class="campo"><strong>Copertina:</strong> ${sc.copertina || 'Non selezionato'}</div>
@@ -1043,7 +1056,7 @@ servizioCommHtml = `
 <div class="campo"><strong>Post Servizio:</strong> ${sc.postServizio || 'Non selezionato'}</div>
 <div class="campo"><strong>Video:</strong> ${sc.video || 'Non selezionato'}</div>
 <div class="campo"><strong>TELA:</strong> ${sc.tela || 'Non selezionato'}</div>
-<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'}</div>
+<div class="campo"><strong>POSTER CARTA FOTOGRAFICA:</strong> ${sc.posterCarta || 'Non selezionato'} (Quantità: ${sc.posterQtà || '0'})</div>
 <div class="campo"><strong>MINI POCKET:</strong> ${sc.miniPocket || '0'}</div>
 <div class="campo"><strong>SERVIZIO SALA POSA:</strong> ${sc.salaPosa || 'Non selezionato'}</div>
 <div class="campo"><strong>SERVIZIO LOCATION:</strong> ${sc.servizioLocation || 'Non selezionato'}</div>
