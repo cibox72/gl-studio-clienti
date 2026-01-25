@@ -99,16 +99,29 @@
       font-size: 0.95em;
     }
 
+    /* INLINE MAPS BUTTON */
+    .input-with-map {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-with-map input {
+      flex: 1;
+      margin: 0;
+    }
+
     .google-maps-btn {
       background: #4285F4;
       color: white;
       border: none;
-      padding: 4px 8px;
-      margin-left: 8px;
-      border-radius: 4px;
+      padding: 6px 10px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 0.85em;
-      vertical-align: middle;
+      font-weight: bold;
+      min-width: 36px;
+      text-align: center;
     }
 
     /* === LAVORO COMMISSIONATO === */
@@ -247,8 +260,10 @@
         </div>
         <div class="form-group">
           <label>Indirizzo</label>
-          <input type="text" id="indirizzo1" />
-          <button class="google-maps-btn" onclick="openMaps('indirizzo1')">📍</button>
+          <div class="input-with-map">
+            <input type="text" id="indirizzo1" />
+            <button class="google-maps-btn" onclick="openMaps('indirizzo1')">📍</button>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -276,8 +291,10 @@
         </div>
         <div class="form-group">
           <label>Indirizzo</label>
-          <input type="text" id="indirizzo2" />
-          <button class="google-maps-btn" onclick="openMaps('indirizzo2')">📍</button>
+          <div class="input-with-map">
+            <input type="text" id="indirizzo2" />
+            <button class="google-maps-btn" onclick="openMaps('indirizzo2')">📍</button>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -292,7 +309,7 @@
       </div>
     </div>
 
-    <!-- Tipo di Servizio -->
+    <!-- Tipo di Servizio + Data Evento -->
     <div class="grid-3">
       <div class="grid-item">
         <label>Tipo di Servizio</label>
@@ -314,6 +331,24 @@
       <div class="grid-item">
         <label>Data Evento</label>
         <input type="text" id="dataEvento" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)" />
+      </div>
+    </div>
+
+    <!-- Chiesa e Location con pulsanti Maps -->
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Chiesa</label>
+        <div class="input-with-map">
+          <input type="text" id="chiesa" />
+          <button class="google-maps-btn" onclick="openMaps('chiesa')">📍</button>
+        </div>
+      </div>
+      <div class="grid-item">
+        <label>Location</label>
+        <div class="input-with-map">
+          <input type="text" id="location" />
+          <button class="google-maps-btn" onclick="openMaps('location')">📍</button>
+        </div>
       </div>
     </div>
 
@@ -593,6 +628,8 @@
         timestamp: new Date().toISOString(),
         servizioTipo: document.getElementById('servizioTipo').value,
         dataEvento: document.getElementById('dataEvento').value,
+        chiesa: document.getElementById('chiesa').value,
+        location: document.getElementById('location').value,
         cliente1: {
           nome: document.getElementById('nome1').value,
           cognome: document.getElementById('cognome1').value,
@@ -671,6 +708,8 @@
         cognome2: document.getElementById('cognome2').value,
         dataEvento: document.getElementById('dataEvento').value,
         servizio: document.getElementById('servizioTipo').value,
+        chiesa: document.getElementById('chiesa').value,
+        location: document.getElementById('location').value,
         album: document.getElementById('album').value,
         copertina: document.getElementById('copertina').value,
         miniAlbum: document.getElementById('miniAlbum').value,
@@ -706,6 +745,8 @@
       doc.text(`Cliente 1: ${cliente.cognome1} ${cliente.nome1}`, 10, y); y += lineHeight;
       if (cliente.nome2) doc.text(`Cliente 2: ${cliente.cognome2} ${cliente.nome2}`, 10, y); y += lineHeight;
       doc.text(`Data Evento: ${cliente.dataEvento}`, 10, y); y += lineHeight;
+      doc.text(`Chiesa: ${cliente.chiesa || 'Non specificata'}`, 10, y); y += lineHeight;
+      doc.text(`Location: ${cliente.location || 'Non specificata'}`, 10, y); y += lineHeight;
       doc.text(`Tipo Servizio: ${cliente.servizio}`, 10, y); y += lineHeight;
 
       doc.text("LAVORO COMMISSIONATO", 10, y); y += lineHeight;
@@ -771,6 +812,8 @@
             <span>${dataEvento}</span>
           </div>
           <div>
+            <strong>Chiesa:</strong> ${c.chiesa || '–'}<br>
+            <strong>Location:</strong> ${c.location || '–'}<br>
             <strong>Servizio:</strong> ${c.servizioTipo}<br>
             <strong>Cartella:</strong> ${c.cartellaServizio || 'Non impostata'}<br>
             <strong>Totale:</strong> €${c.totale.toFixed(2)}
@@ -792,6 +835,8 @@
 
       document.getElementById('servizioTipo').value = c.servizioTipo;
       document.getElementById('dataEvento').value = c.dataEvento;
+      document.getElementById('chiesa').value = c.chiesa || '';
+      document.getElementById('location').value = c.location || '';
 
       document.getElementById('nome1').value = c.cliente1.nome;
       document.getElementById('cognome1').value = c.cliente1.cognome;
@@ -862,6 +907,8 @@
       doc.text(`Cliente 1: ${c.cliente1.cognome} ${c.cliente1.nome}`, 10, y); y += lineHeight;
       if (c.cliente2.nome) doc.text(`Cliente 2: ${c.cliente2.cognome} ${c.cliente2.nome}`, 10, y); y += lineHeight;
       doc.text(`Data Evento: ${c.dataEvento}`, 10, y); y += lineHeight;
+      doc.text(`Chiesa: ${c.chiesa || 'Non specificata'}`, 10, y); y += lineHeight;
+      doc.text(`Location: ${c.location || 'Non specificata'}`, 10, y); y += lineHeight;
       doc.text(`Tipo Servizio: ${c.servizioTipo}`, 10, y); y += lineHeight;
       doc.text("LAVORO COMMISSIONATO", 10, y); y += lineHeight;
       doc.text(`Album: ${c.album}`, 10, y); y += lineHeight;
