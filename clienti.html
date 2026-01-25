@@ -41,7 +41,7 @@
     h1 {
       text-align: center;
       color: var(--primary);
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       font-weight: 600;
     }
 
@@ -200,6 +200,8 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 0.95em;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .btn-primary { background: var(--secondary); color: white; }
@@ -339,13 +341,14 @@
       word-break: break-word;
     }
 
-    .saldo-negativo {
-      color: var(--accent);
+    .saldo-pagato {
+      color: green;
       font-weight: bold;
     }
 
-    .saldo-positivo {
-      color: green;
+    .saldo-negativo {
+      color: var(--accent);
+      font-weight: bold;
     }
 
     @media print {
@@ -356,6 +359,11 @@
 <body>
   <div class="container">
     <h1>G&L Studio – Gestione Clienti</h1>
+
+    <!-- PULSANTE TORNA A DASHBOARD -->
+    <div style="text-align: center; margin-bottom: 20px;">
+      <a href="dashboard.html" class="btn btn-primary">← Torna a Dashboard</a>
+    </div>
 
     <!-- CLIENTI 1 e 2 in due colonne -->
     <div class="clienti-section">
@@ -972,13 +980,77 @@
       doc.save('scheda_cliente.pdf');
     }
 
+    // ===== FUNZIONE DI STAMPA PER CLIENTE SPECIFICO =====
+    function stampaCliente(id) {
+      const c = clienti.find(cl => cl.id === id);
+      if (!c) return;
+
+      const printWindow = window.open('', '', 'height=600,width=800');
+      printWindow.document.write(`
+        <html>
+        <head>
+          <title>Scheda Cliente</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            h2 { margin-top: 30px; }
+            strong { font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <h1>SCHEDA CLIENTE</h1>
+          <p><strong>Cliente 1:</strong> ${c.cliente1.cognome} ${c.cliente1.nome}</p>
+          ${c.cliente2.nome ? `<p><strong>Cliente 2:</strong> ${c.cliente2.cognome} ${c.cliente2.nome}</p>` : ''}
+          <p><strong>Data Evento:</strong> ${c.dataEvento}</p>
+          <p><strong>Chiesa:</strong> ${c.chiesa || '–'}</p>
+          <p><strong>Location:</strong> ${c.location || '–'}</p>
+          <p><strong>Tipo Servizio:</strong> ${c.servizioTipo}</p>
+          <h2>LAVORO COMMISSIONATO</h2>
+          <p><strong>Album:</strong> ${c.album}</p>
+          <p><strong>Copertina:</strong> ${c.copertina}</p>
+          <p><strong>Mini Album:</strong> ${c.miniAlbum}</p>
+          <p><strong>Effetti:</strong> ${c.effetti}</p>
+          <p><strong>Interni:</strong> ${c.interni}</p>
+          <p><strong>Foto Book:</strong> ${c.fotoBook}</p>
+          <p><strong>Anteprima:</strong> ${c.anteprima}</p>
+          <p><strong>Post Servizio:</strong> ${c.postServizio}</p>
+          <p><strong>Video:</strong> ${c.video}</p>
+          <p><strong>Tela:</strong> ${c.tela} x ${c.telaQt}</p>
+          <p><strong>Stampe Carta:</strong> ${c.stampeCarta} x ${c.stampeQt}</p>
+          <p><strong>Mini Pocket:</strong> ${c.miniPocket}</p>
+          <p><strong>Sala Posa:</strong> ${c.salaPosa}</p>
+          <p><strong>Location:</strong> ${c.locationServizio}</p>
+          <h2>APP. GALLERY</h2>
+          <p><strong>Email:</strong> ${c.gallEmail || ''}</p>
+          <p><strong>Password:</strong> ${c.gallPw || ''}</p>
+          <p><strong>URL:</strong> ${c.gallUrl || ''}</p>
+          <h2>CARTELLA SERVIZIO</h2>
+          <p>${c.cartellaServizio || 'Non specificata'}</p>
+          <h2>NOTA</h2>
+          <p>${c.nota || 'Nessuna nota.'}</p>
+          <h2>ACCONTI</h2>
+          <pre>${c.acconti.map(a => `${a.data} - €${a.importo.toFixed(2)}`).join('\n')}</pre>
+          <h2>TOTALE</h2>
+          <p>€${c.totale.toFixed(2)}</p>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => printWindow.print(), 500);
+    }
+
     // ===== CARICAMENTO ELENCO AGGIORNATO =====
     function caricaElencoClienti() {
       const el = document.getElementById('elencoClienti');
       el.innerHTML = '';
 
       if (clienti.length === 0) {
-        el.innerHTML = '<p>Nessun cliente salvato.</p>';
+        el.innerHTML = `
+          <div style="text-align:center; padding:30px; color:#666;">
+            <p>📦 Nessun cliente salvato.</p>
+            <p>Compila il modulo sopra e clicca <strong>"Salva Cliente"</strong> per iniziare.</p>
+          </div>
+        `;
         return;
       }
 
@@ -999,16 +1071,16 @@
         });
       });
 
-      // Ordina ogni gruppo per data (più recente prima)
+      // Ordina ogni gruppo per data (dal più vecchio al più recente)
       Object.keys(gruppi).forEach(servizio => {
         gruppi[servizio].sort((a, b) => {
           const dateA = new Date(a.dataEvento.split('/').reverse().join('-'));
           const dateB = new Date(b.dataEvento.split('/').reverse().join('-'));
-          return dateB - dateA; // Decrescente: più recente in alto
+          return dateA - dateB; // Crescente: più vecchio prima
         });
       });
 
-      // Ordina i gruppi per nome servizio (opzionale)
+      // Ordina i gruppi per nome servizio
       const serviziOrdinati = Object.keys(gruppi).sort();
 
       let html = '';
@@ -1018,21 +1090,21 @@
         
         gruppi[servizio].forEach(c => {
           const cognomi = c.cliente1.cognome + (c.cliente2.cognome ? ` & ${c.cliente2.cognome}` : '');
-          const totale = (c.totale || 0).toFixed(2);
-          const acconti = c.totaleAcconti.toFixed(2);
-          const saldo = c.saldo.toFixed(2);
-          const classeSaldo = c.saldo <= 0 ? 'saldo-positivo' : 'saldo-negativo';
+          const dataEvento = c.dataEvento || 'N/D';
+          const saldoTesto = c.saldo <= 0 ? 'Pagato' : `€ ${c.saldo.toFixed(2)}`;
+          const classeSaldo = c.saldo <= 0 ? 'saldo-pagato' : 'saldo-negativo';
 
           html += `
             <div class="cliente-row">
               <div><strong>${cognomi}</strong></div>
-              <div>${c.dataEvento || 'N/D'}</div>
-              <div>€ ${totale}</div>
-              <div>€ ${acconti}</div>
-              <div class="${classeSaldo}">€ ${saldo}</div>
+              <div>${dataEvento}</div>
+              <div>€ ${(c.totale || 0).toFixed(2)}</div>
+              <div>€ ${c.totaleAcconti.toFixed(2)}</div>
+              <div class="${classeSaldo}">${saldoTesto}</div>
               <div>
-                <button class="btn btn-primary" style="padding:4px 8px;font-size:0.8em;" onclick="modificaCliente(${c.id})">✏️</button>
+                <button class="btn btn-primary" style="padding:4px 8px;font-size:0.8em;" onclick="modificaCliente(${c.id})">Apri</button>
                 <button class="btn btn-primary" style="padding:4px 8px;font-size:0.8em;" onclick="whatsappFromList('${c.cliente1.telefono}')">💬</button>
+                <button class="btn btn-primary" style="padding:4px 8px;font-size:0.8em;" onclick="stampaCliente(${c.id})">🖨️</button>
                 <button class="btn btn-danger" style="padding:4px 8px;font-size:0.8em;" onclick="eliminaClienteById(${c.id})">❌</button>
               </div>
             </div>
@@ -1113,55 +1185,7 @@
       window.open(`https://web.whatsapp.com/send?phone=${clean}`, '_blank');
     }
 
-    function pdfCliente(id) {
-      const c = clienti.find(cl => cl.id === id);
-      if (!c) return;
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      let y = 20;
-      const lineHeight = 10;
-
-      doc.setFontSize(16);
-      doc.text("SCHEDA CLIENTE", 10, y); y += lineHeight * 2;
-      doc.setFontSize(12);
-      doc.text(`Cliente 1: ${c.cliente1.cognome} ${c.cliente1.nome}`, 10, y); y += lineHeight;
-      if (c.cliente2.nome) doc.text(`Cliente 2: ${c.cliente2.cognome} ${c.cliente2.nome}`, 10, y); y += lineHeight;
-      doc.text(`Data Evento: ${c.dataEvento}`, 10, y); y += lineHeight;
-      doc.text(`Chiesa: ${c.chiesa || 'Non specificata'}`, 10, y); y += lineHeight;
-      doc.text(`Location: ${c.location || 'Non specificata'}`, 10, y); y += lineHeight;
-      doc.text(`Tipo Servizio: ${c.servizioTipo}`, 10, y); y += lineHeight;
-      doc.text("LAVORO COMMISSIONATO", 10, y); y += lineHeight;
-      doc.text(`Album: ${c.album}`, 10, y); y += lineHeight;
-      doc.text(`Copertina: ${c.copertina}`, 10, y); y += lineHeight;
-      doc.text(`Mini Album: ${c.miniAlbum}`, 10, y); y += lineHeight;
-      doc.text(`Effetti: ${c.effetti}`, 10, y); y += lineHeight;
-      doc.text(`Interni: ${c.interni}`, 10, y); y += lineHeight;
-      doc.text(`Foto Book: ${c.fotoBook}`, 10, y); y += lineHeight;
-      doc.text(`Anteprima: ${c.anteprima}`, 10, y); y += lineHeight;
-      doc.text(`Post Servizio: ${c.postServizio}`, 10, y); y += lineHeight;
-      doc.text(`Video: ${c.video}`, 10, y); y += lineHeight;
-      doc.text(`Tela: ${c.tela} x ${c.telaQt}`, 10, y); y += lineHeight;
-      doc.text(`Stampe Carta: ${c.stampeCarta} x ${c.stampeQt}`, 10, y); y += lineHeight;
-      doc.text(`Mini Pocket: ${c.miniPocket}`, 10, y); y += lineHeight;
-      doc.text(`Sala Posa: ${c.salaPosa}`, 10, y); y += lineHeight;
-      doc.text(`Location: ${c.locationServizio}`, 10, y); y += lineHeight;
-      doc.text("APP. GALLERY", 10, y); y += lineHeight;
-      doc.text(`Email: ${c.gallEmail || ''}`, 10, y); y += lineHeight;
-      doc.text(`Password: ${c.gallPw || ''}`, 10, y); y += lineHeight;
-      doc.text(`URL: ${c.gallUrl || ''}`, 10, y); y += lineHeight;
-      doc.text("CARTELLA SERVIZIO", 10, y); y += lineHeight;
-      doc.text(c.cartellaServizio || 'Non specificata', 10, y); y += lineHeight;
-      doc.text("NOTA", 10, y); y += lineHeight;
-      doc.text(c.nota || 'Nessuna nota.', 10, y); y += lineHeight;
-      doc.text("ACCONTI", 10, y); y += lineHeight;
-      c.acconti.forEach(a => {
-        doc.text(`${a.data} - €${a.importo.toFixed(2)}`, 10, y);
-        y += lineHeight;
-      });
-      doc.text(`IMPORTO TOTALE IVA ESCLUSA: €${(c.totale || 0).toFixed(2)}`, 10, y);
-      doc.save(`scheda_${c.cliente1.cognome}_${c.cliente1.nome}.pdf`);
-    }
-
+    // Carica l'elenco all'avvio
     caricaElencoClienti();
   </script>
 </body>
