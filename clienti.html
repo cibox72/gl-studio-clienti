@@ -615,6 +615,9 @@
       <button class="btn btn-danger" onclick="eliminaCliente()">Elimina Cliente</button>
       <button class="btn btn-primary" onclick="generaPDF()">📥 PDF</button>
       <button class="btn btn-primary" onclick="stampaScheda()">🖨️ Stampa Scheda</button>
+      <!-- PULSANTE RIPRISTINO -->
+      <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">📤 Ripristina da File</button>
+      <input type="file" id="fileInput" accept=".json" style="display:none;" onchange="caricaDaFile(event)" />
     </div>
 
     <!-- Elenco clienti -->
@@ -766,6 +769,35 @@
       if (confirm("Sei sicuro di voler eliminare questo cliente?")) {
         resetForm();
       }
+    }
+
+    // ===== IMPORTAZIONE DA FILE =====
+    function caricaDaFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+
+          if (Array.isArray(data)) {
+            clienti = data;
+          } else if (data && typeof data === 'object') {
+            clienti = [data];
+          } else {
+            throw new Error("Dati non validi");
+          }
+
+          localStorage.setItem('gl-studio-clienti', JSON.stringify(clienti));
+          caricaElencoClienti();
+          alert("Backup ripristinato con successo!");
+        } catch (err) {
+          console.error(err);
+          alert("Errore: il file non è un backup valido di G&L Studio.");
+        }
+      };
+      reader.readAsText(file);
     }
 
     // ===== STAMPA E PDF =====
