@@ -2,204 +2,56 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>G&L Studio - Archivio</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Archivio – G&L Studio</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #ffffff;
+      background: #f5f5f5;
       margin: 0;
       padding: 20px;
-      color: #333;
     }
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    h1, h2 {
-      text-align: center;
-      color: #000;
-      margin: 20px 0;
-      font-weight: bold;
-    }
-
-    /* Riquadro NOTA */
-    .nota-box {
-      background: #fff8e1;
-      border-left: 4px solid #ffc107;
-      padding: 15px;
-      margin-bottom: 25px;
-      border-radius: 4px;
-    }
-    .nota-box h3 {
-      margin-top: 0;
-      color: #ff8f00;
-      font-size: 18px;
-    }
-    .nota-box textarea {
-      width: 100%;
-      height: 80px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background: #f5f5f5;
-      font-weight: bold;
-    }
-    .btn-apri {
-      background: #d32f2f;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-    .btn-apri:hover {
-      background: #b71c1c;
-    }
-
-    .footer-btns {
-      text-align: center;
-      margin-top: 30px;
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn-dashboard,
-    .btn-esci {
-      display: inline-block;
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      padding: 25px;
       border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
       text-align: center;
-      min-width: 180px;
+      color: #2c3e50;
+    }
+    .btn-back {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #3498db;
       color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-bottom: 20px;
     }
-    .btn-dashboard {
-      background: #1976d2;
-    }
-    .btn-dashboard:hover {
-      background: #1565c0;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-    .btn-esci {
-      background: #d32f2f;
-    }
-    .btn-esci:hover {
-      background: #b71c1c;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    .message {
+      text-align: center;
+      color: #666;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🗄️ Archivio Clienti</h1>
-
-    <!-- Riquadro NOTA -->
-    <div class="nota-box">
-      <h3>📝 NOTA</h3>
-      <textarea id="notaGenerale" placeholder="Inserisci qui eventuali annotazioni generali..."></textarea>
-      <button type="button" style="margin-top: 10px; background: #ff8f00;" onclick="salvaNota()">Salva Nota</button>
+    <a href="dashboard.html" class="btn-back">← Torna alla Dashboard</a>
+    <h1>Archivio Clienti</h1>
+    
+    <div class="message">
+      ⚠️ La gestione completa dei clienti avviene in <strong>Gestione Clienti</strong>.<br>
+      Clicca sul pulsante qui sotto per accedervi.
     </div>
 
-    <table id="elencoClienti">
-      <thead>
-        <tr>
-          <th>Cliente</th>
-          <th>Servizio</th>
-          <th>Data evento</th>
-          <th>Azione</th>
-        </tr>
-      </thead>
-      <tbody id="tbodyClienti"></tbody>
-    </table>
-
-    <div class="footer-btns">
-      <a href="dashboard.html" class="btn-dashboard">← Torna alla dashboard</a>
-      <a href="logout.html" class="btn-esci">🚪 Esci</a>
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="clienti.html" class="btn-back" style="background:#27ae60;">📁 Apri Gestione Clienti</a>
     </div>
   </div>
-
-  <script src="auth.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', caricaArchivio);
-
-    function salvaNota() {
-      const nota = document.getElementById('notaGenerale').value;
-      localStorage.setItem('notaArchivio', nota);
-      alert("Nota salvata!");
-    }
-
-    function caricaNota() {
-      const nota = localStorage.getItem('notaArchivio') || '';
-      document.getElementById('notaGenerale').value = nota;
-    }
-
-    function caricaArchivio() {
-      caricaNota();
-      const clienti = JSON.parse(localStorage.getItem('clienti')) || [];
-      const tbody = document.getElementById('tbodyClienti');
-      
-      if (clienti.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Nessun cliente salvato.</td></tr>';
-        return;
-      }
-
-      clienti.sort((a, b) => {
-        const [gA, mA, aA] = a.dataEvento.split('/');
-        const [gB, mB, bB] = b.dataEvento.split('/');
-        const dateA = new Date(`${aA}-${mA}-${gA}`);
-        const dateB = new Date(`${bB}-${mB}-${gB}`);
-        return dateB - dateA;
-      });
-
-      tbody.innerHTML = '';
-      clienti.forEach(c => {
-        // Costruisci il nome principale
-        let nomePrincipale = '';
-        if (c.cliente1 && c.cliente1.nome && c.cliente1.cognome) {
-          nomePrincipale = `${c.cliente1.nome} ${c.cliente1.cognome}`;
-        } else {
-          nomePrincipale = 'Cliente sconosciuto';
-        }
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${nomePrincipale}</td>
-          <td>${c.servizio}</td>
-          <td>${c.dataEvento}</td>
-          <td><button class="btn-apri" onclick="apriScheda(${c.id})">Apri</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function apriScheda(id) {
-      localStorage.setItem('apriSchedaId', id);
-      window.location.href = 'clienti.html';
-    }
-  </script>
 </body>
 </html>
