@@ -5,42 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>G&L Studio - Gestione Clienti</title>
   <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --border: #ddd;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f9f9f9;
+      background: #f8f9fa;
+      color: var(--dark);
     }
+
     .container {
       max-width: 1200px;
       margin: auto;
       background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    /* === CLIENTI DUE COLONNE === */
+    .clienti-section {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .cliente-box {
+      flex: 1;
+      min-width: 300px;
+      background: #fafafa;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      border: 1px solid var(--border);
     }
-    h1 { text-align: center; color: #333; }
-    .section-title { margin-top: 25px; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: inline-block; width: 180px; font-weight: bold; vertical-align: top; }
-    input, select, textarea {
-      padding: 6px;
-      width: calc(100% - 190px);
-      max-width: 400px;
+
+    .cliente-box h2 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.2em;
+      border-bottom: 2px solid var(--secondary);
+      padding-bottom: 8px;
+      margin-bottom: 15px;
     }
-    .row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-    .col { flex: 1; min-width: 250px; }
-    .btn {
-      padding: 8px 15px;
-      margin: 5px;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
     }
-    .btn-primary { background: #28a745; color: white; }
-    .btn-danger { background: #dc3545; color: white; }
-    .btn-center { text-align: center; margin: 20px 0; }
-    .highlight { font-size: 1.4em; font-weight: bold; color: #d35400; }
+
+    .form-group {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9em;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
     .google-maps-btn {
       background: #4285F4;
       color: white;
@@ -49,10 +107,99 @@
       margin-left: 8px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.9em;
+      font-size: 0.85em;
+      vertical-align: middle;
     }
-    .acconti-list { margin-top: 10px; }
-    .acconto-item { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+
+    /* === LAVORO COMMISSIONATO === */
+    .commissionato-title {
+      text-align: center;
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 30px 0 25px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* === GRIGLIA 3 COLONNE === */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .grid-item {
+      background: #fcfcfc;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+
+    .grid-item label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #2c3e50;
+    }
+
+    .grid-item input,
+    .grid-item select {
+      width: 100%;
+      padding: 7px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 0.95em;
+    }
+
+    /* === SEZIONI SPECIALI === */
+    .section-full {
+      margin: 25px 0;
+    }
+
+    .section-full h3 {
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 1.1em;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .btn-primary { background: var(--secondary); color: white; }
+    .btn-danger { background: var(--accent); color: white; }
+    .btn-center { text-align: center; margin: 25px 0; }
+
+    .highlight {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: var(--accent);
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .acconti-list {
+      margin-top: 10px;
+    }
+
+    .acconto-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 8px;
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+
     .cliente-card {
       border: 1px solid #ddd;
       padding: 15px;
@@ -60,21 +207,23 @@
       border-radius: 8px;
       background: #fafafa;
     }
+
     .cliente-header {
       display: flex;
       justify-content: space-between;
       margin-bottom: 10px;
       font-weight: bold;
     }
+
     .cliente-actions {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
-    .print-only { display: none; }
+
     @media print {
-      .print-only { display: block; }
-      .no-print { display: none; }
+      .no-print { display: none !important; }
     }
   </style>
 </head>
@@ -82,95 +231,99 @@
   <div class="container">
     <h1>G&L Studio – Gestione Clienti</h1>
 
-    <!-- Cliente 1 -->
-    <div class="section-title">Cliente 1 (obbligatorio)</div>
-    <div class="row">
-      <div class="form-group">
-        <label>Cognome:</label>
-        <input type="text" id="cognome1" required />
+    <!-- CLIENTI 1 e 2 in due colonne -->
+    <div class="clienti-section">
+      <div class="cliente-box">
+        <h2>Cliente 1 (obbligatorio)</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cognome</label>
+            <input type="text" id="cognome1" required />
+          </div>
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="nome1" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Indirizzo</label>
+          <input type="text" id="indirizzo1" />
+          <button class="google-maps-btn" onclick="openMaps('indirizzo1')">📍</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefono (WhatsApp)</label>
+            <input type="text" id="telefono1" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email1" />
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Nome:</label>
-        <input type="text" id="nome1" required />
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Indirizzo:</label>
-      <input type="text" id="indirizzo1" />
-      <button class="google-maps-btn" onclick="openMaps('indirizzo1')">📍</button>
-    </div>
-    <div class="row">
-      <div class="form-group">
-        <label>Telefono (WhatsApp):</label>
-        <input type="text" id="telefono1" />
-      </div>
-      <div class="form-group">
-        <label>Email:</label>
-        <input type="email" id="email1" />
-      </div>
-    </div>
 
-    <!-- Cliente 2 -->
-    <div class="section-title">Cliente 2 (opzionale)</div>
-    <div class="row">
-      <div class="form-group">
-        <label>Cognome:</label>
-        <input type="text" id="cognome2" />
-      </div>
-      <div class="form-group">
-        <label>Nome:</label>
-        <input type="text" id="nome2" />
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Indirizzo:</label>
-      <input type="text" id="indirizzo2" />
-      <button class="google-maps-btn" onclick="openMaps('indirizzo2')">📍</button>
-    </div>
-    <div class="row">
-      <div class="form-group">
-        <label>Telefono:</label>
-        <input type="text" id="telefono2" />
-      </div>
-      <div class="form-group">
-        <label>Email:</label>
-        <input type="email" id="email2" />
+      <div class="cliente-box">
+        <h2>Cliente 2 (opzionale)</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cognome</label>
+            <input type="text" id="cognome2" />
+          </div>
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="nome2" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Indirizzo</label>
+          <input type="text" id="indirizzo2" />
+          <button class="google-maps-btn" onclick="openMaps('indirizzo2')">📍</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefono</label>
+            <input type="text" id="telefono2" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email2" />
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Tipo di Servizio -->
-    <div class="section-title">Tipo di Servizio</div>
-    <div class="form-group">
-      <label>Tipo:</label>
-      <select id="servizioTipo">
-        <option value="">Seleziona...</option>
-        <option>Anniversario</option>
-        <option>Compleanno</option>
-        <option>Battesimo</option>
-        <option>Comunione</option>
-        <option>Cresima</option>
-        <option>Percorso Catecumenale</option>
-        <option>Matrimonio</option>
-        <option>Maternity</option>
-        <option>New Born</option>
-        <option>Maternity+New Born</option>
-        <option>Evento</option>
-      </select>
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Tipo di Servizio</label>
+        <select id="servizioTipo">
+          <option value="">Seleziona...</option>
+          <option>Anniversario</option>
+          <option>Compleanno</option>
+          <option>Battesimo</option>
+          <option>Comunione</option>
+          <option>Cresima</option>
+          <option>Percorso Catecumenale</option>
+          <option>Matrimonio</option>
+          <option>Maternity</option>
+          <option>New Born</option>
+          <option>Maternity+New Born</option>
+          <option>Evento</option>
+        </select>
+      </div>
+      <div class="grid-item">
+        <label>Data Evento</label>
+        <input type="text" id="dataEvento" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)" />
+      </div>
     </div>
 
-    <!-- Data Evento -->
-    <div class="form-group">
-      <label>Data Evento:</label>
-      <input type="text" id="dataEvento" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)" />
-    </div>
+    <!-- TITOLO CENTRALE IN ROSSO -->
+    <div class="commissionato-title">LAVORO COMMISSIONATO</div>
 
-    <!-- Servizio Commissionato -->
-    <div class="section-title">Servizio Commissionato</div>
-
-    <!-- Riga 1: Album | Copertina | Mini Album -->
-    <div class="row">
-      <div class="form-group">
-        <label>Album:</label>
+    <!-- RIGA 1: Album | Copertina | Mini Album -->
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Album</label>
         <select id="album">
           <option value="">Seleziona...</option>
           <option>ANALOGICO 33x33 cm</option>
@@ -182,24 +335,24 @@
           <option>SERVIZIO SOLO FILES</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Copertina:</label>
+      <div class="grid-item">
+        <label>Copertina</label>
         <input type="number" id="copertina" min="0" max="10" />
       </div>
-      <div class="form-group">
-        <label>Mini Album:</label>
+      <div class="grid-item">
+        <label>Mini Album</label>
         <input type="number" id="miniAlbum" min="0" max="10" />
       </div>
     </div>
 
-    <!-- Riga 2: Effetti | Interni | Foto selezionate -->
-    <div class="row">
-      <div class="form-group">
-        <label>Effetti:</label>
+    <!-- RIGA 2: Effetti | Interni | Foto selezionate -->
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Effetti</label>
         <input type="text" id="effetti" />
       </div>
-      <div class="form-group">
-        <label>Interni:</label>
+      <div class="grid-item">
+        <label>Interni</label>
         <select id="interni">
           <option value="0">0</option>
           <option>5</option><option>10</option><option>15</option><option>20</option>
@@ -207,24 +360,24 @@
           <option>45</option><option>50</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Foto selezionate per book:</label>
+      <div class="grid-item">
+        <label>Foto selezionate per book</label>
         <input type="number" id="fotoBook" min="0" />
       </div>
     </div>
 
-    <!-- Riga 3: Anteprima | Post Servizio | Video -->
-    <div class="row">
-      <div class="form-group">
-        <label>Anteprima:</label>
-        <input type="checkbox" id="anteprima" />
+    <!-- RIGA 3: Anteprima | Post Servizio | Video -->
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Anteprima</label>
+        <input type="checkbox" id="anteprima" style="width:auto;" />
       </div>
-      <div class="form-group">
-        <label>Post Servizio:</label>
-        <input type="checkbox" id="postServizio" />
+      <div class="grid-item">
+        <label>Post Servizio</label>
+        <input type="checkbox" id="postServizio" style="width:auto;" />
       </div>
-      <div class="form-group">
-        <label>Video:</label>
+      <div class="grid-item">
+        <label>Video</label>
         <select id="video">
           <option value="">Seleziona...</option>
           <option>SOLO GIORNATA</option>
@@ -236,10 +389,10 @@
       </div>
     </div>
 
-    <!-- Riga 4: Tela | Stampe carta fotog. | Mini Pocket -->
-    <div class="row">
-      <div class="form-group">
-        <label>Tela:</label>
+    <!-- RIGA 4: Tela | Stampe carta fotog. | Mini Pocket -->
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Tela</label>
         <select id="tela">
           <option value="">Seleziona...</option>
           <option>30x40 senza telaio</option>
@@ -247,10 +400,10 @@
           <option>50x70 senza telaio</option>
           <option>50x70 con telaio</option>
         </select>
-        <input type="number" id="telaQt" min="0" max="10" placeholder="Qtà" style="width:80px;margin-left:5px;" />
+        <input type="number" id="telaQt" min="0" max="10" placeholder="Qtà" style="margin-top:6px;" />
       </div>
-      <div class="form-group">
-        <label>Stampe carta fotog.:</label>
+      <div class="grid-item">
+        <label>Stampe carta fotog.</label>
         <select id="stampeCarta">
           <option value="">Seleziona...</option>
           <option>50x70 cm</option>
@@ -259,7 +412,7 @@
           <option>20x30 cm</option>
           <option>15x20 cm</option>
         </select>
-        <select id="stampeQt">
+        <select id="stampeQt" style="margin-top:6px;">
           <option value="">Qtà</option>
           <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
           <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
@@ -268,23 +421,23 @@
           <option>110</option><option>120</option><option>130</option><option>140</option><option>150</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Mini Pocket:</label>
+      <div class="grid-item">
+        <label>Mini Pocket</label>
         <input type="number" id="miniPocket" min="0" max="10" />
       </div>
     </div>
 
-    <!-- Riga 5: Servizio Sala Posa | Servizio Location -->
-    <div class="row">
-      <div class="form-group">
-        <label>Servizio Sala Posa:</label>
+    <!-- RIGA 5: Sala Posa | Location -->
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Servizio Sala Posa</label>
         <select id="salaPosa">
           <option>INCLUSO</option>
           <option>DA CONTEGGIARE</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Servizio Location:</label>
+      <div class="grid-item">
+        <label>Servizio Location</label>
         <select id="locationServizio">
           <option>INCLUSO</option>
           <option>DA CONTEGGIARE</option>
@@ -293,50 +446,57 @@
     </div>
 
     <!-- App Gallery -->
-    <div class="section-title">APP. GALLERY</div>
-    <div class="row">
-      <div class="form-group">
-        <label>Email:</label>
-        <input type="email" id="gallEmail" />
-      </div>
-      <div class="form-group">
-        <label>Password:</label>
-        <input type="password" id="gallPw" />
-      </div>
-      <div class="form-group">
-        <label>URL:</label>
-        <input type="url" id="gallUrl" />
+    <div class="section-full">
+      <h3>APP. GALLERY</h3>
+      <div class="grid-3">
+        <div class="grid-item">
+          <label>Email</label>
+          <input type="email" id="gallEmail" />
+        </div>
+        <div class="grid-item">
+          <label>Password</label>
+          <input type="password" id="gallPw" />
+        </div>
+        <div class="grid-item">
+          <label>URL</label>
+          <input type="url" id="gallUrl" />
+        </div>
       </div>
     </div>
 
     <!-- Cartella servizio -->
-    <div class="section-title">Cartella servizio in:</div>
-    <div class="form-group">
-      <input type="text" id="cartellaServizio" placeholder="Esempio: D:\Clienti\Matrimonio_Rossi_2026" />
+    <div class="section-full">
+      <h3>Cartella servizio in:</h3>
+      <input type="text" id="cartellaServizio" placeholder="Esempio: D:\Clienti\Matrimonio_Rossi_2026" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;" />
     </div>
 
     <!-- Nota Cliente -->
-    <div class="section-title">NOTA CLIENTE</div>
-    <div class="form-group">
-      <textarea id="nota" rows="3" placeholder="Inserisci una nota (opzionale)"></textarea>
+    <div class="section-full">
+      <h3>NOTA CLIENTE</h3>
+      <textarea id="nota" rows="3" placeholder="Inserisci una nota (opzionale)" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;"></textarea>
     </div>
 
     <!-- Acconti -->
-    <div class="section-title">Acconti</div>
-    <div class="form-group">
-      <label>Data acconto:</label>
-      <input type="text" id="accontoData" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)" />
-      <label style="margin-left:15px;">Importo:</label>
-      <input type="number" id="accontoImporto" min="0" step="0.01" style="width:120px;" />
-      <button class="btn btn-primary" onclick="aggiungiAcconto()">Aggiungi</button>
+    <div class="section-full">
+      <h3>Acconti</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data acconto</label>
+          <input type="text" id="accontoData" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)" />
+        </div>
+        <div class="form-group">
+          <label>Importo</label>
+          <input type="number" id="accontoImporto" min="0" step="0.01" />
+        </div>
+        <div class="form-group" style="display:flex;align-items:end;">
+          <button class="btn btn-primary" onclick="aggiungiAcconto()">Aggiungi</button>
+        </div>
+      </div>
+      <div class="acconti-list" id="listaAcconti"></div>
     </div>
-    <div class="acconti-list" id="listaAcconti"></div>
 
     <!-- Importo totale -->
-    <div class="form-group">
-      <label>Importo totale:</label>
-      <span class="highlight" id="importoTotale">€ 0,00</span>
-    </div>
+    <div class="highlight" id="importoTotale">€ 0,00</div>
 
     <!-- Pulsanti -->
     <div class="btn-center no-print">
@@ -347,8 +507,10 @@
     </div>
 
     <!-- Elenco clienti -->
-    <div class="section-title">Elenco Clienti</div>
-    <div id="elencoClienti"></div>
+    <div class="section-full">
+      <h3>Elenco Clienti</h3>
+      <div id="elencoClienti"></div>
+    </div>
   </div>
 
   <!-- Librerie CDN per PDF -->
@@ -412,8 +574,8 @@
         div.className = 'acconto-item';
         div.innerHTML = `
           ${a.data} — €${a.importo.toFixed(2)}
-          <button class="btn btn-primary" onclick="modificaAcconto(${i})">Modifica</button>
-          <button class="btn btn-danger" onclick="rimuoviAcconto(${i})">Elimina</button>
+          <button class="btn btn-primary" style="padding:4px 8px;font-size:0.85em;" onclick="modificaAcconto(${i})">✏️</button>
+          <button class="btn btn-danger" style="padding:4px 8px;font-size:0.85em;" onclick="rimuoviAcconto(${i})">❌</button>
         `;
         el.appendChild(div);
       });
@@ -464,7 +626,7 @@
         gallEmail: document.getElementById('gallEmail').value,
         gallPw: document.getElementById('gallPw').value,
         gallUrl: document.getElementById('gallUrl').value,
-        cartellaServizio: document.getElementById('cartellaServizio').value, // ✅ AGGIUNTO
+        cartellaServizio: document.getElementById('cartellaServizio').value,
         nota: document.getElementById('nota').value.trim() || null,
         acconti: [...acconti],
         totale: parseFloat(document.getElementById('importoTotale').textContent.replace('€ ', '').replace(',', '.')) || 0
@@ -487,7 +649,6 @@
       aggiornaTotale();
     }
 
-    // ===== ELIMINA CLIENTE =====
     function eliminaCliente() {
       if (confirm("Sei sicuro di voler eliminare questo cliente?")) {
         resetForm();
@@ -529,7 +690,7 @@
         gallEmail: document.getElementById('gallEmail').value,
         gallPw: document.getElementById('gallPw').value,
         gallUrl: document.getElementById('gallUrl').value,
-        cartellaServizio: document.getElementById('cartellaServizio').value, // ✅ AGGIUNTO
+        cartellaServizio: document.getElementById('cartellaServizio').value,
         nota: document.getElementById('nota').value,
         acconti: acconti.map(a => `${a.data} - €${a.importo.toFixed(2)}`).join('\n'),
         totale: document.getElementById('importoTotale').textContent
@@ -547,7 +708,7 @@
       doc.text(`Data Evento: ${cliente.dataEvento}`, 10, y); y += lineHeight;
       doc.text(`Tipo Servizio: ${cliente.servizio}`, 10, y); y += lineHeight;
 
-      doc.text("SERVIZIO COMMISSIONATO", 10, y); y += lineHeight;
+      doc.text("LAVORO COMMISSIONATO", 10, y); y += lineHeight;
       doc.text(`Album: ${cliente.album}`, 10, y); y += lineHeight;
       doc.text(`Copertina: ${cliente.copertina}`, 10, y); y += lineHeight;
       doc.text(`Mini Album: ${cliente.miniAlbum}`, 10, y); y += lineHeight;
@@ -572,7 +733,7 @@
       doc.text(cliente.cartellaServizio || 'Non specificata', 10, y); y += lineHeight;
 
       doc.text("NOTA", 10, y); y += lineHeight;
-      doc.text(cliente.nota, 10, y); y += lineHeight * 2;
+      doc.text(cliente.nota || 'Nessuna nota.', 10, y); y += lineHeight;
 
       doc.text("ACCONTI", 10, y); y += lineHeight;
       doc.text(cliente.acconti, 10, y); y += lineHeight;
@@ -592,7 +753,6 @@
         return;
       }
 
-      // Ordina per data evento crescente
       const sorted = [...clienti].sort((a, b) => {
         const dateA = new Date(a.dataEvento.split('/').reverse().join('-'));
         const dateB = new Date(b.dataEvento.split('/').reverse().join('-'));
@@ -607,21 +767,18 @@
 
         card.innerHTML = `
           <div class="cliente-header">
-            <span>${c.cliente1.cognome} ${c.cliente1.nome} ${c.cliente2.cognome ? ' & ' + c.cliente2.cognome : ''}</span>
+            <span>${c.cliente1.cognome} ${c.cliente1.nome}${c.cliente2.cognome ? ' & ' + c.cliente2.cognome : ''}</span>
             <span>${dataEvento}</span>
           </div>
           <div>
             <strong>Servizio:</strong> ${c.servizioTipo}<br>
-            <strong>Album:</strong> ${c.album}<br>
             <strong>Cartella:</strong> ${c.cartellaServizio || 'Non impostata'}<br>
-            <strong>Acconti:</strong> €${c.acconti.reduce((sum, a) => sum + a.importo, 0).toFixed(2)}<br>
             <strong>Totale:</strong> €${c.totale.toFixed(2)}
           </div>
           <div class="cliente-actions">
             <button class="btn btn-primary" onclick="modificaCliente(${c.id})">✏️ Modifica</button>
             <button class="btn btn-primary" onclick="whatsappCliente('${c.cliente1.telefono}')">💬 WhatsApp</button>
             <button class="btn btn-danger" onclick="eliminaClienteById(${c.id})">❌ Elimina</button>
-            <button class="btn btn-primary" onclick="stampaCliente(${c.id})">🖨️ Stampa</button>
             <button class="btn btn-primary" onclick="pdfCliente(${c.id})">📥 PDF</button>
           </div>
         `;
@@ -667,7 +824,7 @@
       document.getElementById('gallEmail').value = c.gallEmail;
       document.getElementById('gallPw').value = c.gallPw;
       document.getElementById('gallUrl').value = c.gallUrl;
-      document.getElementById('cartellaServizio').value = c.cartellaServizio || ''; // ✅ AGGIUNTO
+      document.getElementById('cartellaServizio').value = c.cartellaServizio || '';
       document.getElementById('nota').value = c.nota || '';
 
       acconti = [...c.acconti];
@@ -685,88 +842,28 @@
 
     function whatsappCliente(numero) {
       if (!numero) {
-        alert("Numero di telefono non disponibile.");
+        alert("Numero non disponibile.");
         return;
       }
       window.open(`https://wa.me/${numero.replace(/\D/g, '')}`, '_blank');
     }
 
-    function stampaCliente(id) {
-      const c = clienti.find(cl => cl.id === id);
-      if (!c) return;
-
-      const printWindow = window.open('', '', 'height=600,width=800');
-      printWindow.document.write(`
-        <html>
-        <head>
-          <title>Scheda Cliente</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h2 { margin-top: 30px; }
-            strong { font-weight: bold; }
-          </style>
-        </head>
-        <body>
-          <h1>SCHEDA CLIENTE</h1>
-          <p><strong>Cliente 1:</strong> ${c.cliente1.cognome} ${c.cliente1.nome}</p>
-          ${c.cliente2.nome ? `<p><strong>Cliente 2:</strong> ${c.cliente2.cognome} ${c.cliente2.nome}</p>` : ''}
-          <p><strong>Data Evento:</strong> ${c.dataEvento}</p>
-          <p><strong>Tipo Servizio:</strong> ${c.servizioTipo}</p>
-          <h2>Servizio Commissionato</h2>
-          <p><strong>Album:</strong> ${c.album}</p>
-          <p><strong>Copertina:</strong> ${c.copertina}</p>
-          <p><strong>Mini Album:</strong> ${c.miniAlbum}</p>
-          <p><strong>Effetti:</strong> ${c.effetti}</p>
-          <p><strong>Interni:</strong> ${c.interni}</p>
-          <p><strong>Foto Book:</strong> ${c.fotoBook}</p>
-          <p><strong>Anteprima:</strong> ${c.anteprima ? 'Sì' : 'No'}</p>
-          <p><strong>Post Servizio:</strong> ${c.postServizio ? 'Sì' : 'No'}</p>
-          <p><strong>Video:</strong> ${c.video}</p>
-          <p><strong>Tela:</strong> ${c.tela} x ${c.telaQt}</p>
-          <p><strong>Stampe Carta:</strong> ${c.stampeCarta} x ${c.stampeQt}</p>
-          <p><strong>Mini Pocket:</strong> ${c.miniPocket}</p>
-          <p><strong>Sala Posa:</strong> ${c.salaPosa}</p>
-          <p><strong>Location:</strong> ${c.locationServizio}</p>
-          <h2>APP. GALLERY</h2>
-          <p><strong>Email:</strong> ${c.gallEmail}</p>
-          <p><strong>Password:</strong> ${c.gallPw}</p>
-          <p><strong>URL:</strong> ${c.gallUrl}</p>
-          <h2>CARTELLA SERVIZIO</h2>
-          <p>${c.cartellaServizio || 'Non specificata'}</p>
-          <h2>NOTA</h2>
-          <p>${c.nota || 'Nessuna nota.'}</p>
-          <h2>ACCONTI</h2>
-          <pre>${c.acconti.map(a => `${a.data} - €${a.importo.toFixed(2)}`).join('\n')}</pre>
-          <h2>TOTALE</h2>
-          <p>€${c.totale.toFixed(2)}</p>
-        </body>
-        </html>
-      `);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => printWindow.print(), 500);
-    }
-
     function pdfCliente(id) {
       const c = clienti.find(cl => cl.id === id);
       if (!c) return;
-
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-
       let y = 20;
       const lineHeight = 10;
 
       doc.setFontSize(16);
       doc.text("SCHEDA CLIENTE", 10, y); y += lineHeight * 2;
-
       doc.setFontSize(12);
       doc.text(`Cliente 1: ${c.cliente1.cognome} ${c.cliente1.nome}`, 10, y); y += lineHeight;
       if (c.cliente2.nome) doc.text(`Cliente 2: ${c.cliente2.cognome} ${c.cliente2.nome}`, 10, y); y += lineHeight;
       doc.text(`Data Evento: ${c.dataEvento}`, 10, y); y += lineHeight;
       doc.text(`Tipo Servizio: ${c.servizioTipo}`, 10, y); y += lineHeight;
-
-      doc.text("SERVIZIO COMMISSIONATO", 10, y); y += lineHeight;
+      doc.text("LAVORO COMMISSIONATO", 10, y); y += lineHeight;
       doc.text(`Album: ${c.album}`, 10, y); y += lineHeight;
       doc.text(`Copertina: ${c.copertina}`, 10, y); y += lineHeight;
       doc.text(`Mini Album: ${c.miniAlbum}`, 10, y); y += lineHeight;
@@ -781,30 +878,23 @@
       doc.text(`Mini Pocket: ${c.miniPocket}`, 10, y); y += lineHeight;
       doc.text(`Sala Posa: ${c.salaPosa}`, 10, y); y += lineHeight;
       doc.text(`Location: ${c.locationServizio}`, 10, y); y += lineHeight;
-
       doc.text("APP. GALLERY", 10, y); y += lineHeight;
       doc.text(`Email: ${c.gallEmail}`, 10, y); y += lineHeight;
       doc.text(`Password: ${c.gallPw}`, 10, y); y += lineHeight;
       doc.text(`URL: ${c.gallUrl}`, 10, y); y += lineHeight;
-
       doc.text("CARTELLA SERVIZIO", 10, y); y += lineHeight;
       doc.text(c.cartellaServizio || 'Non specificata', 10, y); y += lineHeight;
-
       doc.text("NOTA", 10, y); y += lineHeight;
       doc.text(c.nota || 'Nessuna nota.', 10, y); y += lineHeight;
-
       doc.text("ACCONTI", 10, y); y += lineHeight;
       c.acconti.forEach(a => {
         doc.text(`${a.data} - €${a.importo.toFixed(2)}`, 10, y);
         y += lineHeight;
       });
-
       doc.text(`TOTALE: €${c.totale.toFixed(2)}`, 10, y);
-
       doc.save(`scheda_${c.cliente1.cognome}_${c.cliente1.nome}.pdf`);
     }
 
-    // Inizializza
     caricaElencoClienti();
   </script>
 </body>
