@@ -13,6 +13,7 @@
       --dark: #2c3e50;
       --border: #ddd;
       --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --gallery-green: #27ae60;
     }
 
     * {
@@ -237,11 +238,59 @@
       flex-wrap: wrap;
     }
 
-    .created-by {
+    /* === APP. GALLERY IN VERDE === */
+    .gallery-section {
+      background: #e8f5e9;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 25px 0;
+      border: 1px solid #c8e6c9;
+    }
+
+    .gallery-title {
       text-align: center;
-      font-size: 0.85em;
-      color: #777;
-      margin-top: 8px;
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--gallery-green);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .gallery-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+
+    .gallery-field {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .gallery-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--gallery-green);
+    }
+
+    .gallery-field input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #a5d6a7;
+      border-radius: 6px;
+      background: #f1f8e9;
+    }
+
+    .created-by-pic {
+      color: var(--gallery-green);
+      font-weight: bold;
+      margin-left: 15px;
+      font-size: 1.1em;
+      align-self: flex-end;
+      padding-bottom: 8px;
     }
 
     @media print {
@@ -438,7 +487,12 @@
       </div>
       <div class="grid-item">
         <label>Post Servizio</label>
-        <input type="checkbox" id="postServizio" style="width:auto;" />
+        <select id="postServizio">
+          <option value="">Seleziona...</option>
+          <option>SOLO FOTO</option>
+          <option>SOLO VIDEO</option>
+          <option>VIDEO E FOTO</option>
+        </select>
       </div>
       <div class="grid-item">
         <label>Video</label>
@@ -496,6 +550,7 @@
       <div class="grid-item">
         <label>Servizio Sala Posa</label>
         <select id="salaPosa">
+          <option value="">Seleziona...</option>
           <option>INCLUSO</option>
           <option>DA CONTEGGIARE</option>
         </select>
@@ -503,6 +558,7 @@
       <div class="grid-item">
         <label>Servizio Location</label>
         <select id="locationServizio">
+          <option value="">Seleziona...</option>
           <option>INCLUSO</option>
           <option>DA CONTEGGIARE</option>
         </select>
@@ -512,23 +568,23 @@
     <!-- IMPORTO TOTALE IVA ESCLUSA -->
     <div class="highlight-total" id="importoTotale">IMPORTO TOTALE IVA ESCLUSA: € 0,00</div>
 
-    <!-- APP. GALLERY -->
-    <div class="commissionato-title">APP. GALLERY</div>
-    <div class="created-by">Created by PIC</div>
-    <div class="grid-3">
-      <div class="grid-item">
-        <label>Email</label>
-        <input type="email" id="gallEmail" />
-      </div>
-      <div class="grid-item">
-        <label>Password</label>
-        <input type="password" id="gallPw" />
-      </div>
-    </div>
-    <div class="grid-3">
-      <div class="grid-item">
-        <label>URL</label>
-        <input type="url" id="gallUrl" />
+    <!-- APP. GALLERY IN VERDE, TUTTO IN UNA RIGA -->
+    <div class="gallery-section">
+      <div class="gallery-title">APP. GALLERY</div>
+      <div class="gallery-row">
+        <div class="gallery-field">
+          <label>Email</label>
+          <input type="email" id="gallEmail" />
+        </div>
+        <div class="gallery-field">
+          <label>Password</label>
+          <input type="password" id="gallPw" />
+        </div>
+        <div class="gallery-field">
+          <label>URL</label>
+          <input type="url" id="gallUrl" />
+        </div>
+        <div class="created-by-pic">Created by PIC</div>
       </div>
     </div>
 
@@ -681,7 +737,7 @@
         interni: parseInt(document.getElementById('interni').value) || 0,
         fotoBook: parseInt(document.getElementById('fotoBook').value) || 0,
         anteprima: document.getElementById('anteprima').value,
-        postServizio: document.getElementById('postServizio').checked,
+        postServizio: document.getElementById('postServizio').value,
         video: document.getElementById('video').value,
         tela: document.getElementById('tela').value,
         telaQt: parseInt(document.getElementById('telaQt').value) || 0,
@@ -747,7 +803,7 @@
         interni: document.getElementById('interni').value,
         fotoBook: document.getElementById('fotoBook').value,
         anteprima: document.getElementById('anteprima').value,
-        postServizio: document.getElementById('postServizio').checked ? "Sì" : "No",
+        postServizio: document.getElementById('postServizio').value,
         video: document.getElementById('video').value,
         tela: document.getElementById('tela').value,
         telaQt: document.getElementById('telaQt').value,
@@ -847,6 +903,7 @@
             <strong>Servizio:</strong> ${c.servizioTipo}<br>
             <strong>Copertina:</strong> ${c.copertina || '–'}<br>
             <strong>Anteprima:</strong> ${c.anteprima || '–'}<br>
+            <strong>Post Servizio:</strong> ${c.postServizio || '–'}<br>
             <strong>Cartella:</strong> ${c.cartellaServizio || 'Non impostata'}<br>
             <strong>Totale:</strong> €${c.totale.toFixed(2)}
           </div>
@@ -889,7 +946,7 @@
       document.getElementById('interni').value = c.interni;
       document.getElementById('fotoBook').value = c.fotoBook;
       document.getElementById('anteprima').value = c.anteprima;
-      document.getElementById('postServizio').checked = c.postServizio;
+      document.getElementById('postServizio').value = c.postServizio;
       document.getElementById('video').value = c.video;
       document.getElementById('tela').value = c.tela;
       document.getElementById('telaQt').value = c.telaQt;
@@ -950,7 +1007,7 @@
       doc.text(`Interni: ${c.interni}`, 10, y); y += lineHeight;
       doc.text(`Foto Book: ${c.fotoBook}`, 10, y); y += lineHeight;
       doc.text(`Anteprima: ${c.anteprima}`, 10, y); y += lineHeight;
-      doc.text(`Post Servizio: ${c.postServizio ? 'Sì' : 'No'}`, 10, y); y += lineHeight;
+      doc.text(`Post Servizio: ${c.postServizio}`, 10, y); y += lineHeight;
       doc.text(`Video: ${c.video}`, 10, y); y += lineHeight;
       doc.text(`Tela: ${c.tela} x ${c.telaQt}`, 10, y); y += lineHeight;
       doc.text(`Stampe Carta: ${c.stampeCarta} x ${c.stampeQt}`, 10, y); y += lineHeight;
