@@ -12,7 +12,7 @@
       --light: #ecf0f1;
       --dark: #2c3e50;
       --border: #ddd;
-      --shadow: 0 2,px 8px rgba(0,0,0,0.1);
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     * {
@@ -191,12 +191,14 @@
     .btn-danger { background: var(--accent); color: white; }
     .btn-center { text-align: center; margin: 25px 0; }
 
-    .highlight {
-      font-size: 1.5em;
+    .highlight-total {
+      font-size: 1.8em;
       font-weight: bold;
       color: var(--accent);
       text-align: center;
-      margin: 15px 0;
+      margin: 30px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .acconti-list {
@@ -233,6 +235,13 @@
       gap: 6px;
       margin-top: 10px;
       flex-wrap: wrap;
+    }
+
+    .created-by {
+      text-align: center;
+      font-size: 0.85em;
+      color: #777;
+      margin-top: 8px;
     }
 
     @media print {
@@ -455,7 +464,7 @@
           <option>50x70 senza telaio</option>
           <option>50x70 con telaio</option>
         </select>
-        <input type="number" id="telaQt" min="0" max="10" placeholder="Qtà" style="margin-top:6px;" />
+        <input type="number" id="telaQt" min="1" max="10" placeholder="Qtà" style="margin-top:6px;" />
       </div>
       <div class="grid-item">
         <label>Stampe carta fotog.</label>
@@ -478,7 +487,7 @@
       </div>
       <div class="grid-item">
         <label>Mini Pocket</label>
-        <input type="number" id="miniPocket" min="0" max="10" />
+        <input type="number" id="miniPocket" min="1" max="10" placeholder="Qtà" />
       </div>
     </div>
 
@@ -500,8 +509,12 @@
       </div>
     </div>
 
-    <!-- APP. GALLERY con stile LAVORO COMMISSIONATO -->
+    <!-- IMPORTO TOTALE IVA ESCLUSA -->
+    <div class="highlight-total" id="importoTotale">IMPORTO TOTALE IVA ESCLUSA: € 0,00</div>
+
+    <!-- APP. GALLERY -->
     <div class="commissionato-title">APP. GALLERY</div>
+    <div class="created-by">Created by PIC</div>
     <div class="grid-3">
       <div class="grid-item">
         <label>Email</label>
@@ -511,6 +524,8 @@
         <label>Password</label>
         <input type="password" id="gallPw" />
       </div>
+    </div>
+    <div class="grid-3">
       <div class="grid-item">
         <label>URL</label>
         <input type="url" id="gallUrl" />
@@ -547,9 +562,6 @@
       </div>
       <div class="acconti-list" id="listaAcconti"></div>
     </div>
-
-    <!-- Importo totale -->
-    <div class="highlight" id="importoTotale">€ 0,00</div>
 
     <!-- Pulsanti -->
     <div class="btn-center no-print">
@@ -636,7 +648,7 @@
 
     function aggiornaTotale() {
       const tot = acconti.reduce((sum, a) => sum + a.importo, 0);
-      document.getElementById('importoTotale').textContent = `€ ${tot.toFixed(2)}`;
+      document.getElementById('importoTotale').textContent = `IMPORTO TOTALE IVA ESCLUSA: € ${tot.toFixed(2)}`;
     }
 
     // ===== SALVATAGGIO =====
@@ -684,7 +696,7 @@
         cartellaServizio: document.getElementById('cartellaServizio').value,
         nota: document.getElementById('nota').value.trim() || null,
         acconti: [...acconti],
-        totale: parseFloat(document.getElementById('importoTotale').textContent.replace('€ ', '').replace(',', '.')) || 0
+        totale: parseFloat(document.getElementById('importoTotale').textContent.replace('IMPORTO TOTALE IVA ESCLUSA: € ', '').replace(',', '.')) || 0
       };
 
       clienti.push(cliente);
@@ -783,7 +795,7 @@
       doc.text(`Sala Posa: ${cliente.salaPosa}`, 10, y); y += lineHeight;
       doc.text(`Location: ${cliente.locationServizio}`, 10, y); y += lineHeight;
 
-      doc.text("APP. GALLERY", 10, y); y += lineHeight;
+      doc.text("APP. GALLERY (Created by PIC)", 10, y); y += lineHeight;
       doc.text(`Email: ${cliente.gallEmail}`, 10, y); y += lineHeight;
       doc.text(`Password: ${cliente.gallPw}`, 10, y); y += lineHeight;
       doc.text(`URL: ${cliente.gallUrl}`, 10, y); y += lineHeight;
@@ -797,7 +809,7 @@
       doc.text("ACCONTI", 10, y); y += lineHeight;
       doc.text(cliente.acconti, 10, y); y += lineHeight;
 
-      doc.text(`TOTALE: ${cliente.totale}`, 10, y);
+      doc.text(cliente.totale, 10, y);
 
       doc.save('scheda_cliente.pdf');
     }
@@ -945,7 +957,7 @@
       doc.text(`Mini Pocket: ${c.miniPocket}`, 10, y); y += lineHeight;
       doc.text(`Sala Posa: ${c.salaPosa}`, 10, y); y += lineHeight;
       doc.text(`Location: ${c.locationServizio}`, 10, y); y += lineHeight;
-      doc.text("APP. GALLERY", 10, y); y += lineHeight;
+      doc.text("APP. GALLERY (Created by PIC)", 10, y); y += lineHeight;
       doc.text(`Email: ${c.gallEmail}`, 10, y); y += lineHeight;
       doc.text(`Password: ${c.gallPw}`, 10, y); y += lineHeight;
       doc.text(`URL: ${c.gallUrl}`, 10, y); y += lineHeight;
@@ -958,7 +970,7 @@
         doc.text(`${a.data} - €${a.importo.toFixed(2)}`, 10, y);
         y += lineHeight;
       });
-      doc.text(`TOTALE: €${c.totale.toFixed(2)}`, 10, y);
+      doc.text(`IMPORTO TOTALE IVA ESCLUSA: €${c.totale.toFixed(2)}`, 10, y);
       doc.save(`scheda_${c.cliente1.cognome}_${c.cliente1.nome}.pdf`);
     }
 
