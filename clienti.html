@@ -139,6 +139,19 @@
       text-align: center;
     }
 
+    /* VOICE BUTTON */
+    .voice-btn {
+      background: #9b59b6;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85em;
+      min-width: 36px;
+      text-align: center;
+    }
+
     /* === TITOLO LAVORO COMMISSIONATO STYLE === */
     .commissionato-title {
       text-align: center;
@@ -372,11 +385,17 @@
         <div class="form-row">
           <div class="form-group">
             <label>Cognome</label>
-            <input type="text" id="cognome1" required />
+            <div class="input-with-btn">
+              <input type="text" id="cognome1" required />
+              <button class="voice-btn" onclick="avviaRiconoscimentoVocale('cognome1')">🎙️</button>
+            </div>
           </div>
           <div class="form-group">
             <label>Nome</label>
-            <input type="text" id="nome1" required />
+            <div class="input-with-btn">
+              <input type="text" id="nome1" required />
+              <button class="voice-btn" onclick="avviaRiconoscimentoVocale('nome1')">🎙️</button>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -384,18 +403,21 @@
           <div class="input-with-btn">
             <input type="text" id="indirizzo1" />
             <button class="google-maps-btn" onclick="openMaps('indirizzo1')">📍</button>
+            <button class="voice-btn" onclick="avviaRiconoscimentoVocale('indirizzo1')">🎙️</button>
           </div>
         </div>
-        <div class="form-group">
-          <label>Telefono (WhatsApp)</label>
-          <div class="input-with-btn">
-            <input type="text" id="telefono1" />
-            <button class="whatsapp-btn" onclick="openWhatsApp('telefono1')">💬</button>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefono (WhatsApp)</label>
+            <div class="input-with-btn">
+              <input type="text" id="telefono1" />
+              <button class="whatsapp-btn" onclick="openWhatsApp('telefono1')">💬</button>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="email1" />
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email1" />
+          </div>
         </div>
       </div>
 
@@ -404,11 +426,17 @@
         <div class="form-row">
           <div class="form-group">
             <label>Cognome</label>
-            <input type="text" id="cognome2" />
+            <div class="input-with-btn">
+              <input type="text" id="cognome2" />
+              <button class="voice-btn" onclick="avviaRiconoscimentoVocale('cognome2')">🎙️</button>
+            </div>
           </div>
           <div class="form-group">
             <label>Nome</label>
-            <input type="text" id="nome2" />
+            <div class="input-with-btn">
+              <input type="text" id="nome2" />
+              <button class="voice-btn" onclick="avviaRiconoscimentoVocale('nome2')">🎙️</button>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -416,18 +444,21 @@
           <div class="input-with-btn">
             <input type="text" id="indirizzo2" />
             <button class="google-maps-btn" onclick="openMaps('indirizzo2')">📍</button>
+            <button class="voice-btn" onclick="avviaRiconoscimentoVocale('indirizzo2')">🎙️</button>
           </div>
         </div>
-        <div class="form-group">
-          <label>Telefono</label>
-          <div class="input-with-btn">
-            <input type="text" id="telefono2" />
-            <button class="whatsapp-btn" onclick="openWhatsApp('telefono2')">💬</button>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefono</label>
+            <div class="input-with-btn">
+              <input type="text" id="telefono2" />
+              <button class="whatsapp-btn" onclick="openWhatsApp('telefono2')">💬</button>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="email2" />
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email2" />
+          </div>
         </div>
       </div>
     </div>
@@ -464,6 +495,7 @@
         <div class="input-with-btn">
           <input type="text" id="chiesa" />
           <button class="google-maps-btn" onclick="openMaps('chiesa')">📍</button>
+          <button class="voice-btn" onclick="avviaRiconoscimentoVocale('chiesa')">🎙️</button>
         </div>
       </div>
       <div class="grid-item">
@@ -471,6 +503,7 @@
         <div class="input-with-btn">
           <input type="text" id="location" />
           <button class="google-maps-btn" onclick="openMaps('location')">📍</button>
+          <button class="voice-btn" onclick="avviaRiconoscimentoVocale('location')">🎙️</button>
         </div>
       </div>
     </div>
@@ -663,13 +696,19 @@
     <!-- Cartella servizio -->
     <div class="section-full">
       <h3>Cartella servizio in:</h3>
-      <input type="text" id="cartellaServizio" placeholder="Esempio: D:\Clienti\Matrimonio_Rossi_2026" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;" />
+      <div class="input-with-btn">
+        <input type="text" id="cartellaServizio" placeholder="Esempio: D:\Clienti\Matrimonio_Rossi_2026" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;" />
+        <button class="voice-btn" onclick="avviaRiconoscimentoVocale('cartellaServizio')">🎙️</button>
+      </div>
     </div>
 
     <!-- Nota Cliente - FISSA, NON RIDIMENSIONABILE -->
     <div class="nota-cliente-container">
       <h3 class="nota-cliente-title">NOTA CLIENTE</h3>
-      <textarea id="nota" class="nota-cliente-textarea" placeholder="Inserisci una nota (opzionale)"></textarea>
+      <div class="input-with-btn" style="align-items:flex-start;">
+        <textarea id="nota" class="nota-cliente-textarea" placeholder="Inserisci una nota (opzionale)"></textarea>
+        <button class="voice-btn" style="align-self:flex-start; margin-top:12px;" onclick="avviaRiconoscimentoVocale('nota')">🎙️</button>
+      </div>
     </div>
 
     <!-- Acconti -->
@@ -742,6 +781,39 @@
         return;
       }
       window.open(`https://web.whatsapp.com/send?phone=${clean}`, '_blank');
+    }
+
+    // ===== RICONOSCIMENTO VOCALE =====
+    function avviaRiconoscimentoVocale(campoId) {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("Il tuo browser non supporta il riconoscimento vocale.");
+        return;
+      }
+
+      if (!navigator.onLine) {
+        alert("⚠️ Il riconoscimento vocale richiede una connessione internet.");
+        return;
+      }
+
+      const campo = document.getElementById(campoId);
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new Recognition();
+
+      recognition.lang = 'it-IT';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        campo.value = transcript;
+      };
+
+      recognition.onerror = function(event) {
+        console.error("Errore vocale:", event.error);
+        alert("Errore durante il riconoscimento vocale. Assicurati di essere connesso a internet e di aver dato il permesso al microfono.");
+      };
     }
 
     // ===== ACCONTI =====
