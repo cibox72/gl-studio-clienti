@@ -242,6 +242,76 @@
       flex-wrap: wrap;
     }
 
+    /* === APP. GALLERY IN VERDE (ORIGINALE) === */
+    .gallery-section {
+      background: #e8f5e9;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 25px 0;
+      border: 1px solid #c8e6c9;
+    }
+
+    .gallery-title {
+      text-align: center;
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--gallery-green);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .gallery-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+
+    .gallery-field {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .gallery-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--gallery-green);
+    }
+
+    .gallery-field input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #a5d6a7;
+      border-radius: 6px;
+      background: #f1f8e9;
+    }
+
+    /* === NOTA CLIENTE - FISSA E NON RIDIMENSIONABILE === */
+    .nota-cliente-container {
+      margin: 25px 0;
+    }
+
+    .nota-cliente-title {
+      margin: 0;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #2c3e50;
+      font-size: 1.1em;
+    }
+
+    .nota-cliente-textarea {
+      width: 100%;
+      height: 120px; /* Altezza fissa */
+      padding: 12px;
+      border: 1px solid #999;
+      border-radius: 4px;
+      font-size: 0.95em;
+      resize: none; /* Non ridimensionabile */
+      margin-top: 8px;
+    }
+
     /* === ELenco Clienti Stile === */
     .servizio-group {
       margin-bottom: 30px;
@@ -563,7 +633,7 @@
       </div>
     </div>
 
-    <!-- APP. GALLERY IN VERDE, TUTTO IN UNA RIGA, SENZA "Created by PIC", CAMPI VUOTI -->
+    <!-- APP. GALLERY - ORIGINALE, VERDE, TUTTO IN UNA RIGA -->
     <div class="gallery-section">
       <div class="gallery-title">APP. GALLERY</div>
       <div class="gallery-row">
@@ -588,10 +658,10 @@
       <input type="text" id="cartellaServizio" placeholder="Esempio: D:\Clienti\Matrimonio_Rossi_2026" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;" />
     </div>
 
-    <!-- Nota Cliente -->
-    <div class="section-full">
-      <h3>NOTA CLIENTE</h3>
-      <textarea id="nota" rows="3" placeholder="Inserisci una nota (opzionale)"></textarea>
+    <!-- Nota Cliente - FISSA, NON RIDIMENSIONABILE -->
+    <div class="nota-cliente-container">
+      <h3 class="nota-cliente-title">NOTA CLIENTE</h3>
+      <textarea id="nota" class="nota-cliente-textarea" placeholder="Inserisci una nota (opzionale)"></textarea>
     </div>
 
     <!-- Acconti -->
