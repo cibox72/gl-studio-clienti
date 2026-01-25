@@ -284,15 +284,6 @@
       background: #f1f8e9;
     }
 
-    .created-by-pic {
-      color: var(--gallery-green);
-      font-weight: bold;
-      margin-left: 15px;
-      font-size: 1.1em;
-      align-self: flex-end;
-      padding-bottom: 8px;
-    }
-
     @media print {
       .no-print { display: none !important; }
     }
@@ -568,23 +559,22 @@
     <!-- IMPORTO TOTALE IVA ESCLUSA -->
     <div class="highlight-total" id="importoTotale">IMPORTO TOTALE IVA ESCLUSA: € 0,00</div>
 
-    <!-- APP. GALLERY IN VERDE, TUTTO IN UNA RIGA -->
+    <!-- APP. GALLERY IN VERDE, TUTTO IN UNA RIGA, SENZA "Created by PIC", CAMPI VUOTI -->
     <div class="gallery-section">
       <div class="gallery-title">APP. GALLERY</div>
       <div class="gallery-row">
         <div class="gallery-field">
           <label>Email</label>
-          <input type="email" id="gallEmail" />
+          <input type="email" id="gallEmail" placeholder="" />
         </div>
         <div class="gallery-field">
           <label>Password</label>
-          <input type="password" id="gallPw" />
+          <input type="password" id="gallPw" placeholder="" />
         </div>
         <div class="gallery-field">
           <label>URL</label>
           <input type="url" id="gallUrl" />
         </div>
-        <div class="created-by-pic">Created by PIC</div>
       </div>
     </div>
 
@@ -597,7 +587,7 @@
     <!-- Nota Cliente -->
     <div class="section-full">
       <h3>NOTA CLIENTE</h3>
-      <textarea id="nota" rows="3" placeholder="Inserisci una nota (opzionale)" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;"></textarea>
+      <textarea id="nota" rows="3" placeholder="Inserisci una nota (opzionale)"></textarea>
     </div>
 
     <!-- Acconti -->
@@ -851,10 +841,10 @@
       doc.text(`Sala Posa: ${cliente.salaPosa}`, 10, y); y += lineHeight;
       doc.text(`Location: ${cliente.locationServizio}`, 10, y); y += lineHeight;
 
-      doc.text("APP. GALLERY (Created by PIC)", 10, y); y += lineHeight;
-      doc.text(`Email: ${cliente.gallEmail}`, 10, y); y += lineHeight;
-      doc.text(`Password: ${cliente.gallPw}`, 10, y); y += lineHeight;
-      doc.text(`URL: ${cliente.gallUrl}`, 10, y); y += lineHeight;
+      doc.text("APP. GALLERY", 10, y); y += lineHeight;
+      doc.text(`Email: ${cliente.gallEmail || ''}`, 10, y); y += lineHeight;
+      doc.text(`Password: ${cliente.gallPw || ''}`, 10, y); y += lineHeight;
+      doc.text(`URL: ${cliente.gallUrl || ''}`, 10, y); y += lineHeight;
 
       doc.text("CARTELLA SERVIZIO", 10, y); y += lineHeight;
       doc.text(cliente.cartellaServizio || 'Non specificata', 10, y); y += lineHeight;
@@ -1014,10 +1004,10 @@
       doc.text(`Mini Pocket: ${c.miniPocket}`, 10, y); y += lineHeight;
       doc.text(`Sala Posa: ${c.salaPosa}`, 10, y); y += lineHeight;
       doc.text(`Location: ${c.locationServizio}`, 10, y); y += lineHeight;
-      doc.text("APP. GALLERY (Created by PIC)", 10, y); y += lineHeight;
-      doc.text(`Email: ${c.gallEmail}`, 10, y); y += lineHeight;
-      doc.text(`Password: ${c.gallPw}`, 10, y); y += lineHeight;
-      doc.text(`URL: ${c.gallUrl}`, 10, y); y += lineHeight;
+      doc.text("APP. GALLERY", 10, y); y += lineHeight;
+      doc.text(`Email: ${c.gallEmail || ''}`, 10, y); y += lineHeight;
+      doc.text(`Password: ${c.gallPw || ''}`, 10, y); y += lineHeight;
+      doc.text(`URL: ${c.gallUrl || ''}`, 10, y); y += lineHeight;
       doc.text("CARTELLA SERVIZIO", 10, y); y += lineHeight;
       doc.text(c.cartellaServizio || 'Non specificata', 10, y); y += lineHeight;
       doc.text("NOTA", 10, y); y += lineHeight;
