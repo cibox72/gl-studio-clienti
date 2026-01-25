@@ -12,7 +12,7 @@
       --light: #ecf0f1;
       --dark: #2c3e50;
       --border: #ddd;
-      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --shadow: 0 2,px 8px rgba(0,0,0,0.1);
     }
 
     * {
@@ -124,7 +124,7 @@
       text-align: center;
     }
 
-    /* === LAVORO COMMISSIONATO === */
+    /* === TITOLO LAVORO COMMISSIONATO STYLE === */
     .commissionato-title {
       text-align: center;
       font-size: 1.4em;
@@ -372,7 +372,11 @@
       </div>
       <div class="grid-item">
         <label>Copertina</label>
-        <input type="number" id="copertina" min="0" max="10" />
+        <select id="copertina">
+          <option value="">Seleziona...</option>
+          <option>Semplice con foto TELATA</option>
+          <option>EXTRA LUSSO</option>
+        </select>
       </div>
       <div class="grid-item">
         <label>Mini Album</label>
@@ -384,7 +388,11 @@
     <div class="grid-3">
       <div class="grid-item">
         <label>Effetti</label>
-        <input type="text" id="effetti" />
+        <select id="effetti">
+          <option value="">Seleziona...</option>
+          <option>Senza effetti</option>
+          <option>Con effetti</option>
+        </select>
       </div>
       <div class="grid-item">
         <label>Interni</label>
@@ -397,7 +405,14 @@
       </div>
       <div class="grid-item">
         <label>Foto selezionate per book</label>
-        <input type="number" id="fotoBook" min="0" />
+        <select id="fotoBook">
+          <option value="">Seleziona...</option>
+          <option>10</option><option>20</option><option>30</option><option>40</option><option>50</option>
+          <option>60</option><option>70</option><option>80</option><option>90</option><option>100</option>
+          <option>110</option><option>120</option><option>130</option><option>140</option><option>150</option>
+          <option>160</option><option>170</option><option>180</option><option>190</option><option>200</option>
+          <option>210</option><option>220</option><option>230</option><option>240</option><option>250</option>
+        </select>
       </div>
     </div>
 
@@ -405,7 +420,12 @@
     <div class="grid-3">
       <div class="grid-item">
         <label>Anteprima</label>
-        <input type="checkbox" id="anteprima" style="width:auto;" />
+        <select id="anteprima">
+          <option value="">Seleziona...</option>
+          <option>SOLO FOTO</option>
+          <option>SOLO VIDEO</option>
+          <option>VIDEO E FOTO</option>
+        </select>
       </div>
       <div class="grid-item">
         <label>Post Servizio</label>
@@ -480,22 +500,20 @@
       </div>
     </div>
 
-    <!-- App Gallery -->
-    <div class="section-full">
-      <h3>APP. GALLERY</h3>
-      <div class="grid-3">
-        <div class="grid-item">
-          <label>Email</label>
-          <input type="email" id="gallEmail" />
-        </div>
-        <div class="grid-item">
-          <label>Password</label>
-          <input type="password" id="gallPw" />
-        </div>
-        <div class="grid-item">
-          <label>URL</label>
-          <input type="url" id="gallUrl" />
-        </div>
+    <!-- APP. GALLERY con stile LAVORO COMMISSIONATO -->
+    <div class="commissionato-title">APP. GALLERY</div>
+    <div class="grid-3">
+      <div class="grid-item">
+        <label>Email</label>
+        <input type="email" id="gallEmail" />
+      </div>
+      <div class="grid-item">
+        <label>Password</label>
+        <input type="password" id="gallPw" />
+      </div>
+      <div class="grid-item">
+        <label>URL</label>
+        <input type="url" id="gallUrl" />
       </div>
     </div>
 
@@ -645,12 +663,12 @@
           email: document.getElementById('email2').value
         },
         album: document.getElementById('album').value,
-        copertina: parseInt(document.getElementById('copertina').value) || 0,
+        copertina: document.getElementById('copertina').value,
         miniAlbum: parseInt(document.getElementById('miniAlbum').value) || 0,
         effetti: document.getElementById('effetti').value,
         interni: parseInt(document.getElementById('interni').value) || 0,
         fotoBook: parseInt(document.getElementById('fotoBook').value) || 0,
-        anteprima: document.getElementById('anteprima').checked,
+        anteprima: document.getElementById('anteprima').value,
         postServizio: document.getElementById('postServizio').checked,
         video: document.getElementById('video').value,
         tela: document.getElementById('tela').value,
@@ -716,7 +734,7 @@
         effetti: document.getElementById('effetti').value,
         interni: document.getElementById('interni').value,
         fotoBook: document.getElementById('fotoBook').value,
-        anteprima: document.getElementById('anteprima').checked ? "Sì" : "No",
+        anteprima: document.getElementById('anteprima').value,
         postServizio: document.getElementById('postServizio').checked ? "Sì" : "No",
         video: document.getElementById('video').value,
         tela: document.getElementById('tela').value,
@@ -815,6 +833,8 @@
             <strong>Chiesa:</strong> ${c.chiesa || '–'}<br>
             <strong>Location:</strong> ${c.location || '–'}<br>
             <strong>Servizio:</strong> ${c.servizioTipo}<br>
+            <strong>Copertina:</strong> ${c.copertina || '–'}<br>
+            <strong>Anteprima:</strong> ${c.anteprima || '–'}<br>
             <strong>Cartella:</strong> ${c.cartellaServizio || 'Non impostata'}<br>
             <strong>Totale:</strong> €${c.totale.toFixed(2)}
           </div>
@@ -856,7 +876,7 @@
       document.getElementById('effetti').value = c.effetti;
       document.getElementById('interni').value = c.interni;
       document.getElementById('fotoBook').value = c.fotoBook;
-      document.getElementById('anteprima').checked = c.anteprima;
+      document.getElementById('anteprima').value = c.anteprima;
       document.getElementById('postServizio').checked = c.postServizio;
       document.getElementById('video').value = c.video;
       document.getElementById('tela').value = c.tela;
@@ -917,7 +937,7 @@
       doc.text(`Effetti: ${c.effetti}`, 10, y); y += lineHeight;
       doc.text(`Interni: ${c.interni}`, 10, y); y += lineHeight;
       doc.text(`Foto Book: ${c.fotoBook}`, 10, y); y += lineHeight;
-      doc.text(`Anteprima: ${c.anteprima ? 'Sì' : 'No'}`, 10, y); y += lineHeight;
+      doc.text(`Anteprima: ${c.anteprima}`, 10, y); y += lineHeight;
       doc.text(`Post Servizio: ${c.postServizio ? 'Sì' : 'No'}`, 10, y); y += lineHeight;
       doc.text(`Video: ${c.video}`, 10, y); y += lineHeight;
       doc.text(`Tela: ${c.tela} x ${c.telaQt}`, 10, y); y += lineHeight;
