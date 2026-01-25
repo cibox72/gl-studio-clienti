@@ -14,6 +14,7 @@
       --border: #ddd;
       --shadow: 0 2px 8px rgba(0,0,0,0.1);
       --gallery-green: #27ae60;
+      --whatsapp: #25D366;
     }
 
     * {
@@ -100,20 +101,33 @@
       font-size: 0.95em;
     }
 
-    /* INLINE MAPS BUTTON */
-    .input-with-map {
+    /* INLINE MAPS & WHATSAPP BUTTON */
+    .input-with-btn {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .input-with-map input {
+    .input-with-btn input {
       flex: 1;
       margin: 0;
     }
 
     .google-maps-btn {
       background: #4285F4;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85em;
+      font-weight: bold;
+      min-width: 36px;
+      text-align: center;
+    }
+
+    .whatsapp-btn {
+      background: var(--whatsapp);
       color: white;
       border: none;
       padding: 6px 10px;
@@ -192,16 +206,6 @@
     .btn-danger { background: var(--accent); color: white; }
     .btn-center { text-align: center; margin: 25px 0; }
 
-    .highlight-total {
-      font-size: 1.8em;
-      font-weight: bold;
-      color: var(--accent);
-      text-align: center;
-      margin: 30px 0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
     .acconti-list {
       margin-top: 10px;
     }
@@ -238,50 +242,40 @@
       flex-wrap: wrap;
     }
 
-    /* === APP. GALLERY IN VERDE === */
-    .gallery-section {
-      background: #e8f5e9;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 25px 0;
-      border: 1px solid #c8e6c9;
+    /* === ELenco Clienti Stile === */
+    .servizio-group {
+      margin-bottom: 30px;
     }
 
-    .gallery-title {
-      text-align: center;
-      font-size: 1.4em;
-      font-weight: 700;
-      color: var(--gallery-green);
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .servizio-title {
+      background: #f1f1f1;
+      padding: 10px;
+      border-left: 4px solid var(--secondary);
+      font-weight: bold;
+      margin: 20px 0 10px;
+      font-size: 1.1em;
     }
 
-    .gallery-row {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      align-items: end;
+    .cliente-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95em;
     }
 
-    .gallery-field {
-      flex: 1;
-      min-width: 150px;
+    .cliente-row div {
+      word-break: break-word;
     }
 
-    .gallery-field label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--gallery-green);
+    .saldo-negativo {
+      color: var(--accent);
+      font-weight: bold;
     }
 
-    .gallery-field input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #a5d6a7;
-      border-radius: 6px;
-      background: #f1f8e9;
+    .saldo-positivo {
+      color: green;
     }
 
     @media print {
@@ -309,20 +303,21 @@
         </div>
         <div class="form-group">
           <label>Indirizzo</label>
-          <div class="input-with-map">
+          <div class="input-with-btn">
             <input type="text" id="indirizzo1" />
             <button class="google-maps-btn" onclick="openMaps('indirizzo1')">📍</button>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Telefono (WhatsApp)</label>
+        <div class="form-group">
+          <label>Telefono (WhatsApp)</label>
+          <div class="input-with-btn">
             <input type="text" id="telefono1" />
+            <button class="whatsapp-btn" onclick="openWhatsApp('telefono1')">💬</button>
           </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="email1" />
-          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email1" />
         </div>
       </div>
 
@@ -340,20 +335,21 @@
         </div>
         <div class="form-group">
           <label>Indirizzo</label>
-          <div class="input-with-map">
+          <div class="input-with-btn">
             <input type="text" id="indirizzo2" />
             <button class="google-maps-btn" onclick="openMaps('indirizzo2')">📍</button>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Telefono</label>
+        <div class="form-group">
+          <label>Telefono</label>
+          <div class="input-with-btn">
             <input type="text" id="telefono2" />
+            <button class="whatsapp-btn" onclick="openWhatsApp('telefono2')">💬</button>
           </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="email2" />
-          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email2" />
         </div>
       </div>
     </div>
@@ -387,14 +383,14 @@
     <div class="grid-3">
       <div class="grid-item">
         <label>Chiesa</label>
-        <div class="input-with-map">
+        <div class="input-with-btn">
           <input type="text" id="chiesa" />
           <button class="google-maps-btn" onclick="openMaps('chiesa')">📍</button>
         </div>
       </div>
       <div class="grid-item">
         <label>Location</label>
-        <div class="input-with-map">
+        <div class="input-with-btn">
           <input type="text" id="location" />
           <button class="google-maps-btn" onclick="openMaps('location')">📍</button>
         </div>
@@ -556,8 +552,16 @@
       </div>
     </div>
 
-    <!-- IMPORTO TOTALE IVA ESCLUSA -->
-    <div class="highlight-total" id="importoTotale">IMPORTO TOTALE IVA ESCLUSA: € 0,00</div>
+    <!-- IMPORTO TOTALE IVA ESCLUSA - EDITABILE -->
+    <div class="section-full">
+      <label for="importoTotaleInput" style="display:block; text-align:center; font-size:1.8em; font-weight:bold; color:#e74c3c; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">
+        IMPORTO TOTALE IVA ESCLUSA
+      </label>
+      <div style="text-align:center;">
+        <input type="number" id="importoTotaleInput" min="0" step="0.01" placeholder="0.00" 
+               style="font-size:1.6em; padding:10px; width:80%; max-width:400px; text-align:center; border:2px solid #e74c3c; border-radius:8px;" />
+      </div>
+    </div>
 
     <!-- APP. GALLERY IN VERDE, TUTTO IN UNA RIGA, SENZA "Created by PIC", CAMPI VUOTI -->
     <div class="gallery-section">
@@ -648,6 +652,20 @@
       if (val) window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(val)}`, '_blank');
     }
 
+    function openWhatsApp(fieldId) {
+      const numero = document.getElementById(fieldId)?.value?.trim();
+      if (!numero) {
+        alert("Inserisci un numero di telefono.");
+        return;
+      }
+      const clean = numero.replace(/\D/g, '');
+      if (clean.length < 8) {
+        alert("Numero non valido.");
+        return;
+      }
+      window.open(`https://web.whatsapp.com/send?phone=${clean}`, '_blank');
+    }
+
     // ===== ACCONTI =====
     function aggiungiAcconto() {
       const data = document.getElementById('accontoData').value;
@@ -658,7 +676,6 @@
       }
       acconti.push({ data, importo });
       aggiornaListaAcconti();
-      aggiornaTotale();
       document.getElementById('accontoData').value = '';
       document.getElementById('accontoImporto').value = '';
     }
@@ -666,7 +683,6 @@
     function rimuoviAcconto(index) {
       acconti.splice(index, 1);
       aggiornaListaAcconti();
-      aggiornaTotale();
     }
 
     function modificaAcconto(index) {
@@ -676,7 +692,6 @@
         acconti[index].data = nuovoData;
         acconti[index].importo = parseFloat(nuovoImporto) || 0;
         aggiornaListaAcconti();
-        aggiornaTotale();
       }
     }
 
@@ -693,11 +708,6 @@
         `;
         el.appendChild(div);
       });
-    }
-
-    function aggiornaTotale() {
-      const tot = acconti.reduce((sum, a) => sum + a.importo, 0);
-      document.getElementById('importoTotale').textContent = `IMPORTO TOTALE IVA ESCLUSA: € ${tot.toFixed(2)}`;
     }
 
     // ===== SALVATAGGIO =====
@@ -745,7 +755,7 @@
         cartellaServizio: document.getElementById('cartellaServizio').value,
         nota: document.getElementById('nota').value.trim() || null,
         acconti: [...acconti],
-        totale: parseFloat(document.getElementById('importoTotale').textContent.replace('IMPORTO TOTALE IVA ESCLUSA: € ', '').replace(',', '.')) || 0
+        totale: parseFloat(document.getElementById('importoTotaleInput').value) || 0
       };
 
       clienti.push(cliente);
@@ -760,9 +770,9 @@
         if (el.type === 'checkbox') el.checked = false;
         else el.value = '';
       });
+      document.getElementById('importoTotaleInput').value = '';
       acconti = [];
       aggiornaListaAcconti();
-      aggiornaTotale();
     }
 
     function eliminaCliente() {
@@ -840,7 +850,7 @@
         cartellaServizio: document.getElementById('cartellaServizio').value,
         nota: document.getElementById('nota').value,
         acconti: acconti.map(a => `${a.data} - €${a.importo.toFixed(2)}`).join('\n'),
-        totale: document.getElementById('importoTotale').textContent
+        totale: parseFloat(document.getElementById('importoTotaleInput').value) || 0
       };
 
       let y = 20;
@@ -887,12 +897,12 @@
       doc.text("ACCONTI", 10, y); y += lineHeight;
       doc.text(cliente.acconti, 10, y); y += lineHeight;
 
-      doc.text(cliente.totale, 10, y);
+      doc.text(`IMPORTO TOTALE IVA ESCLUSA: €${cliente.totale.toFixed(2)}`, 10, y);
 
       doc.save('scheda_cliente.pdf');
     }
 
-    // ===== CARICAMENTO ELENCO =====
+    // ===== CARICAMENTO ELENCO AGGIORNATO =====
     function caricaElencoClienti() {
       const el = document.getElementById('elencoClienti');
       el.innerHTML = '';
@@ -902,42 +912,66 @@
         return;
       }
 
-      const sorted = [...clienti].sort((a, b) => {
-        const dateA = new Date(a.dataEvento.split('/').reverse().join('-'));
-        const dateB = new Date(b.dataEvento.split('/').reverse().join('-'));
-        return dateA - dateB;
+      // Raggruppa per servizio
+      const gruppi = {};
+      clienti.forEach(c => {
+        const servizio = c.servizioTipo || 'Altro';
+        if (!gruppi[servizio]) gruppi[servizio] = [];
+        
+        // Calcola totali
+        const totaleAcconti = c.acconti.reduce((sum, a) => sum + (parseFloat(a.importo) || 0), 0);
+        const saldo = (c.totale || 0) - totaleAcconti;
+
+        gruppi[servizio].push({
+          ...c,
+          totaleAcconti,
+          saldo
+        });
       });
 
-      sorted.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'cliente-card';
-
-        const dataEvento = c.dataEvento ? new Date(c.dataEvento.split('/').reverse().join('-')).toLocaleDateString('it-IT') : 'N/D';
-
-        card.innerHTML = `
-          <div class="cliente-header">
-            <span>${c.cliente1.cognome} ${c.cliente1.nome}${c.cliente2.cognome ? ' & ' + c.cliente2.cognome : ''}</span>
-            <span>${dataEvento}</span>
-          </div>
-          <div>
-            <strong>Chiesa:</strong> ${c.chiesa || '–'}<br>
-            <strong>Location:</strong> ${c.location || '–'}<br>
-            <strong>Servizio:</strong> ${c.servizioTipo}<br>
-            <strong>Copertina:</strong> ${c.copertina || '–'}<br>
-            <strong>Anteprima:</strong> ${c.anteprima || '–'}<br>
-            <strong>Post Servizio:</strong> ${c.postServizio || '–'}<br>
-            <strong>Cartella:</strong> ${c.cartellaServizio || 'Non impostata'}<br>
-            <strong>Totale:</strong> €${c.totale.toFixed(2)}
-          </div>
-          <div class="cliente-actions">
-            <button class="btn btn-primary" onclick="modificaCliente(${c.id})">✏️ Modifica</button>
-            <button class="btn btn-primary" onclick="whatsappCliente('${c.cliente1.telefono}')">💬 WhatsApp</button>
-            <button class="btn btn-danger" onclick="eliminaClienteById(${c.id})">❌ Elimina</button>
-            <button class="btn btn-primary" onclick="pdfCliente(${c.id})">📥 PDF</button>
-          </div>
-        `;
-        el.appendChild(card);
+      // Ordina ogni gruppo per data (più recente prima)
+      Object.keys(gruppi).forEach(servizio => {
+        gruppi[servizio].sort((a, b) => {
+          const dateA = new Date(a.dataEvento.split('/').reverse().join('-'));
+          const dateB = new Date(b.dataEvento.split('/').reverse().join('-'));
+          return dateB - dateA; // Decrescente: più recente in alto
+        });
       });
+
+      // Ordina i gruppi per nome servizio (opzionale)
+      const serviziOrdinati = Object.keys(gruppi).sort();
+
+      let html = '';
+      serviziOrdinati.forEach(servizio => {
+        html += `<div class="servizio-group">
+          <div class="servizio-title">${servizio}</div>`;
+        
+        gruppi[servizio].forEach(c => {
+          const cognomi = c.cliente1.cognome + (c.cliente2.cognome ? ` & ${c.cliente2.cognome}` : '');
+          const totale = (c.totale || 0).toFixed(2);
+          const acconti = c.totaleAcconti.toFixed(2);
+          const saldo = c.saldo.toFixed(2);
+          const classeSaldo = c.saldo <= 0 ? 'saldo-positivo' : 'saldo-negativo';
+
+          html += `
+            <div class="cliente-row">
+              <div><strong>${cognomi}</strong></div>
+              <div>${c.dataEvento || 'N/D'}</div>
+              <div>€ ${totale}</div>
+              <div>€ ${acconti}</div>
+              <div class="${classeSaldo}">€ ${saldo}</div>
+              <div>
+                <button class="btn btn-primary" style="padding:4px 8px;font-size:0.8em;" onclick="modificaCliente(${c.id})">✏️</button>
+                <button class="btn btn-primary" style="padding:4px 8px;font-size:0.8em;" onclick="whatsappFromList('${c.cliente1.telefono}')">💬</button>
+                <button class="btn btn-danger" style="padding:4px 8px;font-size:0.8em;" onclick="eliminaClienteById(${c.id})">❌</button>
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+      });
+
+      el.innerHTML = html;
     }
 
     function modificaCliente(id) {
@@ -982,10 +1016,10 @@
       document.getElementById('gallUrl').value = c.gallUrl;
       document.getElementById('cartellaServizio').value = c.cartellaServizio || '';
       document.getElementById('nota').value = c.nota || '';
+      document.getElementById('importoTotaleInput').value = c.totale || '';
 
       acconti = [...c.acconti];
       aggiornaListaAcconti();
-      aggiornaTotale();
     }
 
     function eliminaClienteById(id) {
@@ -996,12 +1030,17 @@
       }
     }
 
-    function whatsappCliente(numero) {
+    function whatsappFromList(numero) {
       if (!numero) {
         alert("Numero non disponibile.");
         return;
       }
-      window.open(`https://wa.me/${numero.replace(/\D/g, '')}`, '_blank');
+      const clean = numero.replace(/\D/g, '');
+      if (clean.length < 8) {
+        alert("Numero non valido.");
+        return;
+      }
+      window.open(`https://web.whatsapp.com/send?phone=${clean}`, '_blank');
     }
 
     function pdfCliente(id) {
@@ -1049,7 +1088,7 @@
         doc.text(`${a.data} - €${a.importo.toFixed(2)}`, 10, y);
         y += lineHeight;
       });
-      doc.text(`IMPORTO TOTALE IVA ESCLUSA: €${c.totale.toFixed(2)}`, 10, y);
+      doc.text(`IMPORTO TOTALE IVA ESCLUSA: €${(c.totale || 0).toFixed(2)}`, 10, y);
       doc.save(`scheda_${c.cliente1.cognome}_${c.cliente1.nome}.pdf`);
     }
 
