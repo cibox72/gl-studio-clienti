@@ -591,16 +591,23 @@ break-inside: avoid;
 </select>
 </div>
 <div class="field-group" style="flex: 1; min-width: 200px;">
-<label for="dataEvento">3. Data Evento</label>
+<label for="dataEvento">4. Data Evento</label>
 <input type="date" id="dataEvento" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 15px;">
 </div>
 </div>
 <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;">
 <div class="field-group" style="flex: 1; min-width: 200px;">
-<label for="chiesa">2. Chiesa / Location</label>
+<label for="chiesa">2. Chiesa</label>
 <div style="display: flex; gap: 10px; align-items: center;">
 <input type="text" id="chiesa" style="flex: 1;">
 <button type="button" class="maps-btn" onclick="openMaps('chiesa')">📍</button>
+</div>
+</div>
+<div class="field-group" style="flex: 1; min-width: 200px;">
+<label for="location">3. Location</label>
+<div style="display: flex; gap: 10px; align-items: center;">
+<input type="text" id="location" style="flex: 1;">
+<button type="button" class="maps-btn" onclick="openMaps('location')">📍</button>
 </div>
 </div>
 </div>
@@ -608,7 +615,7 @@ break-inside: avoid;
 <div class="service-grid">
 <!-- Riga 1 -->
 <div class="service-item">
-<label for="album">4. Album</label>
+<label for="album">5. Album</label>
 <select id="album">
 <option value="">Nessuno</option>
 <option value="ANALOGICO 33x33 cm">ANALOGICO 33x33 cm</option>
@@ -621,7 +628,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="copertina">5. Copertina</label>
+<label for="copertina">6. Copertina</label>
 <select id="copertina">
 <option value="">Nessuna</option>
 <option value="Semplice con foto TELATA">Semplice con foto TELATA</option>
@@ -629,7 +636,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="miniAlbum">6. Mini Album</label>
+<label for="miniAlbum">7. Mini Album</label>
 <select id="miniAlbum">
 <option value="">Nessuno</option>
 <option value="Mini Album 15x15">Mini Album 15x15</option>
@@ -638,7 +645,7 @@ break-inside: avoid;
 </div>
 <!-- Riga 2 -->
 <div class="service-item">
-<label for="effetti">7. Effetti</label>
+<label for="effetti">8. Effetti</label>
 <select id="effetti">
 <option value="">Nessuno</option>
 <option value="B/N Artistico">B/N Artistico</option>
@@ -647,7 +654,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="interni">8. Interni</label>
+<label for="interni">9. Interni</label>
 <select id="interni">
 <option value="">Nessuno</option>
 <option value="5">5</option>
@@ -663,7 +670,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="fotoBook">9. Foto selezionate per book</label>
+<label for="fotoBook">10. Foto selezionate per book</label>
 <select id="fotoBook">
 <option value="">Nessuna</option>
 <option value="10">10</option>
@@ -695,7 +702,7 @@ break-inside: avoid;
 </div>
 <!-- Riga 3 -->
 <div class="service-item">
-<label for="anteprima">10. Anteprima</label>
+<label for="anteprima">11. Anteprima</label>
 <select id="anteprima">
 <option value="">Nessuna</option>
 <option value="SOLO FOTO">SOLO FOTO</option>
@@ -704,7 +711,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="postServizio">11. Post Servizio</label>
+<label for="postServizio">12. Post Servizio</label>
 <select id="postServizio">
 <option value="">Nessuno</option>
 <option value="Ritocco Base">Ritocco Base</option>
@@ -713,7 +720,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="video">12. Video</label>
+<label for="video">13. Video</label>
 <select id="video">
 <option value="">Nessuno</option>
 <option value="SOLO GIORNATA">SOLO GIORNATA</option>
@@ -725,8 +732,8 @@ break-inside: avoid;
 </div>
 <!-- Riga 4 -->
 <div class="service-item">
-<label for="tela">13. Tela</label>
-<select id="tela">
+<label for="tela">14. Tela</label>
+<select id="tela" style="width: calc(100% - 60px); display: inline-block;">
 <option value="">Nessuna</option>
 <option value="30x40 cm - Telaio Standard">30x40 cm - Telaio Standard</option>
 <option value="40x50 cm - Telaio Standard">40x50 cm - Telaio Standard</option>
@@ -735,10 +742,8 @@ break-inside: avoid;
 <option value="40x50 cm - Telaio Spesso">40x50 cm - Telaio Spesso</option>
 <option value="50x70 cm - Telaio Spesso">50x70 cm - Telaio Spesso</option>
 </select>
-</div>
-<div class="service-item">
-<label for="telaQtà">Qtà</label>
-<select id="telaQtà">
+<span style="display: inline-block; width: 60px; text-align: center;">Qtà</span>
+<select id="telaQtà" style="width: 60px; display: inline-block;">
 <option value="">0</option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -753,8 +758,8 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="stampeCarta">14. Stampe Carta Fotografica</label>
-<select id="stampeCarta">
+<label for="stampeCarta">15. Stampe Carta Fotografica</label>
+<select id="stampeCarta" style="width: calc(100% - 60px); display: inline-block;">
 <option value="">Nessuna</option>
 <option value="50x70 cm">50x70 cm</option>
 <option value="30x40 cm">30x40 cm</option>
@@ -762,13 +767,8 @@ break-inside: avoid;
 <option value="20x30 cm">20x30 cm</option>
 <option value="15x20 cm">15x20 cm</option>
 </select>
-</div>
-</div>
-<div class="service-grid">
-<!-- Riga 5 -->
-<div class="service-item">
-<label for="stampeQtà">Qtà</label>
-<select id="stampeQtà">
+<span style="display: inline-block; width: 60px; text-align: center;">Qtà</span>
+<select id="stampeQtà" style="width: 60px; display: inline-block;">
 <option value="">0</option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -792,7 +792,7 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item">
-<label for="miniPocket">15. Mini Pocket</label>
+<label for="miniPocket">16. Mini Pocket</label>
 <select id="miniPocket">
 <option value="">Nessuno</option>
 <option value="1">1</option>
@@ -807,24 +807,23 @@ break-inside: avoid;
 <option value="10">10</option>
 </select>
 </div>
+</div>
+<div class="service-grid">
+<!-- Riga 5 -->
 <div class="service-item">
-<label for="servizioSalaPosa">16. Servizio Sala Posa</label>
+<label for="servizioSalaPosa">17. Servizio Sala Posa</label>
 <select id="servizioSalaPosa">
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
 </div>
-</div>
-<div class="service-grid">
-<!-- Riga 6 -->
 <div class="service-item">
-<label for="servizioLocation">17. Servizio Location</label>
+<label for="servizioLocation">18. Servizio Location</label>
 <select id="servizioLocation">
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
 </div>
-<div class="service-item"></div>
 <div class="service-item"></div>
 </div><!-- IMPORTO E EXTRA -->
 <div class="form-section" style="margin-top: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 12px;">
@@ -1026,6 +1025,7 @@ return;
 
 // Raccolta dati LAVORO COMMISSIONATO
 const chiesa = document.getElementById('chiesa').value.trim() || '';
+const location = document.getElementById('location').value.trim() || '';
 const album = document.getElementById('album').value || '';
 const copertina = document.getElementById('copertina').value || '';
 const miniAlbum = document.getElementById('miniAlbum').value || '';
@@ -1077,9 +1077,10 @@ indirizzo2: document.getElementById('indirizzo2').value.trim() || '',
 citta2: document.getElementById('citta2').value.trim() || '',
 telefono2: document.getElementById('telefono2').value.trim() || '',
 email2: document.getElementById('email2').value.trim() || '',
-// LAVORO COMMISSIONATO (17 campi)
+// LAVORO COMMISSIONATO (18 campi)
 tipoServizio: tipoServizio || '',
 chiesa: chiesa,
+location: location,
 dataEvento: dataEvento || '',
 album: album,
 copertina: copertina,
@@ -1226,6 +1227,7 @@ document.getElementById('email2').value = cliente.email2 || '';
 // LAVORO COMMISSIONATO
 document.getElementById('tipoServizio').value = cliente.tipoServizio || '';
 document.getElementById('chiesa').value = cliente.chiesa || '';
+document.getElementById('location').value = cliente.location || '';
 document.getElementById('dataEvento').value = cliente.dataEvento || '';
 document.getElementById('album').value = cliente.album || '';
 document.getElementById('copertina').value = cliente.copertina || '';
@@ -1364,22 +1366,23 @@ LAVORO COMMISSIONATO
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">Dettagli Servizio</h3>
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
-<p><strong>2. Chiesa / Location:</strong> ${cliente.chiesa || 'N/A'}</p>
-<p><strong>3. Data Evento:</strong> ${formatDate(cliente.dataEvento)}</p>
-<p><strong>4. Album:</strong> ${cliente.album || 'N/A'}</p>
-<p><strong>5. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
-<p><strong>6. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
-<p><strong>7. Effetti:</strong> ${cliente.effetti || 'N/A'}</p>
-<p><strong>8. Interni:</strong> ${cliente.interni || 'N/A'}</p>
-<p><strong>9. Foto selezionate per book:</strong> ${cliente.fotoBook || 'N/A'}</p>
-<p><strong>10. Anteprima:</strong> ${cliente.anteprima || 'N/A'}</p>
-<p><strong>11. Post Servizio:</strong> ${cliente.postServizio || 'N/A'}</p>
-<p><strong>12. Video:</strong> ${cliente.video || 'N/A'}</p>
-<p><strong>13. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
-<p><strong>14. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
-<p><strong>15. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
-<p><strong>16. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa}</p>
-<p><strong>17. Servizio Location:</strong> ${cliente.servizioLocation}</p>
+<p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
+<p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
+<p><strong>4. Data Evento:</strong> ${formatDate(cliente.dataEvento)}</p>
+<p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
+<p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
+<p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
+<p><strong>8. Effetti:</strong> ${cliente.effetti || 'N/A'}</p>
+<p><strong>9. Interni:</strong> ${cliente.interni || 'N/A'}</p>
+<p><strong>10. Foto selezionate per book:</strong> ${cliente.fotoBook || 'N/A'}</p>
+<p><strong>11. Anteprima:</strong> ${cliente.anteprima || 'N/A'}</p>
+<p><strong>12. Post Servizio:</strong> ${cliente.postServizio || 'N/A'}</p>
+<p><strong>13. Video:</strong> ${cliente.video || 'N/A'}</p>
+<p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
+<p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
+<p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
+<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa}</p>
+<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation}</p>
 </div>
 
 ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
