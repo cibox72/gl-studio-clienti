@@ -996,6 +996,24 @@ document.getElementById('totaleComplessivo').textContent = totaleComplessivo.toF
 calculateBalance(); // Aggiorna anche il saldo
 }
 
+// Apri WhatsApp Web con il numero del cliente
+function openWhatsAppWeb(phoneNumber, clientName) {
+  // Rimuovi tutti i caratteri non numerici
+  const cleanNumber = phoneNumber.replace(/\D/g, '');
+  
+  // Verifica che il numero abbia almeno 8 cifre
+  if (cleanNumber.length < 8) {
+    alert('⚠️ Numero di telefono non valido per WhatsApp');
+    return;
+  }
+  
+  // Costruisci l'URL di WhatsApp Web
+  const whatsappUrl = `https://web.whatsapp.com/send?phone=${cleanNumber}&text=Ciao ${encodeURIComponent(clientName)},%20`;
+  
+  // Apri in una nuova scheda
+  window.open(whatsappUrl, '_blank');
+}
+
 // Salva cliente
 function saveClient() {
 // Validazione base
@@ -1175,10 +1193,22 @@ clientCard.innerHTML = `
 <span class="client-card-deposits">Acconti: € ${totaleAcconti.toFixed(2).replace('.', ',')}</span>
 <span class="client-card-balance">Saldo: € ${saldoResiduo.toFixed(2).replace('.', ',')}</span>
 </div>
-<div class="card-buttons">
+<div style="margin-top: 12px;">
+${cliente.telefono1 ? `
+  <div><strong>📞 Cliente 1:</strong> ${cliente.telefono1}
+  <button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
+          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+    💬 WhatsApp
+  </button></div>` : ''}
+${cliente.cognome2 && cliente.telefono2 ? `
+  <div style="margin-top: 6px;"><strong>📞 Cliente 2:</strong> ${cliente.telefono2}
+  <button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
+          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+    💬 WhatsApp
+  </button></div>` : ''}
+</div>
+<div class="card-buttons" style="margin-top: 15px;">
 <button class="card-btn edit" onclick="editClient(${cliente.id})">✏️ Modifica</button>
-${cliente.telefono1 ? `<button class="card-btn whatsapp" onclick="openWhatsApp('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')">💬 WhatsApp 1</button>` : ''}
-${cliente.telefono2 ? `<button class="card-btn whatsapp" onclick="openWhatsApp('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')">💬 WhatsApp 2</button>` : ''}
 <button class="card-btn pdf" onclick="generatePDF(${cliente.id})">🖨️ PDF</button>
 <button class="card-btn delete" onclick="deleteClient(${cliente.id})">❌ Elimina</button>
 </div>
@@ -1300,17 +1330,6 @@ return;
 window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank');
 }
 
-// Apri WhatsApp
-function openWhatsApp(phone, name) {
-const cleanPhone = phone.replace(/\D/g, '');
-if (cleanPhone.length < 8) {
-alert('⚠️ Numero di telefono non valido');
-return;
-}
-const message = `Ciao ${name}, ecco il link alla tua galleria fotografica...`;
-window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
-}
-
 // Genera PDF della scheda cliente
 async function generatePDF(clientId) {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
@@ -1345,7 +1364,12 @@ printSection.innerHTML = `
 <p><strong>Cognome:</strong> ${cliente.cognome1 || 'N/A'}</p>
 <p><strong>Nome:</strong> ${cliente.nome1 || 'N/A'}</p>
 <p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}${cliente.indirizzo1 ? ` - ${cliente.citta1}` : ''}</p>
-<p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}</p>
+<p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}
+${cliente.telefono1 ? `<button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
+          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+    💬 WhatsApp
+  </button>` : ''}
+</p>
 <p><strong>Email:</strong> ${cliente.email1 || 'N/A'}</p>
 </div>
 ${cliente.cognome2 ? `
@@ -1354,7 +1378,12 @@ ${cliente.cognome2 ? `
 <p><strong>Cognome:</strong> ${cliente.cognome2 || 'N/A'}</p>
 <p><strong>Nome:</strong> ${cliente.nome2 || 'N/A'}</p>
 <p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}${cliente.indirizzo2 ? ` - ${cliente.citta2}` : ''}</p>
-<p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}</p>
+<p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}
+${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
+          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+    💬 WhatsApp
+  </button>` : ''}
+</p>
 <p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
 </div>` : ''}
 </div>
