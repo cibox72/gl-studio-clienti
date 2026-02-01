@@ -149,6 +149,20 @@ transition: background-color 0.2s;
 .maps-btn:hover {
 background-color: #3367d6;
 }
+.whatsapp-btn {
+background-color: #25D366;
+color: white;
+border: none;
+border-radius: 6px;
+padding: 8px 12px;
+cursor: pointer;
+margin-left: 8px;
+font-size: 14px;
+transition: background-color 0.2s;
+}
+.whatsapp-btn:hover {
+background-color: #128C7E;
+}
 .service-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
@@ -404,6 +418,19 @@ margin-top: 15px;
 .gallery-item.full {
 grid-column: span 3;
 }
+.extra-section {
+background-color: #f0f8ff;
+padding: 20px;
+border-radius: 12px;
+margin: 25px 0;
+}
+.extra-title {
+text-align: center;
+font-size: 20px;
+font-weight: bold;
+color: var(--secondary-color);
+margin-bottom: 20px;
+}
 @media (max-width: 1100px) {
 .service-grid {
 grid-template-columns: repeat(2, 1fr);
@@ -459,7 +486,8 @@ padding: 0;
 .amount-section,
 .deposit-section,
 .app-gallery,
-.balance-line {
+.balance-line,
+.extra-section {
 display: none !important;
 }
 .form-section {
@@ -515,19 +543,18 @@ break-inside: avoid;
 <input type="text" id="nome1" required>
 </div>
 <div class="field-group full-width">
-<label for="indirizzo1">Indirizzo</label>
+<label for="indirizzo1">Indirizzo (Via, Città)</label>
 <div style="display: flex; gap: 10px; align-items: center;">
-<input type="text" id="indirizzo1" style="flex: 1;">
+<input type="text" id="indirizzo1" placeholder="Via Roma, Canicattì" style="flex: 1;">
 <button type="button" class="maps-btn" onclick="openMaps('indirizzo1')">📍</button>
 </div>
 </div>
 <div class="field-group">
-<label for="citta1">Città</label>
-<input type="text" id="citta1">
-</div>
-<div class="field-group">
 <label for="telefono1">Telefono</label>
-<input type="text" id="telefono1" required>
+<div style="display: flex; gap: 10px; align-items: center;">
+<input type="text" id="telefono1" required style="flex: 1;">
+<button type="button" class="whatsapp-btn" onclick="openWhatsAppWeb(document.getElementById('telefono1').value, document.getElementById('nome1').value + ' ' + document.getElementById('cognome1').value)">💬 WhatsApp</button>
+</div>
 </div>
 <div class="field-group">
 <label for="email1">Email</label>
@@ -548,19 +575,18 @@ break-inside: avoid;
 <input type="text" id="nome2">
 </div>
 <div class="field-group full-width">
-<label for="indirizzo2">Indirizzo</label>
+<label for="indirizzo2">Indirizzo (Via, Città)</label>
 <div style="display: flex; gap: 10px; align-items: center;">
-<input type="text" id="indirizzo2" style="flex: 1;">
+<input type="text" id="indirizzo2" placeholder="Via Verdi, Palermo" style="flex: 1;">
 <button type="button" class="maps-btn" onclick="openMaps('indirizzo2')">📍</button>
 </div>
 </div>
 <div class="field-group">
-<label for="citta2">Città</label>
-<input type="text" id="citta2">
-</div>
-<div class="field-group">
 <label for="telefono2">Telefono</label>
-<input type="text" id="telefono2">
+<div style="display: flex; gap: 10px; align-items: center;">
+<input type="text" id="telefono2" style="flex: 1;">
+<button type="button" class="whatsapp-btn" onclick="openWhatsAppWeb(document.getElementById('telefono2').value, document.getElementById('nome2').value + ' ' + document.getElementById('cognome2').value)">💬 WhatsApp</button>
+</div>
 </div>
 <div class="field-group">
 <label for="email2">Email</label>
@@ -825,6 +851,23 @@ break-inside: avoid;
 </select>
 </div>
 <div class="service-item"></div>
+</div>
+
+<!-- RICHIESTE EXTRA -->
+<div class="extra-section">
+<h3 class="extra-title">Richieste EXTRA</h3>
+<div class="field-group">
+<label for="fotoExtraBook">Foto extra in book</label>
+<textarea id="fotoExtraBook" rows="2" placeholder="Descrivi le foto extra richieste..."></textarea>
+</div>
+<div class="field-group">
+<label for="servizioExtra">Servizio extra</label>
+<textarea id="servizioExtra" rows="2" placeholder="Descrivi eventuali servizi aggiuntivi..."></textarea>
+</div>
+<div class="field-group">
+<label for="penninoUsb">Pennino USB</label>
+<textarea id="penninoUsb" rows="2" placeholder="Specifiche sul pennino USB (capacità, contenuti, ecc.)..."></textarea>
+</div>
 </div><!-- IMPORTO E EXTRA -->
 <div class="form-section" style="margin-top: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 12px;">
   <h3 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px;">💰 DETTAGLIO COSTI</h3>
@@ -1042,6 +1085,8 @@ return;
 }
 
 // Raccolta dati LAVORO COMMISSIONATO
+const indirizzo1 = document.getElementById('indirizzo1').value.trim() || '';
+const indirizzo2 = document.getElementById('indirizzo2').value.trim() || '';
 const chiesa = document.getElementById('chiesa').value.trim() || '';
 const location = document.getElementById('location').value.trim() || '';
 const album = document.getElementById('album').value || '';
@@ -1060,6 +1105,11 @@ const stampeQtà = document.getElementById('stampeQtà').value || '';
 const miniPocket = document.getElementById('miniPocket').value || '';
 const servizioSalaPosa = document.getElementById('servizioSalaPosa').value || 'INCLUSO';
 const servizioLocation = document.getElementById('servizioLocation').value || 'INCLUSO';
+
+// Raccolta dati EXTRA
+const fotoExtraBook = document.getElementById('fotoExtraBook').value.trim() || '';
+const servizioExtra = document.getElementById('servizioExtra').value.trim() || '';
+const penninoUsb = document.getElementById('penninoUsb').value.trim() || '';
 
 // Calcolo totale complessivo
 const importoTotale = importoServizio + importoExtraManuale;
@@ -1085,14 +1135,12 @@ const cliente = {
 id: Date.now(),
 cognome1: cognome1 || '',
 nome1: nome1 || '',
-indirizzo1: document.getElementById('indirizzo1').value.trim() || '',
-citta1: document.getElementById('citta1').value.trim() || '',
+indirizzo1: indirizzo1,
 telefono1: telefono1 || '',
 email1: document.getElementById('email1').value.trim() || '',
 cognome2: document.getElementById('cognome2').value.trim() || '',
 nome2: document.getElementById('nome2').value.trim() || '',
-indirizzo2: document.getElementById('indirizzo2').value.trim() || '',
-citta2: document.getElementById('citta2').value.trim() || '',
+indirizzo2: indirizzo2,
 telefono2: document.getElementById('telefono2').value.trim() || '',
 email2: document.getElementById('email2').value.trim() || '',
 // LAVORO COMMISSIONATO (18 campi)
@@ -1117,6 +1165,9 @@ miniPocket: miniPocket,
 servizioSalaPosa: servizioSalaPosa,
 servizioLocation: servizioLocation,
 // EXTRA
+fotoExtraBook: fotoExtraBook,
+servizioExtra: servizioExtra,
+penninoUsb: penninoUsb,
 importoServizio: importoServizio,
 importoExtraManuale: importoExtraManuale,
 importoTotale: importoTotale,
@@ -1197,13 +1248,13 @@ clientCard.innerHTML = `
 ${cliente.telefono1 ? `
   <div><strong>📞 Cliente 1:</strong> ${cliente.telefono1}
   <button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
-          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
     💬 WhatsApp
   </button></div>` : ''}
 ${cliente.cognome2 && cliente.telefono2 ? `
   <div style="margin-top: 6px;"><strong>📞 Cliente 2:</strong> ${cliente.telefono2}
   <button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
-          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
     💬 WhatsApp
   </button></div>` : ''}
 </div>
@@ -1244,13 +1295,11 @@ if (!cliente) return;
 document.getElementById('cognome1').value = cliente.cognome1 || '';
 document.getElementById('nome1').value = cliente.nome1 || '';
 document.getElementById('indirizzo1').value = cliente.indirizzo1 || '';
-document.getElementById('citta1').value = cliente.citta1 || '';
 document.getElementById('telefono1').value = cliente.telefono1 || '';
 document.getElementById('email1').value = cliente.email1 || '';
 document.getElementById('cognome2').value = cliente.cognome2 || '';
 document.getElementById('nome2').value = cliente.nome2 || '';
 document.getElementById('indirizzo2').value = cliente.indirizzo2 || '';
-document.getElementById('citta2').value = cliente.citta2 || '';
 document.getElementById('telefono2').value = cliente.telefono2 || '';
 document.getElementById('email2').value = cliente.email2 || '';
 
@@ -1275,6 +1324,11 @@ document.getElementById('stampeQtà').value = cliente.stampeQtà || '';
 document.getElementById('miniPocket').value = cliente.miniPocket || '';
 document.getElementById('servizioSalaPosa').value = cliente.servizioSalaPosa || 'INCLUSO';
 document.getElementById('servizioLocation').value = cliente.servizioLocation || 'INCLUSO';
+
+// EXTRA
+document.getElementById('fotoExtraBook').value = cliente.fotoExtraBook || '';
+document.getElementById('servizioExtra').value = cliente.servizioExtra || '';
+document.getElementById('penninoUsb').value = cliente.penninoUsb || '';
 
 // IMPORTO ED EXTRA
 document.getElementById('importoServizio').value = cliente.importoServizio.toFixed(2).replace('.', ',');
@@ -1363,10 +1417,10 @@ printSection.innerHTML = `
 <h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 1</h3>
 <p><strong>Cognome:</strong> ${cliente.cognome1 || 'N/A'}</p>
 <p><strong>Nome:</strong> ${cliente.nome1 || 'N/A'}</p>
-<p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}${cliente.indirizzo1 ? ` - ${cliente.citta1}` : ''}</p>
+<p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}</p>
 <p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}
 ${cliente.telefono1 ? `<button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
-          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
     💬 WhatsApp
   </button>` : ''}
 </p>
@@ -1377,10 +1431,10 @@ ${cliente.cognome2 ? `
 <h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 2</h3>
 <p><strong>Cognome:</strong> ${cliente.cognome2 || 'N/A'}</p>
 <p><strong>Nome:</strong> ${cliente.nome2 || 'N/A'}</p>
-<p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}${cliente.indirizzo2 ? ` - ${cliente.citta2}` : ''}</p>
+<p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}</p>
 <p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}
 ${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
-          style="background:#25D366; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:12px; margin-left:8px;">
+          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
     💬 WhatsApp
   </button>` : ''}
 </p>
@@ -1412,6 +1466,13 @@ LAVORO COMMISSIONATO
 <p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
 <p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa}</p>
 <p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation}</p>
+</div>
+
+<div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
+<h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
+${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
+${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
+${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
 </div>
 
 ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
