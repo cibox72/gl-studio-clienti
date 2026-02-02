@@ -1063,7 +1063,6 @@ break-inside: avoid;
   <div id="pdfContent"></div>
   <div class="pdf-actions" style="text-align: center; margin-top: 20px;">
     <button class="card-btn edit" onclick="editFromPdfView()">✏️ Modifica</button>
-    <button class="card-btn add-deposit" onclick="addDepositFromPdfView()">+ Aggiungi Acconto</button>
     <button class="card-btn pdf" onclick="printPdfView()">🖨️ Stampa</button>
   </div>
 </div>
@@ -1111,7 +1110,9 @@ e.target.value = value;
 // Apri modale per aggiungere acconto
 function openAddDepositModal(clientId) {
 currentClientId = clientId;
-document.getElementById('modalData').value = '';
+const now = new Date();
+const today = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth() + 1)).slice(-2) + '/' + now.getFullYear();
+document.getElementById('modalData').value = today;
 document.getElementById('modalImporto').value = '';
 document.getElementById('modalAcconto').classList.remove('hidden');
 }
@@ -1401,6 +1402,13 @@ document.getElementById('saldoResiduo').textContent = 'SALDO RESIDUO: € 0,00';
 document.getElementById('totaleComplessivo').textContent = '0,00';
 }
 
+// Formatta data YYYY-MM-DD in DD/MM/YYYY
+function formatDate(dateString) {
+if (!dateString) return '';
+const date = new Date(dateString);
+return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+}
+
 // Carica e visualizza clienti
 function loadClients() {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
@@ -1436,13 +1444,6 @@ clientCard.innerHTML = `
 `;
 clientList.appendChild(clientCard);
 });
-}
-
-// Formatta data YYYY-MM-DD in DD/MM/YYYY
-function formatDate(dateString) {
-if (!dateString) return '';
-const date = new Date(dateString);
-return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
 }
 
 // Filtra clienti per ricerca
@@ -1562,7 +1563,7 @@ ${cliente.nota ? `
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">Acconti Ricevuti</h3>
 ${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
-<p style="margin: 5px 0;">${acc.data} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
+<p style="margin: 5px 0;">${acc.date} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
 `).join('') : '<p>Nessun acconto registrato</p>'}
 </div>
 
@@ -1593,11 +1594,6 @@ document.querySelector('.client-list').closest('.form-section').style.display = 
 function editFromPdfView() {
 hidePdfView();
 editClient(currentClientId);
-}
-
-// Aggiungi acconto dal PDF view
-function addDepositFromPdfView() {
-openAddDepositModal(currentClientId);
 }
 
 // Stampa la scheda PDF-like
@@ -1662,7 +1658,7 @@ cliente.acconti.forEach(acc => {
 const depositDiv = document.createElement('div');
 depositDiv.className = 'deposit-item';
 depositDiv.innerHTML = `
-<input type="text" class="deposit-date" value="${acc.data}" style="width: 120px; text-align: center;" readonly>
+<input type="text" class="deposit-date" value="${acc.date}" style="width: 120px; text-align: center;" readonly>
 <input type="text" class="deposit-amount" value="${parseFloat(acc.importo).toFixed(2).replace('.', ',')} €" style="flex: 1;" readonly>
 <button class="deposit-btn edit" onclick="editDeposit(this)">✏️</button>
 <button class="deposit-btn delete" onclick="deleteDeposit(this)">❌</button>
@@ -1809,7 +1805,7 @@ ${cliente.nota ? `
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">Acconti Ricevuti</h3>
 ${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
-<p style="margin: 5px 0;">${acc.data} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
+<p style="margin: 5px 0;">${acc.date} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
 `).join('') : '<p>Nessun acconto registrato</p>'}
 </div>
 
