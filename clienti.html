@@ -383,8 +383,8 @@ color: white;
 background-color: #6c757d;
 color: white;
 }
-.card-btn.add-deposit {
-background-color: #4CAF50;
+.card-btn.open {
+background-color: #1976d2;
 color: white;
 }
 .card-btn:hover {
@@ -490,6 +490,44 @@ background: var(--primary-color);
 color: white;
 }
 
+/* SCHEDA PDF-LIKE */
+.pdf-view {
+background: white;
+padding: 30px;
+margin: 20px auto;
+max-width: 900px;
+border: 1px solid #ddd;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+display: none;
+}
+.pdf-view h2 {
+color: var(--secondary-color);
+text-align: center;
+margin-bottom: 20px;
+}
+.pdf-section {
+margin-bottom: 20px;
+}
+.pdf-section h3 {
+color: var(--secondary-color);
+margin-bottom: 10px;
+border-bottom: 1px solid #eee;
+padding-bottom: 5px;
+}
+.pdf-row {
+display: flex;
+flex-wrap: wrap;
+margin-bottom: 8px;
+}
+.pdf-label {
+font-weight: bold;
+width: 200px;
+}
+.pdf-value {
+flex: 1;
+}
+
 @media (max-width: 1100px) {
 .service-grid {
 grid-template-columns: repeat(2, 1fr);
@@ -546,7 +584,8 @@ padding: 0;
 .deposit-section,
 .app-gallery,
 .balance-line,
-.extra-section {
+.extra-section,
+.pdf-view .pdf-actions {
 display: none !important;
 }
 .form-section {
@@ -1014,6 +1053,17 @@ break-inside: avoid;
 <div class="client-list" id="clientList"></div>
 </div>
 
+<!-- SCHEDA PDF-LIKE -->
+<div class="pdf-view" id="pdfView">
+  <h2>SCHEDA CLIENTE</h2>
+  <div id="pdfContent"></div>
+  <div class="pdf-actions" style="text-align: center; margin-top: 20px;">
+    <button class="card-btn edit" onclick="editFromPdfView()">✏️ Modifica</button>
+    <button class="card-btn add-deposit" onclick="addDepositFromPdfView()">+ Aggiungi Acconto</button>
+    <button class="card-btn pdf" onclick="printPdfView()">🖨️ Stampa</button>
+  </div>
+</div>
+
 <!-- MODALE AGGIUNGI ACCONTO -->
 <div id="modalAcconto" class="hidden">
   <div class="modal-content">
@@ -1031,6 +1081,7 @@ break-inside: avoid;
 // Inizializzazione jsPDF
 const { jsPDF } = window.jspdf;
 let currentClientId = null;
+let isEditing = false;
 
 // Carica clienti all'avvio
 document.addEventListener('DOMContentLoaded', function() {
@@ -1054,7 +1105,7 @@ e.target.value = value;
 }
 
 // Apri modale per aggiungere acconto
-function addDepositToClient(clientId) {
+function openAddDepositModal(clientId) {
 currentClientId = clientId;
 document.getElementById('modalData').value = '';
 document.getElementById('modalImporto').value = '';
@@ -1085,10 +1136,10 @@ return;
 
 // Carica clienti
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-const cliente = clients.find(c => c.id === currentClientId);
+const clienteIndex = clients.findIndex(c => c.id === currentClientId);
 
-if (cliente) {
-cliente.acconti.push({
+if (clienteIndex !== -1) {
+clients[clienteIndex].acconti.push({
   date: data,
 importo: importo.toFixed(2)
 });
@@ -1096,6 +1147,11 @@ localStorage.setItem('glStudioClients', JSON.stringify(clients));
 alert('✅ Acconto aggiunto con successo!');
 loadClients();
 closeModal();
+
+// Se siamo nella scheda PDF, aggiorna anche quella
+if (document.getElementById('pdfView').style.display !== 'none') {
+showPdfView(currentClientId);
+}
 } else {
 alert('❌ Cliente non trovato');
 }
@@ -1183,7 +1239,7 @@ const whatsappUrl = `https://web.whatsapp.com/send?phone=${cleanNumber}&text=Cia
 window.open(whatsappUrl, '_blank');
 }
 
-// Salva cliente
+// Salva cliente (nuovo o modifica)
 function saveClient() {
 const cognome1 = document.getElementById('cognome1').value.trim();
 const nome1 = document.getElementById('nome1').value.trim();
@@ -1257,7 +1313,7 @@ importo: amount.toFixed(2)
 
 // Crea oggetto cliente
 const cliente = {
-id: Date.now(),
+id: isEditing ? currentClientId : Date.now(),
 cognome1: cognome1 || '',
 nome1: nome1 || '',
 indirizzo1: indirizzo1,
@@ -1306,15 +1362,25 @@ dataSalvataggio: new Date().toISOString()
 
 // Carica clienti esistenti
 let clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
+
+if (isEditing) {
+// Aggiorna il cliente esistente
+const index = clients.findIndex(c => c.id === currentClientId);
+if (index !== -1) {
+clients[index] = cliente;
+}
+} else {
 // Aggiungi nuovo cliente
 clients.push(cliente);
+}
+
 // Salva SOLO il file aggiornato
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
-alert('✅ Cliente salvato con successo!');
+alert(isEditing ? '✅ Cliente aggiornato con successo!' : '✅ Cliente salvato con successo!');
 loadClients();
-if (confirm('Vuoi resettare il modulo per un nuovo cliente?')) {
 resetForm();
-}
+isEditing = false;
+currentClientId = null;
 }
 
 // Reset form
@@ -1358,7 +1424,7 @@ clientCard.innerHTML = `
 <span class="client-card-balance">Saldo: € ${saldoResiduo.toFixed(2).replace('.', ',')}</span>
 </div>
 <div class="card-buttons" style="margin-top: 15px;">
-<button class="card-btn add-deposit" onclick="addDepositToClient(${cliente.id})">+ Aggiungi Acconto</button>
+<button class="card-btn open" onclick="showPdfView(${cliente.id})">Apri</button>
 <button class="card-btn edit" onclick="editClient(${cliente.id})">✏️ Modifica</button>
 <button class="card-btn pdf" onclick="generatePDF(${cliente.id})">🖨️ PDF</button>
 <button class="card-btn delete" onclick="deleteClient(${cliente.id})">❌ Elimina</button>
@@ -1385,11 +1451,164 @@ card.style.display = cardText.includes(searchTerm) ? 'block' : 'none';
 });
 }
 
+// Mostra la scheda PDF-like
+function showPdfView(clientId) {
+const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
+const cliente = clients.find(c => c.id === clientId);
+if (!cliente) return;
+
+currentClientId = clientId;
+const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
+const saldoResiduo = cliente.importoTotale - totaleAcconti;
+
+let content = `
+<div style="text-align: center; border-bottom: 3px solid #e63946; padding-bottom: 15px; margin-bottom: 20px;">
+<h1 style="color: #1d3557; font-size: 24px;">G&L Studio</h1>
+<p style="color: #8d99ae;">Via Ciarrocco n.21, Canicattì (AG)</p>
+</div>
+<h2 style="color: #1d3557; text-align: center; margin: 20px 0;">SCHEDA CLIENTE</h2>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+<div>
+<h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 1</h3>
+<p><strong>Cognome:</strong> ${cliente.cognome1 || 'N/A'}</p>
+<p><strong>Nome:</strong> ${cliente.nome1 || 'N/A'}</p>
+<p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}</p>
+<p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}
+${cliente.telefono1 ? `<button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
+          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
+    💬 WhatsApp
+  </button>` : ''}
+</p>
+<p><strong>Email:</strong> ${cliente.email1 || 'N/A'}</p>
+</div>
+${cliente.cognome2 ? `
+<div>
+<h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 2</h3>
+<p><strong>Cognome:</strong> ${cliente.cognome2 || 'N/A'}</p>
+<p><strong>Nome:</strong> ${cliente.nome2 || 'N/A'}</p>
+<p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}</p>
+<p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}
+${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
+          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
+    💬 WhatsApp
+  </button>` : ''}
+</p>
+<p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
+</div>` : ''}
+</div>
+
+<div style="background-color: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 18px; margin: 25px 0;">
+LAVORO COMMISSIONATO
+</div>
+
+<div style="margin-bottom: 20px;">
+<h3 style="color: #1d3557; margin-bottom: 10px;">Dettagli Servizio</h3>
+<p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
+<p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
+<p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
+<p><strong>4. Data Evento:</strong> ${formatDate(cliente.dataEvento)}</p>
+<p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
+<p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
+<p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
+<p><strong>8. Effetti:</strong> ${cliente.effetti || 'N/A'}</p>
+<p><strong>9. Interni:</strong> ${cliente.interni || 'N/A'}</p>
+<p><strong>10. Foto selezionate per book:</strong> ${cliente.fotoBook || 'N/A'}</p>
+<p><strong>11. Anteprima:</strong> ${cliente.anteprima || 'N/A'}</p>
+<p><strong>12. Post Servizio:</strong> ${cliente.postServizio || 'N/A'}</p>
+<p><strong>13. Video:</strong> ${cliente.video || 'N/A'}</p>
+<p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
+<p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
+<p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
+<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa}</p>
+<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation}</p>
+</div>
+
+<div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
+<h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
+${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
+${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
+${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
+</div>
+
+${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
+<div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+<h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
+${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
+${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
+${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
+${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
+</div>` : ''}
+
+${cliente.cartellaServizio ? `
+<div style="margin-bottom: 15px;">
+<p><strong>Cartella servizio in:</strong> ${cliente.cartellaServizio}</p>
+</div>` : ''}
+
+${cliente.nota ? `
+<div style="margin-bottom: 20px;">
+<h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
+<p style="white-space: pre-wrap;">${cliente.nota}</p>
+</div>` : ''}
+
+<div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
+<p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
+<p style="font-size: 28px; font-weight: bold; color: #e63946;">€ ${cliente.importoTotale.toFixed(2).replace('.', ',')}</p>
+</div>
+
+<div style="margin-bottom: 20px;">
+<h3 style="color: #1d3557; margin-bottom: 10px;">Acconti Ricevuti</h3>
+${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
+<p style="margin: 5px 0;">${acc.data} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
+`).join('') : '<p>Nessun acconto registrato</p>'}
+</div>
+
+<div style="text-align: center; font-size: 22px; font-weight: bold; color: #e63946; padding: 15px; background-color: rgba(230, 57, 70, 0.1); border-radius: 8px;">
+SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
+</div>
+
+<div style="margin-top: 30px; text-align: center; font-size: 14px; color: #8d99ae;">
+<p>G&L Studio - Via Ciarrocco n.21, Canicattì (AG)</p>
+<p>Tel: +39 366 9381103 / 320 6337370 | Email: weddinggel@aruba.it</p>
+</div>
+`;
+
+document.getElementById('pdfContent').innerHTML = content;
+document.getElementById('pdfView').style.display = 'block';
+document.querySelector('.form-section').style.display = 'none';
+document.querySelector('.client-list').closest('.form-section').style.display = 'none';
+}
+
+// Nascondi la scheda PDF-like
+function hidePdfView() {
+document.getElementById('pdfView').style.display = 'none';
+document.querySelector('.form-section').style.display = 'block';
+document.querySelector('.client-list').closest('.form-section').style.display = 'block';
+}
+
+// Modifica dal PDF view
+function editFromPdfView() {
+hidePdfView();
+editClient(currentClientId);
+}
+
+// Aggiungi acconto dal PDF view
+function addDepositFromPdfView() {
+openAddDepositModal(currentClientId);
+}
+
+// Stampa la scheda PDF-like
+function printPdfView() {
+window.print();
+}
+
 // Modifica cliente (carica dati nel form)
 function editClient(clientId) {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 const cliente = clients.find(c => c.id === clientId);
 if (!cliente) return;
+
+isEditing = true;
+currentClientId = clientId;
 
 document.getElementById('cognome1').value = cliente.cognome1 || '';
 document.getElementById('nome1').value = cliente.nome1 || '';
@@ -1448,7 +1667,6 @@ depositList.appendChild(depositDiv);
 });
 
 window.scrollTo({ top: 0, behavior: 'smooth' });
-alert('✏️ Dati cliente caricati nel modulo. Modifica i campi necessari e premi "SALVA CLIENTE" per aggiornare.');
 }
 
 // Elimina cliente
