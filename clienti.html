@@ -1068,7 +1068,7 @@ break-inside: avoid;
 </div>
 
 <!-- MODALE AGGIUNGI ACCONTO -->
-<div id="modalAcconto" class="hidden">
+<div id="modalconto" class="hidden">
   <div class="modal-content">
     <h3>➕ Aggiungi Acconto</h3>
     <input type="text" id="modalData" class="modal-input" placeholder="gg/mm/aaaa" maxlength="10">
@@ -1091,6 +1091,29 @@ document.addEventListener('DOMContentLoaded', function() {
 loadClients();
 setupDepositFormatting();
 });
+
+// ✅ FUNZIONE CORRETTA: formatta data come gg/mm/aaaa
+function formatDateYYYYMMDD(dateString) {
+if (!dateString) return '';
+const date = new Date(dateString);
+return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+}
+
+// ✅ FUNZIONE PER CONVERTIRE DA ISO a gg/mm/aaaa (es. 2026-06-19 → 19/06/2026)
+function formatDateISOtoDDMMYYYY(isoDate) {
+if (!isoDate) return '';
+const [y, m, d] = isoDate.split('-');
+return `${d}/${m}/${y}`;
+}
+
+// ✅ FUNZIONE PER CONVERTIRE DA numerico (es. 24022025) a gg/mm/aaaa
+function formatDateNumeric(str) {
+if (!str || str.length !== 8) return str;
+const d = str.substring(0, 2);
+const m = str.substring(2, 4);
+const y = str.substring(4, 8);
+return `${d}/${m}/${y}`;
+}
 
 // Funzione per formattare automaticamente le date degli acconti
 function setupDepositFormatting() {
@@ -1145,7 +1168,7 @@ const clienteIndex = clients.findIndex(c => c.id === currentClientId);
 
 if (clienteIndex !== -1) {
 clients[clienteIndex].acconti.push({
-  date: data,
+  date: data, // già in formato gg/mm/aaaa
 importo: importo.toFixed(2)
 });
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
@@ -1250,7 +1273,8 @@ const cognome1 = document.getElementById('cognome1').value.trim();
 const nome1 = document.getElementById('nome1').value.trim();
 const telefono1 = document.getElementById('telefono1').value.trim();
 const tipoServizio = document.getElementById('tipoServizio').value;
-const dataEvento = document.getElementById('dataEvento').value;
+const dataEventoISO = document.getElementById('dataEvento').value; // es. "2026-06-19"
+const dataEvento = formatDateISOtoDDMMYYYY(dataEventoISO); // → "19/06/2026"
 const importoServizio = parseFloat(document.getElementById('importoServizio').value.replace(/\./g, '').replace(',', '.')) || 0;
 const importoExtraManuale = parseFloat(document.getElementById('importoExtraManuale').value.replace(/\./g, '').replace(',', '.')) || 0;
 if (!cognome1 || !nome1 || !telefono1) {
@@ -1261,7 +1285,7 @@ if (!tipoServizio) {
 alert('⚠️ Seleziona il Tipo di Servizio');
 return;
 }
-if (!dataEvento) {
+if (!dataEventoISO) {
 alert('⚠️ Inserisci la Data dell\'Evento');
 return;
 }
@@ -1305,7 +1329,8 @@ const acconti = [];
 document.querySelectorAll('.deposit-item').forEach(item => {
 const dateInput = item.querySelector('.deposit-date');
 const amountInput = item.querySelector('.deposit-amount');
-const date = dateInput.value.trim();
+const dateRaw = dateInput.value.trim();
+const date = formatDateNumeric(dateRaw); // converte 24022025 → 24/02/2025
 const amountText = amountInput.value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
 const amount = parseFloat(amountText);
 if (date && amount > 0) {
@@ -1332,7 +1357,7 @@ email2: document.getElementById('email2').value.trim() || '',
 tipoServizio: tipoServizio || '',
 chiesa: chiesa,
 location: location,
-dataEvento: dataEvento || '',
+dataEvento: dataEvento, // già in formato gg/mm/aaaa
 album: album,
 copertina: copertina,
 miniAlbum: miniAlbum,
@@ -1402,13 +1427,6 @@ document.getElementById('saldoResiduo').textContent = 'SALDO RESIDUO: € 0,00';
 document.getElementById('totaleComplessivo').textContent = '0,00';
 }
 
-// Formatta data YYYY-MM-DD in DD/MM/YYYY
-function formatDate(dateString) {
-if (!dateString) return '';
-const date = new Date(dateString);
-return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
-}
-
 // Carica e visualizza clienti
 function loadClients() {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
@@ -1418,7 +1436,11 @@ if (clients.length === 0) {
 clientList.innerHTML = '<p style="text-align: center; color: var(--gray-color); padding: 20px;">Nessun cliente salvato</p>';
 return;
 }
-clients.sort((a, b) => new Date(a.dataEvento) - new Date(b.dataEvento));
+clients.sort((a, b) => {
+const dateA = new Date(a.dataEvento.split('/').reverse().join('-'));
+const dateB = new Date(b.dataEvento.split('/').reverse().join('-'));
+return dateA - dateB;
+});
 clients.forEach(cliente => {
 const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
 const saldoResiduo = cliente.importoTotale - totaleAcconti;
@@ -1427,7 +1449,7 @@ clientCard.className = 'client-card';
 clientCard.innerHTML = `
 <div class="client-card-header">
 <div class="client-card-title">${cliente.cognome1} ${cliente.nome1}${cliente.cognome2 ? ' & ' + cliente.cognome2 : ''}</div>
-<div class="client-card-date">${formatDate(cliente.dataEvento)}</div>
+<div class="client-card-date">${cliente.dataEvento}</div> <!-- già gg/mm/aaaa -->
 </div>
 <div class="client-card-service">${cliente.tipoServizio} • ${cliente.dataEvento}</div>
 <div class="client-card-amounts">
@@ -1511,7 +1533,7 @@ LAVORO COMMISSIONATO
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
 <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
 <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${formatDate(cliente.dataEvento)}</p>
+<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p> <!-- ✅ gg/mm/aaaa -->
 <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
 <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
 <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
@@ -1530,16 +1552,16 @@ LAVORO COMMISSIONATO
 
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
 <h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
-${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
+${cliente.fotoExtraBook ?p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
 ${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
-${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
+${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>`: ''}
 </div>
 
 ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
 ${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
-${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
+${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>`: ''}
 ${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
 ${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
 </div>` : ''}
@@ -1553,7 +1575,7 @@ ${cliente.nota ? `
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
 <p style="white-space: pre-wrap;">${cliente.nota}</p>
-</div>` : ''}
+</div>`: ''}
 
 <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
 <p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
@@ -1571,7 +1593,7 @@ ${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
 SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
 </div>
 
-<div style="margin-top: 30px; text-align: center; font-size: 14px; color: #8d99ae;">
+<div style="margin-top: 30px; text: center; font-size: 14px; color: #8d99ae;">
 <p>G&L Studio - Via Ciarrocco n.21, Canicattì (AG)</p>
 <p>Tel: +39 366 9381103 / 320 6337370 | Email: weddinggel@aruba.it</p>
 </div>
@@ -1623,7 +1645,9 @@ document.getElementById('email2').value = cliente.email2 || '';
 document.getElementById('tipoServizio').value = cliente.tipoServizio || '';
 document.getElementById('chiesa').value = cliente.chiesa || '';
 document.getElementById('location').value = cliente.location || '';
-document.getElementById('dataEvento').value = cliente.dataEvento || '';
+// ✅ Converti gg/mm/aaaa → YYYY-MM-DD per il campo <input type="date">
+const [d, m, y] = cliente.dataEvento.split('/');
+document.getElementById('dataEvento').value = `${y}-${m}-${d}`; // es. 2026-06-19
 document.getElementById('album').value = cliente.album || '';
 document.getElementById('copertina').value = cliente.copertina || '';
 document.getElementById('miniAlbum').value = cliente.miniAlbum || '';
@@ -1738,7 +1762,7 @@ ${cliente.cognome2 ? `
 ${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
           class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
     💬 WhatsApp
-  </button>` : ''}
+  </button>`: ''}
 </p>
 <p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
 </div>` : ''}
@@ -1753,7 +1777,7 @@ LAVORO COMMISSIONATO
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
 <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
 <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${formatDate(cliente.dataEvento)}</p>
+<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p> <!-- ✅ gg/mm/aaaa -->
 <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
 <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
 <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
@@ -1774,16 +1798,16 @@ LAVORO COMMISSIONATO
 <h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
 ${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
 ${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
-${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
+${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>`: ''}
 </div>
 
 ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
 ${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
-${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
-${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
-${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
+${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>`: ''}
+${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>`: ''}
+${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>`: ''}
 </div>` : ''}
 
 ${cliente.cartellaServizio ? `
@@ -1795,7 +1819,7 @@ ${cliente.nota ? `
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
 <p style="white-space: pre-wrap;">${cliente.nota}</p>
-</div>` : ''}
+</div>`: ''}
 
 <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
 <p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
@@ -1841,7 +1865,7 @@ pdf.addPage();
 pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
 heightLeft -= pageHeight;
 }
-pdf.save(`G&L_Studio_Cliente_${cliente.cognome1}_${formatDate(cliente.dataEvento)}.pdf`);
+pdf.save(`G&L_Studio_Cliente_${cliente.cognome1}_${cliente.dataEvento}.pdf`);
 
 document.body.removeChild(printSection);
 } catch (error) {
