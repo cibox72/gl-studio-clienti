@@ -387,6 +387,10 @@ color: white;
 background-color: #1976d2;
 color: white;
 }
+.card-btn.add-deposit {
+background-color: #4CAF50;
+color: white;
+}
 .card-btn:hover {
 opacity: 0.9;
 }
@@ -1146,7 +1150,6 @@ importo: importo.toFixed(2)
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
 alert('✅ Acconto aggiunto con successo!');
 loadClients();
-closeModal();
 
 // Se siamo nella scheda PDF, aggiorna anche quella
 if (document.getElementById('pdfView').style.display !== 'none') {
@@ -1155,6 +1158,7 @@ showPdfView(currentClientId);
 } else {
 alert('❌ Cliente non trovato');
 }
+closeModal();
 }
 
 // Aggiungi un nuovo acconto nel modulo principale
