@@ -665,8 +665,16 @@ break-inside: avoid;
 <label for="miniAlbum">7. Mini Album</label>
 <select id="miniAlbum">
 <option value="">Nessuno</option>
-<option value="Mini Album 15x15">Mini Album 15x15</option>
-<option value="Mini Album 20x20">Mini Album 20x20</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
 </select>
 </div>
 <!-- Riga 2 -->
@@ -674,9 +682,8 @@ break-inside: avoid;
 <label for="effetti">8. Effetti</label>
 <select id="effetti">
 <option value="">Nessuno</option>
-<option value="B/N Artistico">B/N Artistico</option>
-<option value="Vintage">Vintage</option>
-<option value="Pastello">Pastello</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
 </select>
 </div>
 <div class="service-item">
@@ -740,9 +747,9 @@ break-inside: avoid;
 <label for="postServizio">12. Post Servizio</label>
 <select id="postServizio">
 <option value="">Nessuno</option>
-<option value="Ritocco Base">Ritocco Base</option>
-<option value="Ritocco Avanzato">Ritocco Avanzato</option>
-<option value="Ritocco Premium">Ritocco Premium</option>
+<option value="SOLO FOTO">SOLO FOTO</option>
+<option value="SOLO VIDEO">SOLO VIDEO</option>
+<option value="FOTO E VIDEO">FOTO E VIDEO</option>
 </select>
 </div>
 <div class="service-item">
@@ -761,12 +768,8 @@ break-inside: avoid;
 <label for="tela">14. Tela</label>
 <select id="tela" style="width: calc(100% - 60px); display: inline-block;">
 <option value="">Nessuna</option>
-<option value="30x40 cm - Telaio Standard">30x40 cm - Telaio Standard</option>
-<option value="40x50 cm - Telaio Standard">40x50 cm - Telaio Standard</option>
-<option value="50x70 cm - Telaio Standard">50x70 cm - Telaio Standard</option>
-<option value="30x40 cm - Telaio Spesso">30x40 cm - Telaio Spesso</option>
-<option value="40x50 cm - Telaio Spesso">40x50 cm - Telaio Spesso</option>
-<option value="50x70 cm - Telaio Spesso">50x70 cm - Telaio Spesso</option>
+<option value="50x70 cm SOLO TELA">50x70 cm SOLO TELA</option>
+<option value="50x70 cm CON TELAIO">50x70 cm CON TELAIO</option>
 </select>
 <span style="display: inline-block; width: 60px; text-align: center;">Qtà</span>
 <select id="telaQtà" style="width: 60px; display: inline-block;">
@@ -868,7 +871,8 @@ break-inside: avoid;
 <label for="penninoUsb">Pennino USB</label>
 <textarea id="penninoUsb" rows="2" placeholder="Specifiche sul pennino USB (capacità, contenuti, ecc.)..."></textarea>
 </div>
-</div><!-- IMPORTO E EXTRA -->
+</div>
+<!-- IMPORTO E EXTRA -->
 <div class="form-section" style="margin-top: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 12px;">
   <h3 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px;">💰 DETTAGLIO COSTI</h3>
   
@@ -900,31 +904,31 @@ break-inside: avoid;
 <div class="gallery-grid">
 <div class="gallery-item">
 <label for="galleryEmail">Email</label>
-<input type="email" id="galleryEmail" placeholder="email@esempio.it">
+<input type="email" id="galleryEmail" placeholder="email@esempio.it" style="width: 100%; padding: 12px; font-size: 16px;">
 </div>
 <div class="gallery-item">
 <label for="galleryUsername">Username</label>
-<input type="text" id="galleryUsername" placeholder="Nome utente">
+<input type="text" id="galleryUsername" placeholder="Nome utente" style="width: 100%; padding: 12px; font-size: 16px;">
 </div>
 <div class="gallery-item">
 <label for="galleryPassword">Password</label>
-<input type="password" id="galleryPassword" placeholder="">
+<input type="password" id="galleryPassword" placeholder="" style="width: 100%; padding: 12px; font-size: 16px;">
 </div>
 <div class="gallery-item full">
 <label for="galleryUrl">URL</label>
-<input type="url" id="galleryUrl" placeholder="https://">
+<input type="url" id="galleryUrl" placeholder="https://" style="width: 100%; padding: 12px; font-size: 16px;">
 </div>
 </div>
 </div>
 <!-- CARTELLA SERVIZIO -->
 <div class="field-group" style="margin-top: 20px;">
 <label for="cartellaServizio">Cartella servizio in:</label>
-<input type="text" id="cartellaServizio" placeholder="Incolla qui il percorso della cartella">
+<input type="text" id="cartellaServizio" placeholder="Incolla qui il percorso della cartella" style="width: 100%; padding: 12px; font-size: 16px;">
 </div>
 <!-- NOTA -->
 <div class="field-group" style="margin-top: 20px;">
 <label for="nota">NOTA</label>
-<textarea id="nota" rows="4" style="resize: none;"></textarea>
+<textarea id="nota" rows="4" style="resize: none; width: 100%; padding: 12px; font-size: 16px;"></textarea>
 </div>
 <!-- ACCONTI -->
 <div class="deposit-section">
