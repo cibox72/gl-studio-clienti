@@ -298,7 +298,7 @@ border-radius: var(--border-radius);
 box-shadow: var(--box-shadow);
 padding: 20px;
 cursor: pointer;
-transition: transform 0.2s;
+transition: transform 0.2;
 border-left: 5px solid var(--secondary-color);
 }
 .client-card:hover {
@@ -660,7 +660,7 @@ break-inside: avoid;
 </div>
 <div class="field-group">
 <label for="email1">Email</label>
-<input type="email" id="email1">
+<input type="email"="email1">
 </div>
 </div>
 </div>
@@ -680,7 +680,7 @@ break-inside: avoid;
 <label for="indirizzo2">Indirizzo (Via, Città)</label>
 <div style="display: flex; gap: 10px; align-items: center;">
 <input type="text" id="indirizzo2" placeholder="Via Verdi, Palermo" style="flex: 1;">
-<button type="button" class="maps-btn" onclick="openMaps('indirizzo2')">📍</button>
+<button type="button" class="maps-btn" onclick="openMaps('indirizzo2')">📍</>
 </div>
 </div>
 <div class="field-group">
@@ -731,7 +731,7 @@ break-inside: avoid;
 <button type="button" class="maps-btn" onclick="openMaps('chiesa')">📍</button>
 </div>
 </div>
-<div class="field-group" style="flex: 1; min-width: 200px;">
+<div class="field-group" style="flex:  200px;">
 <label for="location">3. Location</label>
 <div style="display: flex; gap: 10px; align-items: center;">
 <input type="text" id="location" style="flex: 1;">
@@ -1068,11 +1068,11 @@ break-inside: avoid;
 </div>
 
 <!-- MODALE AGGIUNGI ACCONTO -->
-<div id="modalconto" class="hidden">
+<div id="modalAcconto" class="hidden">
   <div class="modal-content">
     <h3>➕ Aggiungi Acconto</h3>
-    <input type="text" id="modalData" class="modal-input" placeholder="gg/mm/aaaa" maxlength="10">
-    <input type="text" id="modalImporto" class="modal-input" placeholder="Importo (€)">
+    <input type="date" id="modalData" class="modal-input" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px;">
+    <input type="text" id="modalImporto" class="modal-input" placeholder="Importo (€)" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px;">
     <div class="modal-buttons">
       <button class="modal-btn btn-cancel" onclick="closeModal()">Annulla</button>
       <button class="modal-btn btn-save" onclick="saveNewDeposit()">Salva</button>
@@ -1089,53 +1089,19 @@ let isEditing = false;
 // Carica clienti all'avvio
 document.addEventListener('DOMContentLoaded', function() {
 loadClients();
-setupDepositFormatting();
 });
 
-// ✅ FUNZIONE CORRETTA: formatta data come gg/mm/aaaa
-function formatDateYYYYMMDD(dateString) {
-if (!dateString) return '';
-const date = new Date(dateString);
-return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
-}
-
-// ✅ FUNZIONE PER CONVERTIRE DA ISO a gg/mm/aaaa (es. 2026-06-19 → 19/06/2026)
+// ✅ FUNZIONE CORRETTA: formatta data ISO (YYYY-MM-DD) in gg/mm/aaaa
 function formatDateISOtoDDMMYYYY(isoDate) {
 if (!isoDate) return '';
 const [y, m, d] = isoDate.split('-');
 return `${d}/${m}/${y}`;
 }
 
-// ✅ FUNZIONE PER CONVERTIRE DA numerico (es. 24022025) a gg/mm/aaaa
-function formatDateNumeric(str) {
-if (!str || str.length !== 8) return str;
-const d = str.substring(0, 2);
-const m = str.substring(2, 4);
-const y = str.substring(4, 8);
-return `${d}/${m}/${y}`;
-}
-
-// Funzione per formattare automaticamente le date degli acconti
-function setupDepositFormatting() {
-document.addEventListener('input', function(e) {
-if (e.target.id === 'modalData') {
-let value = e.target.value.replace(/\D/g, '');
-if (value.length > 2 && value.length <= 4) {
-value = value.slice(0, 2) + '/' + value.slice(2);
-} else if (value.length > 4) {
-value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4, 8);
-}
-e.target.value = value;
-}
-});
-}
-
 // Apri modale per aggiungere acconto
 function openAddDepositModal(clientId) {
 currentClientId = clientId;
-const now = new Date();
-const today = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth() + 1)).slice(-2) + '/' + now.getFullYear();
-document.getElementById('modalData').value = today;
+document.getElementById('modalData').value = ''; // campo <input type="date">
 document.getElementById('modalImporto').value = '';
 document.getElementById('modalAcconto').classList.remove('hidden');
 }
@@ -1148,10 +1114,10 @@ currentClientId = null;
 
 // Salva nuovo acconto
 function saveNewDeposit() {
-const data = document.getElementById('modalData').value.trim();
+const dataISO = document.getElementById('modalData').value; // es. "2026-06-19"
 const importoText = document.getElementById('modalImporto').value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
 
-if (!data || !importoText) {
+if (!dataISO || !importoText) {
 alert('⚠️ Compila entrambi i campi');
 return;
 }
@@ -1162,13 +1128,16 @@ alert('⚠️ Inserisci un importo valido');
 return;
 }
 
+// Converti data ISO in gg/mm/aaaa
+const dataFormatted = formatDateISOtoDDMMYYYY(dataISO);
+
 // Carica clienti
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 const clienteIndex = clients.findIndex(c => c.id === currentClientId);
 
 if (clienteIndex !== -1) {
 clients[clienteIndex].acconti.push({
-  date: data, // già in formato gg/mm/aaaa
+  date: dataFormatted, // ✅ Formato gg/mm/aaaa
 importo: importo.toFixed(2)
 });
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
@@ -1189,12 +1158,12 @@ closeModal();
 function addDeposit() {
 const depositList = document.getElementById('depositList');
 const now = new Date();
-const today = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth() + 1)).slice(-2) + '/' + now.getFullYear();
+const todayISO = now.toISOString().split('T')[0]; // es. "2026-02-03"
 const depositDiv = document.createElement('div');
 depositDiv.className = 'deposit-item';
 depositDiv.innerHTML = `
-<input type="text" class="deposit-date" placeholder="gg/mm/aaaa" value="${today}" maxlength="10" style="width: 120px; text-align: center;">
-<input type="text" class="deposit-amount" placeholder="Importo (€)" style="flex: 1;" oninput="calculateBalance()">
+<input type="date" class="deposit-date" value="${todayISO}" style="width: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;">
+<input type="text" class="deposit-amount" placeholder="Importo (€)" style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;" oninput="calculateBalance()">
 <button class="deposit-btn edit" onclick="editDeposit(this)">✏️</button>
 <button class="deposit-btn delete" onclick="deleteDeposit(this)">❌</button>
 `;
@@ -1274,7 +1243,6 @@ const nome1 = document.getElementById('nome1').value.trim();
 const telefono1 = document.getElementById('telefono1').value.trim();
 const tipoServizio = document.getElementById('tipoServizio').value;
 const dataEventoISO = document.getElementById('dataEvento').value; // es. "2026-06-19"
-const dataEvento = formatDateISOtoDDMMYYYY(dataEventoISO); // → "19/06/2026"
 const importoServizio = parseFloat(document.getElementById('importoServizio').value.replace(/\./g, '').replace(',', '.')) || 0;
 const importoExtraManuale = parseFloat(document.getElementById('importoExtraManuale').value.replace(/\./g, '').replace(',', '.')) || 0;
 if (!cognome1 || !nome1 || !telefono1) {
@@ -1293,6 +1261,9 @@ if (importoServizio <= 0) {
 alert('⚠️ Inserisci un Importo Servizio valido');
 return;
 }
+
+// Converti data evento in gg/mm/aaaa
+const dataEvento = formatDateISOtoDDMMYYYY(dataEventoISO);
 
 // Raccolta dati LAVORO COMMISSIONATO
 const indirizzo1 = document.getElementById('indirizzo1').value.trim() || '';
@@ -1329,8 +1300,8 @@ const acconti = [];
 document.querySelectorAll('.deposit-item').forEach(item => {
 const dateInput = item.querySelector('.deposit-date');
 const amountInput = item.querySelector('.deposit-amount');
-const dateRaw = dateInput.value.trim();
-const date = formatDateNumeric(dateRaw); // converte 24022025 → 24/02/2025
+const dateISO = dateInput.value.trim(); // es. "2026-06-19"
+const date = formatDateISOtoDDMMYYYY(dateISO); // → "19/06/2026"
 const amountText = amountInput.value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
 const amount = parseFloat(amountText);
 if (date && amount > 0) {
@@ -1357,7 +1328,7 @@ email2: document.getElementById('email2').value.trim() || '',
 tipoServizio: tipoServizio || '',
 chiesa: chiesa,
 location: location,
-dataEvento: dataEvento, // già in formato gg/mm/aaaa
+dataEvento: dataEvento, // ✅ gg/mm/aaaa
 album: album,
 copertina: copertina,
 miniAlbum: miniAlbum,
@@ -1425,9 +1396,7 @@ document.getElementById('servizioLocation').value = 'INCLUSO';
 document.getElementById('depositList').innerHTML = '';
 document.getElementById('saldoResiduo').textContent = 'SALDO RESIDUO: € 0,00';
 document.getElementById('totaleComplessivo').textContent = '0,00';
-}
-
-// Carica e visualizza clienti
+}// Carica e visualizza clienti
 function loadClients() {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 const clientList = document.getElementById('clientList');
@@ -1449,7 +1418,7 @@ clientCard.className = 'client-card';
 clientCard.innerHTML = `
 <div class="client-card-header">
 <div class="client-card-title">${cliente.cognome1} ${cliente.nome1}${cliente.cognome2 ? ' & ' + cliente.cognome2 : ''}</div>
-<div class="client-card-date">${cliente.dataEvento}</div> <!-- già gg/mm/aaaa -->
+<div class="client-card-date">${cliente.dataEvento}</div>
 </div>
 <div class="client-card-service">${cliente.tipoServizio} • ${cliente.dataEvento}</div>
 <div class="client-card-amounts">
@@ -1533,7 +1502,7 @@ LAVORO COMMISSIONATO
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
 <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
 <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p> <!-- ✅ gg/mm/aaaa -->
+<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
 <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
 <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
 <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
@@ -1552,16 +1521,16 @@ LAVORO COMMISSIONATO
 
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
 <h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
-${cliente.fotoExtraBook ?p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
+${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
 ${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
-${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>`: ''}
+${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
 </div>
 
 ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
 ${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
-${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>`: ''}
+${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
 ${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
 ${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
 </div>` : ''}
@@ -1575,7 +1544,7 @@ ${cliente.nota ? `
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
 <p style="white-space: pre-wrap;">${cliente.nota}</p>
-</div>`: ''}
+</div>` : ''}
 
 <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
 <p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
@@ -1593,7 +1562,7 @@ ${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
 SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
 </div>
 
-<div style="margin-top: 30px; text: center; font-size: 14px; color: #8d99ae;">
+<div style="margin-top: 30px; text-align: center; font-size: 14px; color: #8d99ae;">
 <p>G&L Studio - Via Ciarrocco n.21, Canicattì (AG)</p>
 <p>Tel: +39 366 9381103 / 320 6337370 | Email: weddinggel@aruba.it</p>
 </div>
@@ -1679,11 +1648,14 @@ document.getElementById('nota').value = cliente.nota || '';
 const depositList = document.getElementById('depositList');
 depositList.innerHTML = '';
 cliente.acconti.forEach(acc => {
+// ✅ Converti gg/mm/aaaa → YYYY-MM-DD per il campo <input type="date">
+const [dd, mm, yy] = acc.date.split('/');
+const isoDate = `${yy}-${mm}-${dd}`;
 const depositDiv = document.createElement('div');
 depositDiv.className = 'deposit-item';
 depositDiv.innerHTML = `
-<input type="text" class="deposit-date" value="${acc.date}" style="width: 120px; text-align: center;" readonly>
-<input type="text" class="deposit-amount" value="${parseFloat(acc.importo).toFixed(2).replace('.', ',')} €" style="flex: 1;" readonly>
+<input type="date" class="deposit-date" value="${isoDate}" style="width: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;" readonly>
+<input type="text" class="deposit-amount" value="${parseFloat(acc.importo).toFixed(2).replace('.', ',')} €" style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;" readonly>
 <button class="deposit-btn edit" onclick="editDeposit(this)">✏️</button>
 <button class="deposit-btn delete" onclick="deleteDeposit(this)">❌</button>
 `;
@@ -1762,7 +1734,7 @@ ${cliente.cognome2 ? `
 ${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
           class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
     💬 WhatsApp
-  </button>`: ''}
+  </button>` : ''}
 </p>
 <p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
 </div>` : ''}
@@ -1777,7 +1749,7 @@ LAVORO COMMISSIONATO
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
 <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
 <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p> <!-- ✅ gg/mm/aaaa -->
+<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
 <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
 <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
 <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
@@ -1798,16 +1770,16 @@ LAVORO COMMISSIONATO
 <h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
 ${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
 ${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
-${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>`: ''}
+${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
 </div>
 
 ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
 ${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
-${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>`: ''}
-${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>`: ''}
-${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>`: ''}
+${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
+${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
+${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
 </div>` : ''}
 
 ${cliente.cartellaServizio ? `
@@ -1819,7 +1791,7 @@ ${cliente.nota ? `
 <div style="margin-bottom: 20px;">
 <h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
 <p style="white-space: pre-wrap;">${cliente.nota}</p>
-</div>`: ''}
+</div>` : ''}
 
 <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
 <p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
