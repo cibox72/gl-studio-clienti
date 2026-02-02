@@ -383,6 +383,10 @@ color: white;
 background-color: #6c757d;
 color: white;
 }
+.card-btn.add-deposit {
+background-color: #4CAF50;
+color: white;
+}
 .card-btn:hover {
 opacity: 0.9;
 }
@@ -1046,25 +1050,17 @@ calculateBalance(); // Aggiorna anche il saldo
 
 // Apri WhatsApp Web con il numero del cliente
 function openWhatsAppWeb(phoneNumber, clientName) {
-  // Rimuovi tutti i caratteri non numerici
   const cleanNumber = phoneNumber.replace(/\D/g, '');
-  
-  // Verifica che il numero abbia almeno 8 cifre
   if (cleanNumber.length < 8) {
     alert('⚠️ Numero di telefono non valido per WhatsApp');
     return;
   }
-  
-  // Costruisci l'URL di WhatsApp Web
   const whatsappUrl = `https://web.whatsapp.com/send?phone=${cleanNumber}&text=Ciao ${encodeURIComponent(clientName)},%20`;
-  
-  // Apri in una nuova scheda
   window.open(whatsappUrl, '_blank');
 }
 
 // Salva cliente
 function saveClient() {
-// Validazione base
 const cognome1 = document.getElementById('cognome1').value.trim();
 const nome1 = document.getElementById('nome1').value.trim();
 const telefono1 = document.getElementById('telefono1').value.trim();
@@ -1148,7 +1144,6 @@ nome2: document.getElementById('nome2').value.trim() || '',
 indirizzo2: indirizzo2,
 telefono2: document.getElementById('telefono2').value.trim() || '',
 email2: document.getElementById('email2').value.trim() || '',
-// LAVORO COMMISSIONATO (18 campi)
 tipoServizio: tipoServizio || '',
 chiesa: chiesa,
 location: location,
@@ -1169,14 +1164,12 @@ stampeQtà: stampeQtà,
 miniPocket: miniPocket,
 servizioSalaPosa: servizioSalaPosa,
 servizioLocation: servizioLocation,
-// EXTRA
 fotoExtraBook: fotoExtraBook,
 servizioExtra: servizioExtra,
 penninoUsb: penninoUsb,
 importoServizio: importoServizio,
 importoExtraManuale: importoExtraManuale,
 importoTotale: importoTotale,
-// ALTRO
 galleryEmail: document.getElementById('galleryEmail').value.trim() || '',
 galleryUsername: document.getElementById('galleryUsername').value.trim() || '',
 galleryPassword: document.getElementById('galleryPassword').value.trim() || '',
@@ -1191,17 +1184,10 @@ dataSalvataggio: new Date().toISOString()
 let clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 // Aggiungi nuovo cliente
 clients.push(cliente);
-// Salva in localStorage
+// Salva SOLO il file aggiornato (nessun backup dei precedenti)
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
-// Backup automatico ogni 5 salvataggi
-const backupCount = parseInt(localStorage.getItem('backupCount') || '0');
-if (backupCount % 5 === 0) {
-downloadBackup(true);
-}
-localStorage.setItem('backupCount', (backupCount + 1).toString());
 alert('✅ Cliente salvato con successo!');
 loadClients();
-// Reset form (opzionale)
 if (confirm('Vuoi resettare il modulo per un nuovo cliente?')) {
 resetForm();
 }
@@ -1230,10 +1216,8 @@ if (clients.length === 0) {
 clientList.innerHTML = '<p style="text-align: center; color: var(--gray-color); padding: 20px;">Nessun cliente salvato</p>';
 return;
 }
-// Ordina per data evento (dal più vecchio al più recente)
 clients.sort((a, b) => new Date(a.dataEvento) - new Date(b.dataEvento));
 clients.forEach(cliente => {
-// Calcola totale acconti
 const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
 const saldoResiduo = cliente.importoTotale - totaleAcconti;
 const clientCard = document.createElement('div');
@@ -1249,21 +1233,8 @@ clientCard.innerHTML = `
 <span class="client-card-deposits">Acconti: € ${totaleAcconti.toFixed(2).replace('.', ',')}</span>
 <span class="client-card-balance">Saldo: € ${saldoResiduo.toFixed(2).replace('.', ',')}</span>
 </div>
-<div style="margin-top: 12px;">
-${cliente.telefono1 ? `
-  <div><strong>📞 Cliente 1:</strong> ${cliente.telefono1}
-  <button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
-          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
-    💬 WhatsApp
-  </button></div>` : ''}
-${cliente.cognome2 && cliente.telefono2 ? `
-  <div style="margin-top: 6px;"><strong>📞 Cliente 2:</strong> ${cliente.telefono2}
-  <button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
-          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
-    💬 WhatsApp
-  </button></div>` : ''}
-</div>
 <div class="card-buttons" style="margin-top: 15px;">
+<button class="card-btn add-deposit" onclick="addDepositToClient(${cliente.id})">+ Aggiungi Acconto</button>
 <button class="card-btn edit" onclick="editClient(${cliente.id})">✏️ Modifica</button>
 <button class="card-btn pdf" onclick="generatePDF(${cliente.id})">🖨️ PDF</button>
 <button class="card-btn delete" onclick="deleteClient(${cliente.id})">❌ Elimina</button>
@@ -1290,13 +1261,32 @@ card.style.display = cardText.includes(searchTerm) ? 'block' : 'none';
 });
 }
 
+// Aggiungi acconto a un cliente esistente
+function addDepositToClient(clientId) {
+const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
+const cliente = clients.find(c => c.id === clientId);
+if (!cliente) return;
+
+// Crea un nuovo acconto
+const now = new Date();
+const today = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth() + 1)).slice(-2) + '/' + now.getFullYear();
+cliente.acconti.push({
+  date: today,
+importo: "0.00"
+});
+
+// Salva SOLO il file aggiornato
+localStorage.setItem('glStudioClients', JSON.stringify(clients));
+alert('✅ Nuovo acconto aggiunto! Modifica data e importo.');
+loadClients();
+}
+
 // Modifica cliente (carica dati nel form)
 function editClient(clientId) {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 const cliente = clients.find(c => c.id === clientId);
 if (!cliente) return;
 
-// Compila il form CLIENTE 1 e 2
 document.getElementById('cognome1').value = cliente.cognome1 || '';
 document.getElementById('nome1').value = cliente.nome1 || '';
 document.getElementById('indirizzo1').value = cliente.indirizzo1 || '';
@@ -1307,8 +1297,6 @@ document.getElementById('nome2').value = cliente.nome2 || '';
 document.getElementById('indirizzo2').value = cliente.indirizzo2 || '';
 document.getElementById('telefono2').value = cliente.telefono2 || '';
 document.getElementById('email2').value = cliente.email2 || '';
-
-// LAVORO COMMISSIONATO
 document.getElementById('tipoServizio').value = cliente.tipoServizio || '';
 document.getElementById('chiesa').value = cliente.chiesa || '';
 document.getElementById('location').value = cliente.location || '';
@@ -1329,27 +1317,18 @@ document.getElementById('stampeQtà').value = cliente.stampeQtà || '';
 document.getElementById('miniPocket').value = cliente.miniPocket || '';
 document.getElementById('servizioSalaPosa').value = cliente.servizioSalaPosa || 'INCLUSO';
 document.getElementById('servizioLocation').value = cliente.servizioLocation || 'INCLUSO';
-
-// EXTRA
 document.getElementById('fotoExtraBook').value = cliente.fotoExtraBook || '';
 document.getElementById('servizioExtra').value = cliente.servizioExtra || '';
 document.getElementById('penninoUsb').value = cliente.penninoUsb || '';
-
-// IMPORTO ED EXTRA
 document.getElementById('importoServizio').value = cliente.importoServizio.toFixed(2).replace('.', ',');
 document.getElementById('importoExtraManuale').value = cliente.importoExtraManuale.toFixed(2).replace('.', ',');
-
-// APP. GALLERY
 document.getElementById('galleryEmail').value = cliente.galleryEmail || '';
 document.getElementById('galleryUsername').value = cliente.galleryUsername || '';
 document.getElementById('galleryPassword').value = cliente.galleryPassword || '';
 document.getElementById('galleryUrl').value = cliente.galleryUrl || '';
-
-// ALTRO
 document.getElementById('cartellaServizio').value = cliente.cartellaServizio || '';
 document.getElementById('nota').value = cliente.nota || '';
 
-// Carica acconti
 const depositList = document.getElementById('depositList');
 depositList.innerHTML = '';
 cliente.acconti.forEach(acc => {
@@ -1364,7 +1343,6 @@ depositDiv.innerHTML = `
 depositList.appendChild(depositDiv);
 });
 
-// Scrolla in alto
 window.scrollTo({ top: 0, behavior: 'smooth' });
 alert('✏️ Dati cliente caricati nel modulo. Modifica i campi necessari e premi "SALVA CLIENTE" per aggiornare.');
 }
@@ -1398,7 +1376,6 @@ alert('Cliente non trovato');
 return;
 }
 try {
-// Crea una scheda temporanea per la stampa/PDF
 const printSection = document.createElement('div');
 printSection.id = 'printSection';
 printSection.style.padding = '20px';
@@ -1406,11 +1383,9 @@ printSection.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 printSection.style.maxWidth = '800px';
 printSection.style.margin = '0 auto';
 
-// Calcola totali
 const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
 const saldoResiduo = cliente.importoTotale - totaleAcconti;
 
-// Costruisci contenuto
 printSection.innerHTML = `
 <div style="text-align: center; border-bottom: 3px solid #e63946; padding-bottom: 15px; margin-bottom: 20px;">
 <h1 style="color: #1d3557; font-size: 24px;">G&L Studio</h1>
@@ -1524,7 +1499,6 @@ SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
 
 document.body.appendChild(printSection);
 
-// Genera PDF
 const pdf = new jsPDF('p', 'mm', 'a4');
 const canvas = await html2canvas(printSection, {
 scale: 2,
@@ -1547,7 +1521,6 @@ heightLeft -= pageHeight;
 }
 pdf.save(`G&L_Studio_Cliente_${cliente.cognome1}_${formatDate(cliente.dataEvento)}.pdf`);
 
-// Rimuovi sezione temporanea
 document.body.removeChild(printSection);
 } catch (error) {
 console.error('Errore generazione PDF:', error);
@@ -1555,21 +1528,19 @@ alert('❌ Errore durante la generazione del PDF. Riprova.');
 }
 }
 
-// Backup dati
+// Backup dati (SOLO file aggiornato)
 function downloadBackup(auto = false) {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 if (clients.length === 0) {
 alert('Nessun dato da esportare');
 return;
 }
-let backupNum = parseInt(localStorage.getItem('backupNumber') || '0') + 1;
-localStorage.setItem('backupNumber', backupNum.toString());
 const backupData = {
 version: 'G&L Studio v1.0',
 exportDate: new Date().toISOString(),
 clients: clients
 };
-const filename = `backup-gl-studio-clienti-${String(backupNum).padStart(3, '0')}.json`;
+const filename = `gl-studio-clienti.json`;
 const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
 const url = URL.createObjectURL(blob);
 const a = document.createElement('a');
