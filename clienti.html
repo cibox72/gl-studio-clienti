@@ -298,7 +298,7 @@ border-radius: var(--border-radius);
 box-shadow: var(--box-shadow);
 padding: 20px;
 cursor: pointer;
-transition: transform 0.2;
+transition: transform 0.2s;
 border-left: 5px solid var(--secondary-color);
 }
 .client-card:hover {
@@ -660,7 +660,7 @@ break-inside: avoid;
 </div>
 <div class="field-group">
 <label for="email1">Email</label>
-<input type="email"="email1">
+<input type="email" id="email1">
 </div>
 </div>
 </div>
@@ -680,7 +680,7 @@ break-inside: avoid;
 <label for="indirizzo2">Indirizzo (Via, Città)</label>
 <div style="display: flex; gap: 10px; align-items: center;">
 <input type="text" id="indirizzo2" placeholder="Via Verdi, Palermo" style="flex: 1;">
-<button type="button" class="maps-btn" onclick="openMaps('indirizzo2')">📍</>
+<button type="button" class="maps-btn" onclick="openMaps('indirizzo2')">📍</button>
 </div>
 </div>
 <div class="field-group">
@@ -731,7 +731,7 @@ break-inside: avoid;
 <button type="button" class="maps-btn" onclick="openMaps('chiesa')">📍</button>
 </div>
 </div>
-<div class="field-group" style="flex:  200px;">
+<div class="field-group" style="flex: 1; min-width: 200px;">
 <label for="location">3. Location</label>
 <div style="display: flex; gap: 10px; align-items: center;">
 <input type="text" id="location" style="flex: 1;">
@@ -1091,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function() {
 loadClients();
 });
 
-// ✅ FUNZIONE CORRETTA: formatta data ISO (YYYY-MM-DD) in gg/mm/aaaa
+// ✅ FUNZIONE: formatta data ISO (YYYY-MM-DD) in gg/mm/aaaa
 function formatDateISOtoDDMMYYYY(isoDate) {
 if (!isoDate) return '';
 const [y, m, d] = isoDate.split('-');
@@ -1101,7 +1101,7 @@ return `${d}/${m}/${y}`;
 // Apri modale per aggiungere acconto
 function openAddDepositModal(clientId) {
 currentClientId = clientId;
-document.getElementById('modalData').value = ''; // campo <input type="date">
+document.getElementById('modalData').value = '';
 document.getElementById('modalImporto').value = '';
 document.getElementById('modalAcconto').classList.remove('hidden');
 }
@@ -1114,7 +1114,7 @@ currentClientId = null;
 
 // Salva nuovo acconto
 function saveNewDeposit() {
-const dataISO = document.getElementById('modalData').value; // es. "2026-06-19"
+const dataISO = document.getElementById('modalData').value;
 const importoText = document.getElementById('modalImporto').value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
 
 if (!dataISO || !importoText) {
@@ -1128,23 +1128,20 @@ alert('⚠️ Inserisci un importo valido');
 return;
 }
 
-// Converti data ISO in gg/mm/aaaa
 const dataFormatted = formatDateISOtoDDMMYYYY(dataISO);
 
-// Carica clienti
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 const clienteIndex = clients.findIndex(c => c.id === currentClientId);
 
 if (clienteIndex !== -1) {
 clients[clienteIndex].acconti.push({
-  date: dataFormatted, // ✅ Formato gg/mm/aaaa
+  date: dataFormatted,
 importo: importo.toFixed(2)
 });
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
 alert('✅ Acconto aggiunto con successo!');
 loadClients();
 
-// Se siamo nella scheda PDF, aggiorna anche quella
 if (document.getElementById('pdfView').style.display !== 'none') {
 showPdfView(currentClientId);
 }
@@ -1154,7 +1151,7 @@ alert('❌ Cliente non trovato');
 closeModal();
 }
 
-// Aggiungi un nuovo acconto nel modulo principale
+// ✅ AGGIUNGI ACCHI NEL MODULO PRINCIPALE CON CALENDARIO
 function addDeposit() {
 const depositList = document.getElementById('depositList');
 const now = new Date();
@@ -1177,14 +1174,12 @@ const depositItem = btn.closest('.deposit-item');
 const inputs = depositItem.querySelectorAll('input');
 const isEditing = !inputs[0].readOnly;
 if (isEditing) {
-// Salva
 inputs.forEach(input => {
 input.readOnly = true;
 input.style.backgroundColor = '#f9f9f9';
 });
 btn.textContent = '✏️';
 } else {
-// Modifica
 inputs.forEach(input => {
 input.readOnly = false;
 input.style.backgroundColor = 'white';
@@ -1222,7 +1217,7 @@ const importoExtraManuale = parseFloat(document.getElementById('importoExtraManu
 const totaleComplessivo = importoServizio + importoExtraManuale;
 
 document.getElementById('totaleComplessivo').textContent = totaleComplessivo.toFixed(2).replace('.', ',');
-calculateBalance(); // Aggiorna anche il saldo
+calculateBalance();
 }
 
 // Apri WhatsApp Web con il numero del cliente
@@ -1242,7 +1237,7 @@ const cognome1 = document.getElementById('cognome1').value.trim();
 const nome1 = document.getElementById('nome1').value.trim();
 const telefono1 = document.getElementById('telefono1').value.trim();
 const tipoServizio = document.getElementById('tipoServizio').value;
-const dataEventoISO = document.getElementById('dataEvento').value; // es. "2026-06-19"
+const dataEventoISO = document.getElementById('dataEvento').value;
 const importoServizio = parseFloat(document.getElementById('importoServizio').value.replace(/\./g, '').replace(',', '.')) || 0;
 const importoExtraManuale = parseFloat(document.getElementById('importoExtraManuale').value.replace(/\./g, '').replace(',', '.')) || 0;
 if (!cognome1 || !nome1 || !telefono1) {
@@ -1262,10 +1257,8 @@ alert('⚠️ Inserisci un Importo Servizio valido');
 return;
 }
 
-// Converti data evento in gg/mm/aaaa
 const dataEvento = formatDateISOtoDDMMYYYY(dataEventoISO);
 
-// Raccolta dati LAVORO COMMISSIONATO
 const indirizzo1 = document.getElementById('indirizzo1').value.trim() || '';
 const indirizzo2 = document.getElementById('indirizzo2').value.trim() || '';
 const chiesa = document.getElementById('chiesa').value.trim() || '';
@@ -1287,15 +1280,13 @@ const miniPocket = document.getElementById('miniPocket').value || '';
 const servizioSalaPosa = document.getElementById('servizioSalaPosa').value || 'INCLUSO';
 const servizioLocation = document.getElementById('servizioLocation').value || 'INCLUSO';
 
-// Raccolta dati EXTRA
 const fotoExtraBook = document.getElementById('fotoExtraBook').value.trim() || '';
 const servizioExtra = document.getElementById('servizioExtra').value.trim() || '';
 const penninoUsb = document.getElementById('penninoUsb').value.trim() || '';
 
-// Calcolo totale complessivo
 const importoTotale = importoServizio + importoExtraManuale;
 
-// Raccolta acconti
+// ✅ RACCOLTA ACCONTI DAL MODULO PRINCIPALE CON CALENDARIO
 const acconti = [];
 document.querySelectorAll('.deposit-item').forEach(item => {
 const dateInput = item.querySelector('.deposit-date');
@@ -1312,7 +1303,6 @@ importo: amount.toFixed(2)
 }
 });
 
-// Crea oggetto cliente
 const cliente = {
 id: isEditing ? currentClientId : Date.now(),
 cognome1: cognome1 || '',
@@ -1328,7 +1318,7 @@ email2: document.getElementById('email2').value.trim() || '',
 tipoServizio: tipoServizio || '',
 chiesa: chiesa,
 location: location,
-dataEvento: dataEvento, // ✅ gg/mm/aaaa
+dataEvento: dataEvento,
 album: album,
 copertina: copertina,
 miniAlbum: miniAlbum,
@@ -1361,21 +1351,17 @@ acconti: acconti,
 dataSalvataggio: new Date().toISOString()
 };
 
-// Carica clienti esistenti
 let clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 
 if (isEditing) {
-// Aggiorna il cliente esistente
 const index = clients.findIndex(c => c.id === currentClientId);
 if (index !== -1) {
 clients[index] = cliente;
 }
 } else {
-// Aggiungi nuovo cliente
 clients.push(cliente);
 }
 
-// Salva SOLO il file aggiornato
 localStorage.setItem('glStudioClients', JSON.stringify(clients));
 alert(isEditing ? '✅ Cliente aggiornato con successo!' : '✅ Cliente salvato con successo!');
 loadClients();
@@ -1396,7 +1382,9 @@ document.getElementById('servizioLocation').value = 'INCLUSO';
 document.getElementById('depositList').innerHTML = '';
 document.getElementById('saldoResiduo').textContent = 'SALDO RESIDUO: € 0,00';
 document.getElementById('totaleComplessivo').textContent = '0,00';
-}// Carica e visualizza clienti
+}
+
+// Carica e visualizza clienti
 function loadClients() {
 const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
 const clientList = document.getElementById('clientList');
@@ -1614,9 +1602,8 @@ document.getElementById('email2').value = cliente.email2 || '';
 document.getElementById('tipoServizio').value = cliente.tipoServizio || '';
 document.getElementById('chiesa').value = cliente.chiesa || '';
 document.getElementById('location').value = cliente.location || '';
-// ✅ Converti gg/mm/aaaa → YYYY-MM-DD per il campo <input type="date">
 const [d, m, y] = cliente.dataEvento.split('/');
-document.getElementById('dataEvento').value = `${y}-${m}-${d}`; // es. 2026-06-19
+document.getElementById('dataEvento').value = `${y}-${m}-${d}`;
 document.getElementById('album').value = cliente.album || '';
 document.getElementById('copertina').value = cliente.copertina || '';
 document.getElementById('miniAlbum').value = cliente.miniAlbum || '';
@@ -1648,7 +1635,6 @@ document.getElementById('nota').value = cliente.nota || '';
 const depositList = document.getElementById('depositList');
 depositList.innerHTML = '';
 cliente.acconti.forEach(acc => {
-// ✅ Converti gg/mm/aaaa → YYYY-MM-DD per il campo <input type="date">
 const [dd, mm, yy] = acc.date.split('/');
 const isoDate = `${yy}-${mm}-${dd}`;
 const depositDiv = document.createElement('div');
