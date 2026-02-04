@@ -946,14 +946,18 @@ break-inside: avoid;
 <!-- Riga 5 -->
 <div class="service-item">
 <label for="servizioSalaPosa">17. Servizio Sala Posa</label>
+<!-- ✅ AGGIUNTA VOCE "Nessuno" -->
 <select id="servizioSalaPosa">
+<option value="">Nessuno</option>
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
 </div>
 <div class="service-item">
 <label for="servizioLocation">18. Servizio Location</label>
+<!-- ✅ AGGIUNTA VOCE "Nessuno" -->
 <select id="servizioLocation">
+<option value="">Nessuno</option>
 <option value="INCLUSO">INCLUSO</option>
 <option value="DA CONTEGGIARE">DA CONTEGGIARE</option>
 </select>
@@ -1278,8 +1282,10 @@ const telaQtà = document.getElementById('telaQtà').value || '';
 const stampeCarta = document.getElementById('stampeCarta').value || '';
 const stampeQtà = document.getElementById('stampeQtà').value || '';
 const miniPocket = document.getElementById('miniPocket').value || '';
-const servizioSalaPosa = document.getElementById('servizioSalaPosa').value || 'INCLUSO';
-const servizioLocation = document.getElementById('servizioLocation').value || 'INCLUSO';
+
+// ✅ VALORI AGGIORNATI CON "Nessuno"
+const servizioSalaPosa = document.getElementById('servizioSalaPosa').value || '';
+const servizioLocation = document.getElementById('servizioLocation').value || '';
 
 const fotoExtraBook = document.getElementById('fotoExtraBook').value.trim() || '';
 const servizioExtra = document.getElementById('servizioExtra').value.trim() || '';
@@ -1334,8 +1340,8 @@ telaQtà: telaQtà,
 stampeCarta: stampeCarta,
 stampeQtà: stampeQtà,
 miniPocket: miniPocket,
-servizioSalaPosa: servizioSalaPosa,
-servizioLocation: servizioLocation,
+servizioSalaPosa: servizioSalaPosa, // ✅ Può essere "Nessuno"
+servizioLocation: servizioLocation, // ✅ Può essere "Nessuno"
 fotoExtraBook: fotoExtraBook,
 servizioExtra: servizioExtra,
 penninoUsb: penninoUsb,
@@ -1378,8 +1384,9 @@ if (!el.id.startsWith('importo') && el.id !== 'totaleComplessivo') {
 el.value = '';
 }
 });
-document.getElementById('servizioSalaPosa').value = 'INCLUSO';
-document.getElementById('servizioLocation').value = 'INCLUSO';
+// ✅ Imposta "Nessuno" come valore predefinito
+document.getElementById('servizioSalaPosa').value = '';
+document.getElementById('servizioLocation').value = '';
 document.getElementById('depositList').innerHTML = '';
 document.getElementById('saldoResiduo').textContent = 'SALDO RESIDUO: € 0,00';
 document.getElementById('totaleComplessivo').textContent = '0,00';
@@ -1491,7 +1498,7 @@ LAVORO COMMISSIONATO
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
 <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
 <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p> <!-- ✅ Formato corretto: 19/06/2026 -->
+<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
 <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
 <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
 <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
@@ -1504,8 +1511,8 @@ LAVORO COMMISSIONATO
 <p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
 <p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
 <p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
-<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa}</p>
-<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation}</p>
+<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa || 'Nessuno'}</p>
+<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation || 'Nessuno'}</p>
 </div>
 
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
@@ -1619,8 +1626,11 @@ document.getElementById('telaQtà').value = cliente.telaQtà || '';
 document.getElementById('stampeCarta').value = cliente.stampeCarta || '';
 document.getElementById('stampeQtà').value = cliente.stampeQtà || '';
 document.getElementById('miniPocket').value = cliente.miniPocket || '';
-document.getElementById('servizioSalaPosa').value = cliente.servizioSalaPosa || 'INCLUSO';
-document.getElementById('servizioLocation').value = cliente.servizioLocation || 'INCLUSO';
+
+// ✅ Carica valori corretti (incluso "Nessuno" = stringa vuota)
+document.getElementById('servizioSalaPosa').value = cliente.servizioSalaPosa || '';
+document.getElementById('servizioLocation').value = cliente.servizioLocation || '';
+
 document.getElementById('fotoExtraBook').value = cliente.fotoExtraBook || '';
 document.getElementById('servizioExtra').value = cliente.servizioExtra || '';
 document.getElementById('penninoUsb').value = cliente.penninoUsb || '';
@@ -1736,7 +1746,7 @@ LAVORO COMMISSIONATO
 <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
 <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
 <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p> <!-- ✅ 19/06/2026 -->
+<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
 <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
 <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
 <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
@@ -1749,8 +1759,8 @@ LAVORO COMMISSIONATO
 <p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
 <p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
 <p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
-<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa}</p>
-<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation}</p>
+<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa || 'Nessuno'}</p>
+<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation || 'Nessuno'}</p>
 </div>
 
 <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
