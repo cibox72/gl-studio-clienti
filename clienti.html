@@ -624,10 +624,10 @@ break-inside: avoid;
 <p>Via Ciarrocco n.21, Canicattì (AG)</p>
 </div>
 <div class="nav-buttons">
-<button class="nav-btn" onclick="location.href='dashboard.html'">🏠 Dashboard</button>
+<button class="nav-btn" onclick="location.href='index.html'">🏠 Dashboard</button>
 <button class="nav-btn" onclick="downloadBackup()">📥 Backup Dati</button>
 <button class="nav-btn" onclick="restoreBackup()">📤 Ripristina da File</button>
-<button class="nav-btn logout" onclick="location.href='logout.html'">🚪 Esci</button>
+<button class="nav-btn logout" onclick="location.href='login.html'">🚪 Esci</button>
 </div>
 <div class="form-section">
 <h2 class="section-title">Nuovo Cliente</h2>
@@ -701,7 +701,6 @@ break-inside: avoid;
 <div class="highlight-line">LAVORO COMMISSIONATO</div>
 <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;">
 <div class="field-group" style="flex: 1; min-width: 200px;">
-<!-- ✅ MENU PIÙ LUNGO PER "TIPO DI SERVIZIO" -->
 <label for="tipoServizio">1. Tipo di Servizio</label>
 <select id="tipoServizio" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 15px; min-width: 220px;">
 <option value="">Seleziona...</option>
@@ -946,7 +945,6 @@ break-inside: avoid;
 <!-- Riga 5 -->
 <div class="service-item">
 <label for="servizioSalaPosa">17. Servizio Sala Posa</label>
-<!-- ✅ AGGIUNTA VOCE "Nessuno" -->
 <select id="servizioSalaPosa">
 <option value="">Nessuno</option>
 <option value="INCLUSO">INCLUSO</option>
@@ -955,7 +953,6 @@ break-inside: avoid;
 </div>
 <div class="service-item">
 <label for="servizioLocation">18. Servizio Location</label>
-<!-- ✅ AGGIUNTA VOCE "Nessuno" -->
 <select id="servizioLocation">
 <option value="">Nessuno</option>
 <option value="INCLUSO">INCLUSO</option>
@@ -980,926 +977,231 @@ break-inside: avoid;
 <label for="penninoUsb">Pennino USB</label>
 <textarea id="penninoUsb" rows="2" placeholder="Specifiche sul pennino USB (capacità, contenuti, ecc.)..."></textarea>
 </div>
-</div><!-- IMPORTO E EXTRA -->
-<div class="form-section" style="margin-top: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 12px;">
-  <h3 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px;">💰 DETTAGLIO COSTI</h3>
-  
-  <!-- Riga 1: Importo servizio -->
-  <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
-    <div class="field-group" style="flex: 1; min-width: 200px;">
-      <label for="importoServizio">Importo Servizio (€)</label>
-      <input type="text" id="importoServizio" placeholder="0,00 €" oninput="calculateTotal()" style="width: 100%; padding: 10px; font-size: 16px; border: 2px solid #ddd; border-radius: 6px; text-align: right;">
-    </div>
-  </div>
-
-  <!-- Riga 2: Importo EXTRA manuale -->
-  <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
-    <div class="field-group" style="flex: 1; min-width: 200px;">
-      <label for="importoExtraManuale">Importo EXTRA (€)</label>
-      <input type="text" id="importoExtraManuale" placeholder="0,00 €" oninput="calculateTotal()" style="width: 100%; padding: 10px; font-size: 16px; border: 2px solid #ddd; border-radius: 6px; text-align: right;">
-    </div>
-  </div>
-
-  <!-- Riga 3: Totale complessivo -->
-  <div style="text-align: center; margin-top: 20px; padding: 15px; background-color: rgba(230, 57, 70, 0.1); border-radius: 8px;">
-    <strong style="font-size: 20px; color: var(--primary-color);">TOTALE COMPLESSIVO: € <span id="totaleComplessivo">0,00</span></strong>
-  </div>
-</div>
-
-<!-- APP. GALLERY -->
-<div class="app-gallery">
-<h3 style="color: var(--secondary-color); margin-bottom: 15px;">APP. GALLERY</h3>
-<div class="gallery-grid">
-<div class="gallery-item">
-<label for="galleryEmail">Email</label>
-<input type="email" id="galleryEmail" placeholder="email@esempio.it" style="width: 100%; padding: 12px; font-size: 16px;">
-</div>
-<div class="gallery-item">
-<label for="galleryUsername">Username</label>
-<input type="text" id="galleryUsername" placeholder="Nome utente" style="width: 100%; padding: 12px; font-size: 16px;">
-</div>
-<div class="gallery-item">
-<label for="galleryPassword">Password</label>
-<input type="password" id="galleryPassword" placeholder="" style="width: 100%; padding: 12px; font-size: 16px;">
-</div>
-<div class="gallery-item full">
-<label for="galleryUrl">URL</label>
-<input type="url" id="galleryUrl" placeholder="https://" style="width: 100%; padding: 12px; font-size: 16px;">
-</div>
-</div>
-</div>
-<!-- CARTELLA SERVIZIO -->
-<div class="field-group" style="margin-top: 20px;">
-<label for="cartellaServizio">Cartella servizio in:</label>
-<input type="text" id="cartellaServizio" placeholder="Incolla qui il percorso della cartella" style="width: 100%; padding: 12px; font-size: 16px;">
-</div>
-<!-- NOTA -->
-<div class="field-group" style="margin-top: 20px;">
-<label for="nota">NOTA</label>
-<textarea id="nota" rows="4" style="resize: none; width: 100%; padding: 12px; font-size: 16px;"></textarea>
-</div>
-<!-- ACCONTI -->
-<div class="deposit-section">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-<h3 style="color: var(--secondary-color);">Acconti Ricevuti</h3>
-<button class="deposit-btn" onclick="addDeposit()">+ Aggiungi Acconto</button>
-</div>
-<div id="depositList"></div>
-</div>
-<!-- SALDO RESIDUO -->
-<div class="balance-line" id="saldoResiduo">SALDO RESIDUO: € 0,00</div>
-<!-- PULSANTI AZIONE -->
-<div class="action-buttons">
-<button class="action-btn save-btn" onclick="saveClient()">✅ SALVA CLIENTE</button>
-</div>
-</div>
-<!-- LISTA CLIENTI -->
-<div class="search-container">
-<input type="text" id="searchInput" placeholder="🔍 Cerca cliente per nome o cognome..." onkeyup="filterClients()">
-</div>
-<div class="form-section">
-<h2 class="section-title">Archivio Clienti</h2>
-<div class="client-list" id="clientList"></div>
-</div>
-
-<!-- SCHEDA PDF-LIKE -->
-<div class="pdf-view" id="pdfView">
-  <h2>SCHEDA CLIENTE</h2>
-  <div id="pdfContent"></div>
-  <div class="pdf-actions" style="text-align: center; margin-top: 20px;">
-    <button class="card-btn edit" onclick="editFromPdfView()">✏️ Modifica</button>
-    <button class="card-btn pdf" onclick="printPdfView()">🖨️ Stampa</button>
-  </div>
-</div>
-
-<!-- MODALE AGGIUNGI ACCONTO -->
-<div id="modalAcconto" class="hidden">
-  <div class="modal-content">
-    <h3>➕ Aggiungi Acconto</h3>
-    <input type="date" id="modalData" class="modal-input" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px;">
-    <input type="text" id="modalImporto" class="modal-input" placeholder="Importo (€)" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px;">
-    <div class="modal-buttons">
-      <button class="modal-btn btn-cancel" onclick="closeModal()">Annulla</button>
-      <button class="modal-btn btn-save" onclick="saveNewDeposit()">Salva</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// Inizializzazione jsPDF
-const { jsPDF } = window.jspdf;
-let currentClientId = null;
-let isEditing = false;
-
-// Carica clienti all'avvio
-document.addEventListener('DOMContentLoaded', function() {
-loadClients();
-});
-
-// ✅ FUNZIONE: formatta data ISO (YYYY-MM-DD) in gg/mm/aaaa
-function formatDateISOtoDDMMYYYY(isoDate) {
-if (!isoDate) return '';
-const [y, m, d] = isoDate.split('-');
-return `${d}/${m}/${y}`;
-}
-
-// Apri modale per aggiungere acconto
-function openAddDepositModal(clientId) {
-currentClientId = clientId;
-document.getElementById('modalData').value = '';
-document.getElementById('modalImporto').value = '';
-document.getElementById('modalAcconto').classList.remove('hidden');
-}
-
-// Chiudi modale
-function closeModal() {
-document.getElementById('modalAcconto').classList.add('hidden');
-currentClientId = null;
-}
-
-// Salva nuovo acconto
-function saveNewDeposit() {
-const dataISO = document.getElementById('modalData').value;
-const importoText = document.getElementById('modalImporto').value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
-
-if (!dataISO || !importoText) {
-alert('⚠️ Compila entrambi i campi');
-return;
-}
-
-const importo = parseFloat(importoText);
-if (isNaN(importo) || importo <= 0) {
-alert('⚠️ Inserisci un importo valido');
-return;
-}
-
-const dataFormatted = formatDateISOtoDDMMYYYY(dataISO);
-
-const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-const clienteIndex = clients.findIndex(c => c.id === currentClientId);
-
-if (clienteIndex !== -1) {
-clients[clienteIndex].acconti.push({
-  date: dataFormatted,
-importo: importo.toFixed(2)
-});
-localStorage.setItem('glStudioClients', JSON.stringify(clients));
-alert('✅ Acconto aggiunto con successo!');
-loadClients();
-
-if (document.getElementById('pdfView').style.display !== 'none') {
-showPdfView(currentClientId);
-}
-} else {
-alert('❌ Cliente non trovato');
-}
-closeModal();
-}
-
-// ✅ AGGIUNGI ACCHI NEL MODULO PRINCIPALE CON CALENDARIO
-function addDeposit() {
-const depositList = document.getElementById('depositList');
-const now = new Date();
-const todayISO = now.toISOString().split('T')[0]; // es. "2026-02-03"
-const depositDiv = document.createElement('div');
-depositDiv.className = 'deposit-item';
-depositDiv.innerHTML = `
-<input type="date" class="deposit-date" value="${todayISO}" style="width: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;">
-<input type="text" class="deposit-amount" placeholder="Importo (€)" style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;" oninput="calculateBalance()">
-<button class="deposit-btn edit" onclick="editDeposit(this)">✏️</button>
-<button class="deposit-btn delete" onclick="deleteDeposit(this)">❌</button>
-`;
-depositList.appendChild(depositDiv);
-calculateBalance();
-}
-
-// Modifica acconto (attiva/disattiva editing)
-function editDeposit(btn) {
-const depositItem = btn.closest('.deposit-item');
-const inputs = depositItem.querySelectorAll('input');
-const isEditing = !inputs[0].readOnly;
-if (isEditing) {
-inputs.forEach(input => {
-input.readOnly = true;
-input.style.backgroundColor = '#f9f9f9';
-});
-btn.textContent = '✏️';
-} else {
-inputs.forEach(input => {
-input.readOnly = false;
-input.style.backgroundColor = 'white';
-});
-btn.textContent = '💾';
-}
-calculateBalance();
-}
-
-// Elimina acconto
-function deleteDeposit(btn) {
-const depositItem = btn.closest('.deposit-item');
-depositItem.remove();
-calculateBalance();
-}
-
-// Calcola saldo residuo
-function calculateBalance() {
-const importoText = document.getElementById('totaleComplessivo').textContent.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
-const importoTotale = parseFloat(importoText) || 0;
-let totaleAcconti = 0;
-document.querySelectorAll('.deposit-amount').forEach(input => {
-const value = input.value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
-const amount = parseFloat(value) || 0;
-totaleAcconti += amount;
-});
-const saldo = importoTotale - totaleAcconti;
-document.getElementById('saldoResiduo').textContent = `SALDO RESIDUO: € ${saldo.toFixed(2).replace('.', ',')}`;
-}
-
-// Calcola il totale complessivo (servizio + extra manuale)
-function calculateTotal() {
-const importoServizio = parseFloat(document.getElementById('importoServizio').value.replace(/\./g, '').replace(',', '.')) || 0;
-const importoExtraManuale = parseFloat(document.getElementById('importoExtraManuale').value.replace(/\./g, '').replace(',', '.')) || 0;
-const totaleComplessivo = importoServizio + importoExtraManuale;
-
-document.getElementById('totaleComplessivo').textContent = totaleComplessivo.toFixed(2).replace('.', ',');
-calculateBalance();
-}
-
-// Apri WhatsApp Web con il numero del cliente
-function openWhatsAppWeb(phoneNumber, clientName) {
-const cleanNumber = phoneNumber.replace(/\D/g, '');
-if (cleanNumber.length < 8) {
-alert('⚠️ Numero di telefono non valido per WhatsApp');
-return;
-}
-const whatsappUrl = `https://web.whatsapp.com/send?phone=${cleanNumber}&text=Ciao ${encodeURIComponent(clientName)},%20`;
-window.open(whatsappUrl, '_blank');
-}
-
-// Salva cliente (nuovo o modifica)
-function saveClient() {
-const cognome1 = document.getElementById('cognome1').value.trim();
-const nome1 = document.getElementById('nome1').value.trim();
-const telefono1 = document.getElementById('telefono1').value.trim();
-const tipoServizio = document.getElementById('tipoServizio').value;
-const dataEventoISO = document.getElementById('dataEvento').value;
-const importoServizio = parseFloat(document.getElementById('importoServizio').value.replace(/\./g, '').replace(',', '.')) || 0;
-const importoExtraManuale = parseFloat(document.getElementById('importoExtraManuale').value.replace(/\./g, '').replace(',', '.')) || 0;
-if (!cognome1 || !nome1 || !telefono1) {
-alert('⚠️ Compila almeno Cognome, Nome e Telefono del Cliente 1');
-return;
-}
-if (!tipoServizio) {
-alert('⚠️ Seleziona il Tipo di Servizio');
-return;
-}
-if (!dataEventoISO) {
-alert('⚠️ Inserisci la Data dell\'Evento');
-return;
-}
-if (importoServizio <= 0) {
-alert('⚠️ Inserisci un Importo Servizio valido');
-return;
-}
-
-const dataEvento = formatDateISOtoDDMMYYYY(dataEventoISO);
-
-const indirizzo1 = document.getElementById('indirizzo1').value.trim() || '';
-const indirizzo2 = document.getElementById('indirizzo2').value.trim() || '';
-const chiesa = document.getElementById('chiesa').value.trim() || '';
-const location = document.getElementById('location').value.trim() || '';
-const album = document.getElementById('album').value || '';
-const copertina = document.getElementById('copertina').value || '';
-const miniAlbum = document.getElementById('miniAlbum').value || '';
-const effetti = document.getElementById('effetti').value || '';
-const interni = document.getElementById('interni').value || '';
-const fotoBook = document.getElementById('fotoBook').value || '';
-const anteprima = document.getElementById('anteprima').value || '';
-const postServizio = document.getElementById('postServizio').value || '';
-const video = document.getElementById('video').value || '';
-const tela = document.getElementById('tela').value || '';
-const telaQtà = document.getElementById('telaQtà').value || '';
-const stampeCarta = document.getElementById('stampeCarta').value || '';
-const stampeQtà = document.getElementById('stampeQtà').value || '';
-const miniPocket = document.getElementById('miniPocket').value || '';
-
-// ✅ VALORI AGGIORNATI CON "Nessuno"
-const servizioSalaPosa = document.getElementById('servizioSalaPosa').value || '';
-const servizioLocation = document.getElementById('servizioLocation').value || '';
-
-const fotoExtraBook = document.getElementById('fotoExtraBook').value.trim() || '';
-const servizioExtra = document.getElementById('servizioExtra').value.trim() || '';
-const penninoUsb = document.getElementById('penninoUsb').value.trim() || '';
-
-const importoTotale = importoServizio + importoExtraManuale;
-
-// ✅ RACCOLTA ACCONTI DAL MODULO PRINCIPALE CON CALENDARIO
-const acconti = [];
-document.querySelectorAll('.deposit-item').forEach(item => {
-const dateInput = item.querySelector('.deposit-date');
-const amountInput = item.querySelector('.deposit-amount');
-const dateISO = dateInput.value.trim(); // es. "2026-06-19"
-const date = formatDateISOtoDDMMYYYY(dateISO); // → "19/06/2026"
-const amountText = amountInput.value.trim().replace('€', '').replace(/\./g, '').replace(',', '.');
-const amount = parseFloat(amountText);
-if (date && amount > 0) {
-acconti.push({
-  date,
-importo: amount.toFixed(2)
-});
-}
-});
-
-const cliente = {
-id: isEditing ? currentClientId : Date.now(),
-cognome1: cognome1 || '',
-nome1: nome1 || '',
-indirizzo1: indirizzo1,
-telefono1: telefono1 || '',
-email1: document.getElementById('email1').value.trim() || '',
-cognome2: document.getElementById('cognome2').value.trim() || '',
-nome2: document.getElementById('nome2').value.trim() || '',
-indirizzo2: indirizzo2,
-telefono2: document.getElementById('telefono2').value.trim() || '',
-email2: document.getElementById('email2').value.trim() || '',
-tipoServizio: tipoServizio || '',
-chiesa: chiesa,
-location: location,
-dataEvento: dataEvento,
-album: album,
-copertina: copertina,
-miniAlbum: miniAlbum,
-effetti: effetti,
-interni: interni,
-fotoBook: fotoBook,
-anteprima: anteprima,
-postServizio: postServizio,
-video: video,
-tela: tela,
-telaQtà: telaQtà,
-stampeCarta: stampeCarta,
-stampeQtà: stampeQtà,
-miniPocket: miniPocket,
-servizioSalaPosa: servizioSalaPosa, // ✅ Può essere "Nessuno"
-servizioLocation: servizioLocation, // ✅ Può essere "Nessuno"
-fotoExtraBook: fotoExtraBook,
-servizioExtra: servizioExtra,
-penninoUsb: penninoUsb,
-importoServizio: importoServizio,
-importoExtraManuale: importoExtraManuale,
-importoTotale: importoTotale,
-galleryEmail: document.getElementById('galleryEmail').value.trim() || '',
-galleryUsername: document.getElementById('galleryUsername').value.trim() || '',
-galleryPassword: document.getElementById('galleryPassword').value.trim() || '',
-galleryUrl: document.getElementById('galleryUrl').value.trim() || '',
-cartellaServizio: document.getElementById('cartellaServizio').value.trim() || '',
-nota: document.getElementById('nota').value.trim() || '',
-acconti: acconti,
-dataSalvataggio: new Date().toISOString()
-};
-
-let clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-
-if (isEditing) {
-const index = clients.findIndex(c => c.id === currentClientId);
-if (index !== -1) {
-clients[index] = cliente;
-}
-} else {
-clients.push(cliente);
-}
-
-localStorage.setItem('glStudioClients', JSON.stringify(clients));
-alert(isEditing ? '✅ Cliente aggiornato con successo!' : '✅ Cliente salvato con successo!');
-loadClients();
-resetForm();
-isEditing = false;
-currentClientId = null;
-}
-
-// Reset form
-function resetForm() {
-document.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]), select, textarea').forEach(el => {
-if (!el.id.startsWith('importo') && el.id !== 'totaleComplessivo') {
-el.value = '';
-}
-});
-// ✅ Imposta "Nessuno" come valore predefinito
-document.getElementById('servizioSalaPosa').value = '';
-document.getElementById('servizioLocation').value = '';
-document.getElementById('depositList').innerHTML = '';
-document.getElementById('saldoResiduo').textContent = 'SALDO RESIDUO: € 0,00';
-document.getElementById('totaleComplessivo').textContent = '0,00';
-}
-
-// ✅ CARICA E VISUALIZZA CLIENTI — CON DATA IN gg/mm/aaaa
-function loadClients() {
-const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-const clientList = document.getElementById('clientList');
-clientList.innerHTML = '';
-if (clients.length === 0) {
-clientList.innerHTML = '<p style="text-align: center; color: var(--gray-color); padding: 20px;">Nessun cliente salvato</p>';
-return;
-}
-clients.sort((a, b) => {
-const dateA = new Date(a.dataEvento.split('/').reverse().join('-'));
-const dateB = new Date(b.dataEvento.split('/').reverse().join('-'));
-return dateA - dateB;
-});
-clients.forEach(cliente => {
-const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
-const saldoResiduo = cliente.importoTotale - totaleAcconti;
-const clientCard = document.createElement('div');
-clientCard.className = 'client-card';
-clientCard.innerHTML = `
-<div class="client-card-header">
-<div class="client-card-title">${cliente.cognome1} ${cliente.nome1}${cliente.cognome2 ? ' & ' + cliente.cognome2 : ''}</div>
-<div class="client-card-date">${cliente.dataEvento}</div>
-</div>
-<div class="client-card-service">${cliente.tipoServizio} • ${cliente.dataEvento}</div>
-<div class="client-card-amounts">
-<span class="client-card-total">Totale: € ${cliente.importoTotale.toFixed(2).replace('.', ',')}</span>
-<span class="client-card-deposits">Acconti: € ${totaleAcconti.toFixed(2).replace('.', ',')}</span>
-<span class="client-card-balance">Saldo: € ${saldoResiduo.toFixed(2).replace('.', ',')}</span>
-</div>
-<div class="card-buttons" style="margin-top: 15px;">
-<button class="card-btn open" onclick="showPdfView(${cliente.id})">Apri</button>
-<button class="card-btn edit" onclick="editClient(${cliente.id})">✏️ Modifica</button>
-<button class="card-btn pdf" onclick="generatePDF(${cliente.id})">🖨️ PDF</button>
-<button class="card-btn delete" onclick="deleteClient(${cliente.id})">❌ Elimina</button>
-</div>
-`;
-clientList.appendChild(clientCard);
-});
-}
-
-// Filtra clienti per ricerca
-function filterClients() {
-const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-const clientCards = document.querySelectorAll('.client-card');
-clientCards.forEach(card => {
-const cardText = card.textContent.toLowerCase();
-card.style.display = cardText.includes(searchTerm) ? 'block' : 'none';
-});
-}
-
-// ✅ MOSTRA LA SCHEDA PDF-LIKE — CON DATA IN FORMATO CORRETTO
-function showPdfView(clientId) {
-const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-const cliente = clients.find(c => c.id === clientId);
-if (!cliente) return;
-
-currentClientId = clientId;
-const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
-const saldoResiduo = cliente.importoTotale - totaleAcconti;
-
-let content = `
-<div style="text-align: center; border-bottom: 3px solid #e63946; padding-bottom: 15px; margin-bottom: 20px;">
-<h1 style="color: #1d3557; font-size: 24px;">G&L Studio</h1>
-<p style="color: #8d99ae;">Via Ciarrocco n.21, Canicattì (AG)</p>
-</div>
-<h2 style="color: #1d3557; text-align: center; margin: 20px 0;">SCHEDA CLIENTE</h2>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-<div>
-<h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 1</h3>
-<p><strong>Cognome:</strong> ${cliente.cognome1 || 'N/A'}</p>
-<p><strong>Nome:</strong> ${cliente.nome1 || 'N/A'}</p>
-<p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}</p>
-<p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}
-${cliente.telefono1 ? `<button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
-          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
-    💬 WhatsApp
-  </button>` : ''}
-</p>
-<p><strong>Email:</strong> ${cliente.email1 || 'N/A'}</p>
-</div>
-${cliente.cognome2 ? `
-<div>
-<h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 2</h3>
-<p><strong>Cognome:</strong> ${cliente.cognome2 || 'N/A'}</p>
-<p><strong>Nome:</strong> ${cliente.nome2 || 'N/A'}</p>
-<p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}</p>
-<p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}
-${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
-          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
-    💬 WhatsApp
-  </button>` : ''}
-</p>
-<p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
-</div>` : ''}
-</div>
-
-<div style="background-color: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 18px; margin: 25px 0;">
-LAVORO COMMISSIONATO
-</div>
-
-<div style="margin-bottom: 20px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">Dettagli Servizio</h3>
-<p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
-<p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
-<p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
-<p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
-<p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
-<p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
-<p><strong>8. Effetti:</strong> ${cliente.effetti || 'N/A'}</p>
-<p><strong>9. Interni:</strong> ${cliente.interni || 'N/A'}</p>
-<p><strong>10. Foto selezionate per book:</strong> ${cliente.fotoBook || 'N/A'}</p>
-<p><strong>11. Anteprima:</strong> ${cliente.anteprima || 'N/A'}</p>
-<p><strong>12. Post Servizio:</strong> ${cliente.postServizio || 'N/A'}</p>
-<p><strong>13. Video:</strong> ${cliente.video || 'N/A'}</p>
-<p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
-<p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
-<p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
-<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa || 'Nessuno'}</p>
-<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation || 'Nessuno'}</p>
-</div>
-
-<div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
-<h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
-${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
-${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
-${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
-</div>
-
-${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
-<div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
-${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
-${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
-${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
-${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
-</div>` : ''}
-
-${cliente.cartellaServizio ? `
-<div style="margin-bottom: 15px;">
-<p><strong>Cartella servizio in:</strong> ${cliente.cartellaServizio}</p>
-</div>` : ''}
-
-${cliente.nota ? `
-<div style="margin-bottom: 20px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
-<p style="white-space: pre-wrap;">${cliente.nota}</p>
-</div>` : ''}
-
-<div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
-<p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
-<p style="font-size: 28px; font-weight: bold; color: #e63946;">€ ${cliente.importoTotale.toFixed(2).replace('.', ',')}</p>
-</div>
-
-<div style="margin-bottom: 20px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">Acconti Ricevuti</h3>
-${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
-<p style="margin: 5px 0;">${acc.date} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
-`).join('') : '<p>Nessun acconto registrato</p>'}
-</div>
-
-<div style="text-align: center; font-size: 22px; font-weight: bold; color: #e63946; padding: 15px; background-color: rgba(230, 57, 70, 0.1); border-radius: 8px;">
-SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
-</div>
-
-<div style="margin-top: 30px; text-align: center; font-size: 14px; color: #8d99ae;">
-<p>G&L Studio - Via Ciarrocco n.21, Canicattì (AG)</p>
-<p>Tel: +39 366 9381103 / 320 6337370 | Email: weddinggel@aruba.it</p>
-</div>
-`;
-
-document.getElementById('pdfContent').innerHTML = content;
-document.getElementById('pdfView').style.display = 'block';
-document.querySelector('.form-section').style.display = 'none';
-document.querySelector('.client-list').closest('.form-section').style.display = 'none';
-}
-
-// Nascondi la scheda PDF-like
-function hidePdfView() {
-document.getElementById('pdfView').style.display = 'none';
-document.querySelector('.form-section').style.display = 'block';
-document.querySelector('.client-list').closest('.form-section').style.display = 'block';
-}
-
-// Modifica dal PDF view
-function editFromPdfView() {
-hidePdfView();
-editClient(currentClientId);
-}
-
-// Stampa la scheda PDF-like
-function printPdfView() {
-window.print();
-}
-
-// Modifica cliente (carica dati nel form)
-function editClient(clientId) {
-const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-const cliente = clients.find(c => c.id === clientId);
-if (!cliente) return;
-
-isEditing = true;
-currentClientId = clientId;
-
-document.getElementById('cognome1').value = cliente.cognome1 || '';
-document.getElementById('nome1').value = cliente.nome1 || '';
-document.getElementById('indirizzo1').value = cliente.indirizzo1 || '';
-document.getElementById('telefono1').value = cliente.telefono1 || '';
-document.getElementById('email1').value = cliente.email1 || '';
-document.getElementById('cognome2').value = cliente.cognome2 || '';
-document.getElementById('nome2').value = cliente.nome2 || '';
-document.getElementById('indirizzo2').value = cliente.indirizzo2 || '';
-document.getElementById('telefono2').value = cliente.telefono2 || '';
-document.getElementById('email2').value = cliente.email2 || '';
-document.getElementById('tipoServizio').value = cliente.tipoServizio || '';
-document.getElementById('chiesa').value = cliente.chiesa || '';
-document.getElementById('location').value = cliente.location || '';
-const [d, m, y] = cliente.dataEvento.split('/');
-document.getElementById('dataEvento').value = `${y}-${m}-${d}`;
-document.getElementById('album').value = cliente.album || '';
-document.getElementById('copertina').value = cliente.copertina || '';
-document.getElementById('miniAlbum').value = cliente.miniAlbum || '';
-document.getElementById('effetti').value = cliente.effetti || '';
-document.getElementById('interni').value = cliente.interni || '';
-document.getElementById('fotoBook').value = cliente.fotoBook || '';
-document.getElementById('anteprima').value = cliente.anteprima || '';
-document.getElementById('postServizio').value = cliente.postServizio || '';
-document.getElementById('video').value = cliente.video || '';
-document.getElementById('tela').value = cliente.tela || '';
-document.getElementById('telaQtà').value = cliente.telaQtà || '';
-document.getElementById('stampeCarta').value = cliente.stampeCarta || '';
-document.getElementById('stampeQtà').value = cliente.stampeQtà || '';
-document.getElementById('miniPocket').value = cliente.miniPocket || '';
-
-// ✅ Carica valori corretti (incluso "Nessuno" = stringa vuota)
-document.getElementById('servizioSalaPosa').value = cliente.servizioSalaPosa || '';
-document.getElementById('servizioLocation').value = cliente.servizioLocation || '';
-
-document.getElementById('fotoExtraBook').value = cliente.fotoExtraBook || '';
-document.getElementById('servizioExtra').value = cliente.servizioExtra || '';
-document.getElementById('penninoUsb').value = cliente.penninoUsb || '';
-document.getElementById('importoServizio').value = cliente.importoServizio.toFixed(2).replace('.', ',');
-document.getElementById('importoExtraManuale').value = cliente.importoExtraManuale.toFixed(2).replace('.', ',');
-document.getElementById('galleryEmail').value = cliente.galleryEmail || '';
-document.getElementById('galleryUsername').value = cliente.galleryUsername || '';
-document.getElementById('galleryPassword').value = cliente.galleryPassword || '';
-document.getElementById('galleryUrl').value = cliente.galleryUrl || '';
-document.getElementById('cartellaServizio').value = cliente.cartellaServizio || '';
-document.getElementById('nota').value = cliente.nota || '';
-
-const depositList = document.getElementById('depositList');
-depositList.innerHTML = '';
-cliente.acconti.forEach(acc => {
-const [dd, mm, yy] = acc.date.split('/');
-const isoDate = `${yy}-${mm}-${dd}`;
-const depositDiv = document.createElement('div');
-depositDiv.className = 'deposit-item';
-depositDiv.innerHTML = `
-<input type="date" class="deposit-date" value="${isoDate}" style="width: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;" readonly>
-<input type="text" class="deposit-amount" value="${parseFloat(acc.importo).toFixed(2).replace('.', ',')} €" style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;" readonly>
-<button class="deposit-btn edit" onclick="editDeposit(this)">✏️</button>
-<button class="deposit-btn delete" onclick="deleteDeposit(this)">❌</button>
-`;
-depositList.appendChild(depositDiv);
-});
-
-window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Elimina cliente
-function deleteClient(clientId) {
-if (!confirm('⚠️ Sei sicuro di eliminare questo cliente? Questa azione è irreversibile.')) return;
-let clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-clients = clients.filter(c => c.id !== clientId);
-localStorage.setItem('glStudioClients', JSON.stringify(clients));
-alert('✅ Cliente eliminato con successo');
-loadClients();
-}
-
-// Apri Google Maps
-function openMaps(fieldId) {
-const address = document.getElementById(fieldId).value.trim();
-if (!address) {
-alert('⚠️ Inserisci prima un indirizzo');
-return;
-}
-window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank');
-}
-
-// Genera PDF della scheda cliente
+</div>// Genera PDF della scheda cliente
 async function generatePDF(clientId) {
-const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-const cliente = clients.find(c => c.id === clientId);
-if (!cliente) {
-alert('Cliente non trovato');
-return;
+  const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
+  const cliente = clients.find(c => c.id === clientId);
+  if (!cliente) {
+    alert('Cliente non trovato');
+    return;
+  }
+  try {
+    const printSection = document.createElement('div');
+    printSection.id = 'printSection';
+    printSection.style.padding = '20px';
+    printSection.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+    printSection.style.maxWidth = '800px';
+    printSection.style.margin = '0 auto';
+
+    const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
+    const saldoResiduo = cliente.importoTotale - totaleAcconti;
+
+    printSection.innerHTML = `
+    <div style="text-align: center; border-bottom: 3px solid #e63946; padding-bottom: 15px; margin-bottom: 20px;">
+    <h1 style="color: #1d3557; font-size: 24px;">G&L Studio</h1>
+    <p style="color: #8d99ae;">Via Ciarrocco n.21, Canicattì (AG)</p>
+    </div>
+    <h2 style="color: #1d3557; text-align: center; margin: 20px 0;">SCHEDA CLIENTE</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+    <div>
+    <h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 1</h3>
+    <p><strong>Cognome:</strong> ${cliente.cognome1 || 'N/A'}</p>
+    <p><strong>Nome:</strong> ${cliente.nome1 || 'N/A'}</p>
+    <p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}</p>
+    <p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}
+    ${cliente.telefono1 ? `<button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
+              class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
+        💬 WhatsApp
+      </button>` : ''}
+    </p>
+    <p><strong>Email:</strong> ${cliente.email1 || 'N/A'}</p>
+    </div>
+    ${cliente.cognome2 ? `
+    <div>
+    <h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 2</h3>
+    <p><strong>Cognome:</strong> ${cliente.cognome2 || 'N/A'}</p>
+    <p><strong>Nome:</strong> ${cliente.nome2 || 'N/A'}</p>
+    <p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}</p>
+    <p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}
+    ${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
+              class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
+        💬 WhatsApp
+      </button>` : ''}
+    </p>
+    <p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
+    </div>` : ''}
+    </div>
+
+    <div style="background-color: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 18px; margin: 25px 0;">
+    LAVORO COMMISSIONATO
+    </div>
+
+    <div style="margin-bottom: 20px;">
+    <h3 style="color: #1d3557; margin-bottom: 10px;">Dettagli Servizio</h3>
+    <p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
+    <p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
+    <p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
+    <p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
+    <p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
+    <p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
+    <p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
+    <p><strong>8. Effetti:</strong> ${cliente.effetti || 'N/A'}</p>
+    <p><strong>9. Interni:</strong> ${cliente.interni || 'N/A'}</p>
+    <p><strong>10. Foto selezionate per book:</strong> ${cliente.fotoBook || 'N/A'}</p>
+    <p><strong>11. Anteprima:</strong> ${cliente.anteprima || 'N/A'}</p>
+    <p><strong>12. Post Servizio:</strong> ${cliente.postServizio || 'N/A'}</p>
+    <p><strong>13. Video:</strong> ${cliente.video || 'N/A'}</p>
+    <p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
+    <p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
+    <p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
+    <p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa || 'Nessuno'}</p>
+    <p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation || 'Nessuno'}</p>
+    </div>
+
+    <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
+    <h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
+    ${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
+    ${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
+    ${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
+    </div>
+
+    ${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
+    <div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+    <h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
+    ${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
+    ${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
+    ${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
+    ${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
+    </div>` : ''}
+
+    ${cliente.cartellaServizio ? `
+    <div style="margin-bottom: 15px;">
+    <p><strong>Cartella servizio in:</strong> ${cliente.cartellaServizio}</p>
+    </div>` : ''}
+
+    ${cliente.nota ? `
+    <div style="margin-bottom: 20px;">
+    <h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
+    <p style="white-space: pre-wrap;">${cliente.nota}</p>
+    </div>` : ''}
+
+    <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
+    <p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
+    <p style="font-size: 28px; font-weight: bold; color: #e63946;">€ ${cliente.importoTotale.toFixed(2).replace('.', ',')}</p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+    <h3 style="color: #1d3557; margin-bottom: 10px;">Acconti Ricevuti</h3>
+    ${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
+    <p style="margin: 5px 0;">${acc.date} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
+    `).join('') : '<p>Nessun acconto registrato</p>'}
+    </div>
+
+    <div style="text-align: center; font-size: 22px; font-weight: bold; color: #e63946; padding: 15px; background-color: rgba(230, 57, 70, 0.1); border-radius: 8px;">
+    SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
+    </div>
+
+    <div style="margin-top: 30px; text-align: center; font-size: 14px; color: #8d99ae;">
+    <p>G&L Studio - Via Ciarrocco n.21, Canicattì (AG)</p>
+    <p>Tel: +39 366 9381103 / 320 6337370 | Email: weddinggel@aruba.it</p>
+    </div>
+    `;
+
+    document.body.appendChild(printSection);
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const canvas = await html2canvas(printSection, {
+      scale: 2,
+      useCORS: true,
+      logging: false
+    });
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = 190;
+    const pageHeight = 295;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 10;
+    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    pdf.save(`G&L_Studio_Cliente_${cliente.cognome1}_${cliente.dataEvento}.pdf`);
+
+    document.body.removeChild(printSection);
+  } catch (error) {
+    console.error('Errore generazione PDF:', error);
+    alert('❌ Errore durante la generazione del PDF. Riprova.');
+  }
 }
-try {
-const printSection = document.createElement('div');
-printSection.id = 'printSection';
-printSection.style.padding = '20px';
-printSection.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-printSection.style.maxWidth = '800px';
-printSection.style.margin = '0 auto';
 
-const totaleAcconti = cliente.acconti.reduce((sum, acc) => sum + parseFloat(acc.importo), 0);
-const saldoResiduo = cliente.importoTotale - totaleAcconti;
-
-printSection.innerHTML = `
-<div style="text-align: center; border-bottom: 3px solid #e63946; padding-bottom: 15px; margin-bottom: 20px;">
-<h1 style="color: #1d3557; font-size: 24px;">G&L Studio</h1>
-<p style="color: #8d99ae;">Via Ciarrocco n.21, Canicattì (AG)</p>
-</div>
-<h2 style="color: #1d3557; text-align: center; margin: 20px 0;">SCHEDA CLIENTE</h2>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-<div>
-<h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 1</h3>
-<p><strong>Cognome:</strong> ${cliente.cognome1 || 'N/A'}</p>
-<p><strong>Nome:</strong> ${cliente.nome1 || 'N/A'}</p>
-<p><strong>Indirizzo:</strong> ${cliente.indirizzo1 || 'N/A'}</p>
-<p><strong>Telefono:</strong> ${cliente.telefono1 || 'N/A'}
-${cliente.telefono1 ? `<button onclick="openWhatsAppWeb('${cliente.telefono1}', '${cliente.nome1} ${cliente.cognome1}')" 
-          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
-    💬 WhatsApp
-  </button>` : ''}
-</p>
-<p><strong>Email:</strong> ${cliente.email1 || 'N/A'}</p>
-</div>
-${cliente.cognome2 ? `
-<div>
-<h3 style="color: #1d3557; margin-bottom: 10px;">👤 Cliente 2</h3>
-<p><strong>Cognome:</strong> ${cliente.cognome2 || 'N/A'}</p>
-<p><strong>Nome:</strong> ${cliente.nome2 || 'N/A'}</p>
-<p><strong>Indirizzo:</strong> ${cliente.indirizzo2 || 'N/A'}</p>
-<p><strong>Telefono:</strong> ${cliente.telefono2 || 'N/A'}
-${cliente.telefono2 ? `<button onclick="openWhatsAppWeb('${cliente.telefono2}', '${cliente.nome2} ${cliente.cognome2}')" 
-          class="whatsapp-btn" style="padding:4px 8px; font-size:12px; margin-left:8px;">
-    💬 WhatsApp
-  </button>` : ''}
-</p>
-<p><strong>Email:</strong> ${cliente.email2 || 'N/A'}</p>
-</div>` : ''}
-</div>
-
-<div style="background-color: rgba(230, 57, 70, 0.1); padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 18px; margin: 25px 0;">
-LAVORO COMMISSIONATO
-</div>
-
-<div style="margin-bottom: 20px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">Dettagli Servizio</h3>
-<p><strong>1. Tipo di Servizio:</strong> ${cliente.tipoServizio || 'N/A'}</p>
-<p><strong>2. Chiesa:</strong> ${cliente.chiesa || 'N/A'}</p>
-<p><strong>3. Location:</strong> ${cliente.location || 'N/A'}</p>
-<p><strong>4. Data Evento:</strong> ${cliente.dataEvento}</p>
-<p><strong>5. Album:</strong> ${cliente.album || 'N/A'}</p>
-<p><strong>6. Copertina:</strong> ${cliente.copertina || 'N/A'}</p>
-<p><strong>7. Mini Album:</strong> ${cliente.miniAlbum || 'N/A'}</p>
-<p><strong>8. Effetti:</strong> ${cliente.effetti || 'N/A'}</p>
-<p><strong>9. Interni:</strong> ${cliente.interni || 'N/A'}</p>
-<p><strong>10. Foto selezionate per book:</strong> ${cliente.fotoBook || 'N/A'}</p>
-<p><strong>11. Anteprima:</strong> ${cliente.anteprima || 'N/A'}</p>
-<p><strong>12. Post Servizio:</strong> ${cliente.postServizio || 'N/A'}</p>
-<p><strong>13. Video:</strong> ${cliente.video || 'N/A'}</p>
-<p><strong>14. Tela:</strong> ${cliente.tela || 'N/A'} (Qtà: ${cliente.telaQtà || '0'})</p>
-<p><strong>15. Stampe Carta Fotografica:</strong> ${cliente.stampeCarta || 'N/A'} (Qtà: ${cliente.stampeQtà || '0'})</p>
-<p><strong>16. Mini Pocket:</strong> ${cliente.miniPocket || 'N/A'}</p>
-<p><strong>17. Servizio Sala Posa:</strong> ${cliente.servizioSalaPosa || 'Nessuno'}</p>
-<p><strong>18. Servizio Location:</strong> ${cliente.servizioLocation || 'Nessuno'}</p>
-</div>
-
-<div style="margin-bottom: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
-<h3 style="color: #1d3557; margin-bottom: 10px; text-align: center;">Richieste EXTRA</h3>
-${cliente.fotoExtraBook ? `<p><strong>Foto extra in book:</strong> ${cliente.fotoExtraBook}</p>` : ''}
-${cliente.servizioExtra ? `<p><strong>Servizio extra:</strong> ${cliente.servizioExtra}</p>` : ''}
-${cliente.penninoUsb ? `<p><strong>Pennino USB:</strong> ${cliente.penninoUsb}</p>` : ''}
-</div>
-
-${cliente.galleryEmail || cliente.galleryUsername || cliente.galleryPassword || cliente.galleryUrl ? `
-<div style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">APP. GALLERY</h3>
-${cliente.galleryEmail ? `<p><strong>Email:</strong> ${cliente.galleryEmail}</p>` : ''}
-${cliente.galleryUsername ? `<p><strong>Username:</strong> ${cliente.galleryUsername}</p>` : ''}
-${cliente.galleryPassword ? `<p><strong>Password:</strong> ${cliente.galleryPassword}</p>` : ''}
-${cliente.galleryUrl ? `<p><strong>URL:</strong> <a href="${cliente.galleryUrl}" target="_blank">${cliente.galleryUrl}</a></p>` : ''}
-</div>` : ''}
-
-${cliente.cartellaServizio ? `
-<div style="margin-bottom: 15px;">
-<p><strong>Cartella servizio in:</strong> ${cliente.cartellaServizio}</p>
-</div>` : ''}
-
-${cliente.nota ? `
-<div style="margin-bottom: 20px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">NOTA</h3>
-<p style="white-space: pre-wrap;">${cliente.nota}</p>
-</div>` : ''}
-
-<div style="text-align: center; margin: 30px 0; padding: 20px; background-color: rgba(230, 57, 70, 0.1); border-radius: 12px;">
-<p style="font-size: 24px; font-weight: bold; color: #e63946; margin-bottom: 10px;">IMPORTO TOTALE COMPLESSIVO</p>
-<p style="font-size: 28px; font-weight: bold; color: #e63946;">€ ${cliente.importoTotale.toFixed(2).replace('.', ',')}</p>
-</div>
-
-<div style="margin-bottom: 20px;">
-<h3 style="color: #1d3557; margin-bottom: 10px;">Acconti Ricevuti</h3>
-${cliente.acconti.length > 0 ? cliente.acconti.map(acc => `
-<p style="margin: 5px 0;">${acc.date} - € ${parseFloat(acc.importo).toFixed(2).replace('.', ',')}</p>
-`).join('') : '<p>Nessun acconto registrato</p>'}
-</div>
-
-<div style="text-align: center; font-size: 22px; font-weight: bold; color: #e63946; padding: 15px; background-color: rgba(230, 57, 70, 0.1); border-radius: 8px;">
-SALDO RESIDUO: € ${saldoResiduo.toFixed(2).replace('.', ',')}
-</div>
-
-<div style="margin-top: 30px; text-align: center; font-size: 14px; color: #8d99ae;">
-<p>G&L Studio - Via Ciarrocco n.21, Canicattì (AG)</p>
-<p>Tel: +39 366 9381103 / 320 6337370 | Email: weddinggel@aruba.it</p>
-</div>
-`;
-
-document.body.appendChild(printSection);
-
-const pdf = new jsPDF('p', 'mm', 'a4');
-const canvas = await html2canvas(printSection, {
-scale: 2,
-useCORS: true,
-logging: false
-});
-const imgData = canvas.toDataURL('image/png');
-const imgWidth = 190;
-const pageHeight = 295;
-const imgHeight = canvas.height * imgWidth / canvas.width;
-let heightLeft = imgHeight;
-let position = 10;
-pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-while (heightLeft >= 0) {
-position = heightLeft - imgHeight;
-pdf.addPage();
-pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-}
-pdf.save(`G&L_Studio_Cliente_${cliente.cognome1}_${cliente.dataEvento}.pdf`);
-
-document.body.removeChild(printSection);
-} catch (error) {
-console.error('Errore generazione PDF:', error);
-alert('❌ Errore durante la generazione del PDF. Riprova.');
-}
-}
-
-// Backup dati (SOLO file aggiornato)
+// ✅ FUNZIONE DI BACKUP UNIFICATA (v2.1)
 function downloadBackup(auto = false) {
-const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
-if (clients.length === 0) {
-alert('Nessun dato da esportare');
-return;
-}
-const backupData = {
-version: 'G&L Studio v1.0',
-exportDate: new Date().toISOString(),
-clients: clients
-};
-const filename = `gl-studio-clienti.json`;
-const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
-const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = filename;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-URL.revokeObjectURL(url);
-if (!auto) {
-alert(`✅ Backup salvato: ${filename}`);
-}
+  const clients = JSON.parse(localStorage.getItem('glStudioClients')) || [];
+  if (clients.length === 0) {
+    alert('Nessun dato da esportare');
+    return;
+  }
+
+  const data = {
+    app: 'G&L Studio',
+    version: '2.1',
+    timestamp: new Date().toISOString(),
+    clients: clients
+  };
+
+  const filename = `G&L_Studio_Backup_${new Date().toISOString().slice(0,10)}.json`;
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  if (!auto) {
+    alert(`✅ Backup salvato: ${filename}`);
+  }
 }
 
-// Ripristina da file
+// ✅ FUNZIONE DI RIPRISTINO UNIFICATA (v2.1)
 function restoreBackup() {
-const input = document.createElement('input');
-input.type = 'file';
-input.accept = '.json';
-input.onchange = e => {
-const file = e.target.files[0];
-if (!file) return;
-const reader = new FileReader();
-reader.onload = event => {
-try {
-const data = JSON.parse(event.target.result);
-if (!data.clients) {
-alert('❌ File non valido: struttura dati non riconosciuta');
-return;
-}
-if (!confirm(`⚠️ Questa operazione sovrascriverà tutti i clienti esistenti (${data.clients.length} clienti nel file). Procedere?`)) {
-return;
-}
-localStorage.setItem('glStudioClients', JSON.stringify(data.clients));
-alert(`✅ Backup ripristinato con successo (${data.clients.length} clienti)`);
-loadClients();
-} catch (error) {
-console.error('Errore ripristino:', error);
-alert('❌ Errore durante il ripristino del file');
-}
-};
-reader.readAsText(file);
-};
-input.click();
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        const json = JSON.parse(event.target.result);
+
+        // 🔍 VALIDAZIONE STRICT (identica a index.html)
+        if (
+          json.app !== 'G&L Studio' ||
+          json.version !== '2.1' ||
+          !Array.isArray(json.clients)
+        ) {
+          throw new Error('File non compatibile: deve essere un backup G&L Studio v2.1');
+        }
+
+        localStorage.setItem('glStudioClients', JSON.stringify(json.clients));
+        alert(`✅ Backup ripristinato! ${json.clients.length} clienti caricati.`);
+        loadClients();
+      } catch (err) {
+        console.error('Errore:', err);
+        alert(`❌ Errore: ${err.message}\n\nAssicurati di usare un backup generato dal pulsante "Backup Dati".`);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
 }
 </script>
 </body>
